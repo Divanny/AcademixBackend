@@ -43,6 +43,9 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,9 +55,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Logger.cs" />
+    <Compile Include="Common\Mailing.cs" />
     <Compile Include="Common\ObjectsMapper.cs" />
+    <Compile Include="Common\OnlineUser.cs" />
     <Compile Include="Common\Repository.cs" />
     <Compile Include="Common\Utilities.cs" />
+    <Compile Include="Entities\AcademixDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcademixDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AcademixDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AcademixDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcademixDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Perfiles.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -65,7 +88,32 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="Entities\AcademixDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AcademixDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\AcademixDB.edmx.diagram">
+      <DependentUpon>AcademixDB.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Entities\AcademixDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AcademixDB.edmx</DependentUpon>
+      <LastGenOutput>AcademixDB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Entities\AcademixDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AcademixDB.edmx</DependentUpon>
+      <LastGenOutput>AcademixDB.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
