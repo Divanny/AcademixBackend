@@ -12,3 +12,17 @@ D:\Software Projects\Academix-Backend\Academix Backend\Data\obj\Debug\Data.cspro
 D:\Software Projects\Academix-Backend\Academix Backend\Data\obj\Debug\Data.csproj.CopyComplete
 D:\Software Projects\Academix-Backend\Academix Backend\Data\obj\Debug\Data.dll
 D:\Software Projects\Academix-Backend\Academix Backend\Data\obj\Debug\Data.pdb
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\bin\Debug\Data.dll.config
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\bin\Debug\Data.dll
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\bin\Debug\Data.pdb
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\bin\Debug\EntityFramework.dll
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\bin\Debug\Models.dll
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\bin\Debug\Models.pdb
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\bin\Debug\EntityFramework.xml
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\obj\Debug\Data.csproj.AssemblyReference.cache
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\obj\Debug\Data.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\obj\Debug\Data.csproj.CopyComplete
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\obj\Debug\Data.dll
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Data\obj\Debug\Data.pdb
