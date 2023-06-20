@@ -481,5 +481,154 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="T:WebAPI.Controllers.AccountController">
+            <summary>
+            API para manejar la cuenta del usuario.
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.AccountController.Get">
+            <summary>
+            Obtiene la información del usuario en línea.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AccountController.Post(Models.Credentials)">
+            <summary>
+            Iniciar sesión en el sistema.
+            </summary>
+            <param name="credentials"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AccountController.MyProfile(System.String)">
+            <summary>
+            Obtiene "Mi perfil" del usuario.
+            </summary>
+            <param name="userName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AccountController.Put">
+            <summary>
+            Cierra sesión en el sistema.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:WebAPI.Controllers.PerfilesController">
+            <summary>
+            API para manejar los perfiles o roles del sistema.
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.PerfilesController.Get">
+            <summary>
+            Obtiene un listado de todos los perfiles del sistema.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PerfilesController.Post(Models.Administration.PerfilesModel)">
+            <summary>
+            Crea un nuevo perfil al sistema.
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PerfilesController.Put(System.Int32,Models.Administration.PerfilesModel)">
+            <summary>
+            Actualiza la información de un perfil.
+            </summary>
+            <param name="idPerfil"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PerfilesController.Delete(System.Int32)">
+            <summary>
+            Elimina un perfil.
+            </summary>
+            <param name="idPerfil"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PerfilesController.GetUsuarios(System.Int32)">
+            <summary>
+            Obtiene un listado de usuarios de un perfil.
+            </summary>
+            <param name="idPerfil"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PerfilesController.GetPermisos(System.Int32)">
+            <summary>
+            Obtiene un listado de permisos de un perfil.
+            </summary>
+            <param name="idPerfil"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PerfilesController.GetVistas">
+            <summary>
+            Obtiene un listado de todas las vistas del sistema.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:WebAPI.Controllers.UsuariosController">
+            <summary>
+            API para manejar los usuarios del sistema.
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.UsuariosController.Get">
+            <summary>
+            Obtiene un listado de los usuarios registrados.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.UsuariosController.Get(System.Int32)">
+            <summary>
+            Obtiene un usuario en específico.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.UsuariosController.Post(Models.Administration.UsuariosModel)">
+            <summary>
+            Agrega un nuevo usuario (se necesita permiso de administrador).
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.UsuariosController.Put(System.Int32,Models.Administration.UsuariosModel)">
+            <summary>
+            Actualiza la información de un usuario.
+            </summary>
+            <param name="idUsuario"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.UsuariosController.GetEstadosUsuarios">
+            <summary>
+            Obtiene los diferentes estados que puede estar un usuario.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:WebAPI.Infraestructure.AutorizarAttribute">
+            <summary>
+            Sirve para autorizar el acceso a las rutas de los controladores de la aplicacion 
+            </summary>
+        </member>
+        <member name="M:WebAPI.Infraestructure.Cipher.Encrypt(System.String,System.String)">
+            <summary>
+            Encrypt a string.
+            </summary>
+            <param name="plainText">String to be encrypted</param>
+            <param name="password">Password</param>
+        </member>
+        <member name="M:WebAPI.Infraestructure.Cipher.Decrypt(System.String,System.String)">
+            <summary>
+            Decrypt a string.
+            </summary>
+            <param name="encryptedText">String to be decrypted</param>
+            <param name="password">Password used during encryption</param>
+            <exception cref="T:System.FormatException"></exception>
+        </member>
+        <member name="T:WebAPI.Infraestructure.SessionData">
+            <summary>
+            Maneja los datos del usuario en sesion POR MEDIO DE TOKEN
+            </summary>
+            
+        </member>
     </members>
 </doc>

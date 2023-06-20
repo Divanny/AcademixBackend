@@ -42,15 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Administration\PerfilesModel.cs" />
+    <Compile Include="Administration\UsuariosModel.cs" />
+    <Compile Include="Administration\VistasModel.cs" />
     <Compile Include="Common\LogInResult.cs" />
     <Compile Include="Common\OperationResult.cs" />
     <Compile Include="Credentials.cs" />
+    <Compile Include="Enums\EstadosUsuarios.cs" />
+    <Compile Include="Enums\VistasEnum.cs" />
     <Compile Include="Identity.cs" />
     <Compile Include="Principal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

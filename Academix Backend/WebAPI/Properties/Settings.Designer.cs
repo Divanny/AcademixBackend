@@ -34,7 +34,7 @@ namespace WebAPI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("^[H.;YGe_Vdsj38H")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4c4d3m1x@!P455w0rd_$5%453cr3tP34c4d3m1x-3f#5")]
         public string JwtSecret {
             get {
                 return ((string)(this["JwtSecret"]));

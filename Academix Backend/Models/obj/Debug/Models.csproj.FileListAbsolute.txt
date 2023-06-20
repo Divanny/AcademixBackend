@@ -1,0 +1,6 @@
+D:\Software Projects\Academix-Backend\Academix Backend\Models\bin\Debug\Models.dll
+D:\Software Projects\Academix-Backend\Academix Backend\Models\bin\Debug\Models.pdb
+D:\Software Projects\Academix-Backend\Academix Backend\Models\obj\Debug\Models.csproj.AssemblyReference.cache
+D:\Software Projects\Academix-Backend\Academix Backend\Models\obj\Debug\Models.csproj.CoreCompileInputs.cache
+D:\Software Projects\Academix-Backend\Academix Backend\Models\obj\Debug\Models.dll
+D:\Software Projects\Academix-Backend\Academix Backend\Models\obj\Debug\Models.pdb

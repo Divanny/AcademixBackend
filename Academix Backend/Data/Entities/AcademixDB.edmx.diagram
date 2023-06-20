@@ -9,6 +9,7 @@
         <EntityTypeShape EntityType="AcadmixModel.PerfilesVistas" Width="1.5" PointX="3.75" PointY="0.75" />
         <EntityTypeShape EntityType="AcadmixModel.Usuarios" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="AcadmixModel.Vistas" Width="1.5" PointX="2.75" PointY="3.75" />
+        <EntityTypeShape EntityType="AcadmixModel.EstadosUsuarios" Width="1.5" PointX="5.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -29,5 +29,6 @@ namespace Data.Entities
         public virtual DbSet<PerfilesVistas> PerfilesVistas { get; set; }
         public virtual DbSet<Usuarios> Usuarios { get; set; }
         public virtual DbSet<Vistas> Vistas { get; set; }
+        public virtual DbSet<EstadosUsuarios> EstadosUsuarios { get; set; }
     }
 }

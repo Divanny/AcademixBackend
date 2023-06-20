@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Administration\PerfilesRepo.cs" />
+    <Compile Include="Administration\UsuariosRepo.cs" />
     <Compile Include="Common\Logger.cs" />
     <Compile Include="Common\Mailing.cs" />
     <Compile Include="Common\ObjectsMapper.cs" />
@@ -75,7 +77,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AcademixDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\EstadosUsuarios.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Perfiles.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PerfilesVistas.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Usuarios.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Vistas.cs">
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

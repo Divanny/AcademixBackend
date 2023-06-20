@@ -6,7 +6,7 @@
       <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="JwtSecret" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">^[H.;YGe_Vdsj38H</Value>
+      <Value Profile="(Default)">4c4d3m1x@!P455w0rd_$5%453cr3tP34c4d3m1x-3f#5</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -5,13 +5,21 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="AcadmixModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EstadosUsuarios">
+          <Key>
+            <PropertyRef Name="idEstado" />
+          </Key>
+          <Property Name="idEstado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="Perfiles">
           <Key>
             <PropertyRef Name="idPerfil" />
           </Key>
           <Property Name="idPerfil" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="PorDefecto" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PerfilesVistas">
@@ -33,6 +41,7 @@
           <Property Name="idPerfil" Type="int" Nullable="false" />
           <Property Name="idEstado" Type="int" Nullable="false" />
           <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="UltimoIngreso" Type="datetime" Nullable="false" />
           <Property Name="Nombres" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Apellidos" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Telefono" Type="varchar" MaxLength="25" />
@@ -49,6 +58,7 @@
           <Property Name="IconClass" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityContainer Name="AcadmixModelStoreContainer">
+          <EntitySet Name="EstadosUsuarios" EntityType="Self.EstadosUsuarios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Perfiles" EntityType="Self.Perfiles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PerfilesVistas" EntityType="Self.PerfilesVistas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
@@ -61,13 +71,10 @@
         <EntityType Name="Perfiles">
           <Key>
             <PropertyRef Name="idPerfil" />
-            <PropertyRef Name="Nombre" />
-            <PropertyRef Name="Descripcion" />
-            <PropertyRef Name="PorDefecto" />
           </Key>
-          <Property Name="idPerfil" Type="Int32" Nullable="false" />
+          <Property Name="idPerfil" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PorDefecto" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityContainer Name="AcadmixEntities" annotation:LazyLoadingEnabled="true">
@@ -75,6 +82,7 @@
           <EntitySet Name="PerfilesVistas" EntityType="AcadmixModel.PerfilesVistas" />
           <EntitySet Name="Usuarios" EntityType="AcadmixModel.Usuarios" />
           <EntitySet Name="Vistas" EntityType="AcadmixModel.Vistas" />
+          <EntitySet Name="EstadosUsuarios" EntityType="AcadmixModel.EstadosUsuarios" />
         </EntityContainer>
         <EntityType Name="PerfilesVistas">
           <Key>
@@ -98,6 +106,7 @@
           <Property Name="Nombres" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Apellidos" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Telefono" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="UltimoIngreso" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="Vistas">
           <Key>
@@ -109,6 +118,14 @@
           <Property Name="URL" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Principal" Type="Boolean" Nullable="false" />
           <Property Name="IconClass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EstadosUsuarios">
+          <Key>
+            <PropertyRef Name="idEstado" />
+          </Key>
+          <Property Name="idEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -138,6 +155,7 @@
           <EntitySetMapping Name="Usuarios">
             <EntityTypeMapping TypeName="AcadmixModel.Usuarios">
               <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="UltimoIngreso" ColumnName="UltimoIngreso" />
                 <ScalarProperty Name="Telefono" ColumnName="Telefono" />
                 <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
                 <ScalarProperty Name="Nombres" ColumnName="Nombres" />
@@ -160,6 +178,15 @@
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="idVista" ColumnName="idVista" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EstadosUsuarios">
+            <EntityTypeMapping TypeName="AcadmixModel.EstadosUsuarios">
+              <MappingFragment StoreEntitySet="EstadosUsuarios">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
