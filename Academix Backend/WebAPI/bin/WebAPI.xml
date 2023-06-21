@@ -596,6 +596,34 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.MaestrosController.Get">
+            <summary>
+            Obtiene un listado de los Maestros registrados.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.MaestrosController.Get(System.Int32)">
+            <summary>
+            Obtiene un maestro en específico.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.MaestrosController.Post(Models.Administration.MaestroModel)">
+            <summary>
+            Agrega un nuevo maestro (se necesita permiso de administrador).
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.MaestrosController.Put(System.Int32,Models.Administration.MaestroModel)">
+            <summary>
+            Actualiza la información de un maestro.
+            </summary>
+            <param name="idMaestro"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="T:WebAPI.Controllers.PerfilesController">
             <summary>
             API para manejar los perfiles o roles del sistema.
