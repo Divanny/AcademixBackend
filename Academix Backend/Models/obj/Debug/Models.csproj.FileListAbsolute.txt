@@ -4,3 +4,9 @@ D:\Software Projects\Academix-Backend\Academix Backend\Models\obj\Debug\Models.c
 D:\Software Projects\Academix-Backend\Academix Backend\Models\obj\Debug\Models.csproj.CoreCompileInputs.cache
 D:\Software Projects\Academix-Backend\Academix Backend\Models\obj\Debug\Models.dll
 D:\Software Projects\Academix-Backend\Academix Backend\Models\obj\Debug\Models.pdb
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Models\bin\Debug\Models.dll
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Models\bin\Debug\Models.pdb
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Models\obj\Debug\Models.csproj.AssemblyReference.cache
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Models\obj\Debug\Models.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Models\obj\Debug\Models.dll
+C:\Users\Lenovo\Escritorio\AcademixIDS325\BackEnd\AcademixBackend\Academix Backend\Models\obj\Debug\Models.pdb

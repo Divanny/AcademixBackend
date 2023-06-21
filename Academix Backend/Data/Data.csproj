@@ -54,6 +54,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Administration\AreasRepo.cs" />
+    <Compile Include="Administration\AsignaturasRepo.cs" />
+    <Compile Include="Administration\CarrerasRepo.cs" />
+    <Compile Include="Administration\MaestrosRepo.cs" />
     <Compile Include="Administration\PerfilesRepo.cs" />
     <Compile Include="Administration\UsuariosRepo.cs" />
     <Compile Include="Common\Logger.cs" />
@@ -77,13 +81,70 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AcademixDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Area.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Asignatura.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Asignatura_Pensum.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Aula.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Calificacion.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Carrera.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Dependencia.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Dia_Semana.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\EstadosUsuarios.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Estudiante.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Listado_Estudiantes.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Maestro.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Modalidad.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Pensum.cs">
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Perfiles.cs">
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\PerfilesVistas.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Periodo.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Publicacion.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SeccionHorarioDetalle.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Seccion_Asignatura.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Tipo_Aula.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Trimestre.cs">
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Usuarios.cs">
