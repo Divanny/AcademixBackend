@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace Models.Administration
 {
-    internal class AsignaturasModel
+    public class AsignaturasModel
     {
+        public int idAsignatura { get; set; }
+        public string NombreAsignatura { get; set; }
+        public string CodigoAsignatura { get; set; }
+        public int idArea { get; set; }
+        public string Area { get; set; }
+        public int Creditos { get; set; }
+        
+        
     }
 }
