@@ -10,6 +10,25 @@
         <EntityTypeShape EntityType="AcadmixModel.Usuarios" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="AcadmixModel.Vistas" Width="1.5" PointX="2.75" PointY="3.75" />
         <EntityTypeShape EntityType="AcadmixModel.EstadosUsuarios" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Area" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Asignatura" Width="1.5" PointX="5.75" PointY="6.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Asignatura_Pensum" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Aula" Width="1.5" PointX="2.75" PointY="7.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Calificacion" Width="1.5" PointX="7.75" PointY="3.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Carrera" Width="1.5" PointX="7.75" PointY="6.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Dependencia" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Dia_Semana" Width="1.5" PointX="9.75" PointY="3.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Estudiante" Width="1.5" PointX="4.75" PointY="9.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Listado_Estudiantes" Width="1.5" PointX="9.75" PointY="6.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Maestro" Width="1.5" PointX="9.75" PointY="9.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Modalidad" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Pensum" Width="1.5" PointX="0.75" PointY="10.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Periodo" Width="1.5" PointX="6.75" PointY="10.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Publicacion" Width="1.5" PointX="11.75" PointY="3.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Seccion_Asignatura" Width="1.5" PointX="11.75" PointY="6.75" />
+        <EntityTypeShape EntityType="AcadmixModel.SeccionHorarioDetalle" Width="1.5" PointX="11.75" PointY="10.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Tipo_Aula" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Trimestre" Width="1.5" PointX="2.75" PointY="12.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

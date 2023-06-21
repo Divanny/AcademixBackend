@@ -40,6 +40,7 @@
     <EntitySetMapping Name="Vistas">
       <EntityTypeMapping TypeName="AcadmixModel.Vistas">
         <MappingFragment StoreEntitySet="Vistas">
+          <ScalarProperty Name="Sidebar" ColumnName="Sidebar" />
           <ScalarProperty Name="IconClass" ColumnName="IconClass" />
           <ScalarProperty Name="Principal" ColumnName="Principal" />
           <ScalarProperty Name="URL" ColumnName="URL" />
@@ -55,6 +56,205 @@
           <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
           <ScalarProperty Name="Nombre" ColumnName="Nombre" />
           <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Area">
+      <EntityTypeMapping TypeName="AcadmixModel.Area">
+        <MappingFragment StoreEntitySet="Area">
+          <ScalarProperty Name="esActivo" ColumnName="esActivo" />
+          <ScalarProperty Name="idEncargado" ColumnName="idEncargado" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idArea" ColumnName="idArea" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Asignatura">
+      <EntityTypeMapping TypeName="AcadmixModel.Asignatura">
+        <MappingFragment StoreEntitySet="Asignatura">
+          <ScalarProperty Name="creditos" ColumnName="creditos" />
+          <ScalarProperty Name="idArea" ColumnName="idArea" />
+          <ScalarProperty Name="codigoAsignatura" ColumnName="codigoAsignatura" />
+          <ScalarProperty Name="nombreAsignatura" ColumnName="nombreAsignatura" />
+          <ScalarProperty Name="idAsignatura" ColumnName="idAsignatura" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Asignatura_Pensum">
+      <EntityTypeMapping TypeName="AcadmixModel.Asignatura_Pensum">
+        <MappingFragment StoreEntitySet="Asignatura_Pensum">
+          <ScalarProperty Name="idTrimestre" ColumnName="idTrimestre" />
+          <ScalarProperty Name="idPensum" ColumnName="idPensum" />
+          <ScalarProperty Name="idAsignatura" ColumnName="idAsignatura" />
+          <ScalarProperty Name="idAsignaturaPensum" ColumnName="idAsignaturaPensum" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Aula">
+      <EntityTypeMapping TypeName="AcadmixModel.Aula">
+        <MappingFragment StoreEntitySet="Aula">
+          <ScalarProperty Name="idTipoAula" ColumnName="idTipoAula" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idAula" ColumnName="idAula" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Calificacion">
+      <EntityTypeMapping TypeName="AcadmixModel.Calificacion">
+        <MappingFragment StoreEntitySet="Calificacion">
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="calificacion1" ColumnName="calificacion" />
+          <ScalarProperty Name="idCalificacion" ColumnName="idCalificacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Carrera">
+      <EntityTypeMapping TypeName="AcadmixModel.Carrera">
+        <MappingFragment StoreEntitySet="Carrera">
+          <ScalarProperty Name="esActivo" ColumnName="esActivo" />
+          <ScalarProperty Name="idArea" ColumnName="idArea" />
+          <ScalarProperty Name="creditos" ColumnName="creditos" />
+          <ScalarProperty Name="duracionTrimestres" ColumnName="duracionTrimestres" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idCarrera" ColumnName="idCarrera" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Dependencia">
+      <EntityTypeMapping TypeName="AcadmixModel.Dependencia">
+        <MappingFragment StoreEntitySet="Dependencia">
+          <ScalarProperty Name="idPrerrequisito" ColumnName="idPrerrequisito" />
+          <ScalarProperty Name="idAsignatura" ColumnName="idAsignatura" />
+          <ScalarProperty Name="idDependencia" ColumnName="idDependencia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Dia_Semana">
+      <EntityTypeMapping TypeName="AcadmixModel.Dia_Semana">
+        <MappingFragment StoreEntitySet="Dia_Semana">
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="dia" ColumnName="dia" />
+          <ScalarProperty Name="idDia" ColumnName="idDia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Estudiante">
+      <EntityTypeMapping TypeName="AcadmixModel.Estudiante">
+        <MappingFragment StoreEntitySet="Estudiante">
+          <ScalarProperty Name="idPensum" ColumnName="idPensum" />
+          <ScalarProperty Name="asignaturasAprobadas" ColumnName="asignaturasAprobadas" />
+          <ScalarProperty Name="trimestresCursados" ColumnName="trimestresCursados" />
+          <ScalarProperty Name="idCarrera" ColumnName="idCarrera" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="idEstudiante" ColumnName="idEstudiante" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Listado_Estudiantes">
+      <EntityTypeMapping TypeName="AcadmixModel.Listado_Estudiantes">
+        <MappingFragment StoreEntitySet="Listado_Estudiantes">
+          <ScalarProperty Name="idPeriodo" ColumnName="idPeriodo" />
+          <ScalarProperty Name="idEstudiante" ColumnName="idEstudiante" />
+          <ScalarProperty Name="idSeccion" ColumnName="idSeccion" />
+          <ScalarProperty Name="idListadoEstudiante" ColumnName="idListadoEstudiante" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Maestro">
+      <EntityTypeMapping TypeName="AcadmixModel.Maestro">
+        <MappingFragment StoreEntitySet="Maestro">
+          <ScalarProperty Name="idArea" ColumnName="idArea" />
+          <ScalarProperty Name="credencial" ColumnName="credencial" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="idMaestro" ColumnName="idMaestro" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Modalidad">
+      <EntityTypeMapping TypeName="AcadmixModel.Modalidad">
+        <MappingFragment StoreEntitySet="Modalidad">
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idModalidad" ColumnName="idModalidad" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pensum">
+      <EntityTypeMapping TypeName="AcadmixModel.Pensum">
+        <MappingFragment StoreEntitySet="Pensum">
+          <ScalarProperty Name="esActivo" ColumnName="esActivo" />
+          <ScalarProperty Name="limiteCreditoTrimestral" ColumnName="limiteCreditoTrimestral" />
+          <ScalarProperty Name="idCarrera" ColumnName="idCarrera" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="anioPensum" ColumnName="anioPensum" />
+          <ScalarProperty Name="nombrePensum" ColumnName="nombrePensum" />
+          <ScalarProperty Name="idPensum" ColumnName="idPensum" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Periodo">
+      <EntityTypeMapping TypeName="AcadmixModel.Periodo">
+        <MappingFragment StoreEntitySet="Periodo">
+          <ScalarProperty Name="finPeriodo" ColumnName="finPeriodo" />
+          <ScalarProperty Name="incioPeriodo" ColumnName="incioPeriodo" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idPeriodo" ColumnName="idPeriodo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Publicacion">
+      <EntityTypeMapping TypeName="AcadmixModel.Publicacion">
+        <MappingFragment StoreEntitySet="Publicacion">
+          <ScalarProperty Name="fechaPublicacion" ColumnName="fechaPublicacion" />
+          <ScalarProperty Name="idCalificacion" ColumnName="idCalificacion" />
+          <ScalarProperty Name="idListadoEstudiante" ColumnName="idListadoEstudiante" />
+          <ScalarProperty Name="idPublicacion" ColumnName="idPublicacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Seccion_Asignatura">
+      <EntityTypeMapping TypeName="AcadmixModel.Seccion_Asignatura">
+        <MappingFragment StoreEntitySet="Seccion_Asignatura">
+          <ScalarProperty Name="esActivo" ColumnName="esActivo" />
+          <ScalarProperty Name="idMaestro" ColumnName="idMaestro" />
+          <ScalarProperty Name="idAsignatura" ColumnName="idAsignatura" />
+          <ScalarProperty Name="capacidadMax" ColumnName="capacidadMax" />
+          <ScalarProperty Name="idModalidad" ColumnName="idModalidad" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="codigoSeccion" ColumnName="codigoSeccion" />
+          <ScalarProperty Name="idSeccion" ColumnName="idSeccion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SeccionHorarioDetalle">
+      <EntityTypeMapping TypeName="AcadmixModel.SeccionHorarioDetalle">
+        <MappingFragment StoreEntitySet="SeccionHorarioDetalle">
+          <ScalarProperty Name="horaHasta" ColumnName="horaHasta" />
+          <ScalarProperty Name="horaDesde" ColumnName="horaDesde" />
+          <ScalarProperty Name="idDia" ColumnName="idDia" />
+          <ScalarProperty Name="idAula" ColumnName="idAula" />
+          <ScalarProperty Name="idSecciom" ColumnName="idSecciom" />
+          <ScalarProperty Name="idSeccionHorario" ColumnName="idSeccionHorario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tipo_Aula">
+      <EntityTypeMapping TypeName="AcadmixModel.Tipo_Aula">
+        <MappingFragment StoreEntitySet="Tipo_Aula">
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="tipo" ColumnName="tipo" />
+          <ScalarProperty Name="idTipoAula" ColumnName="idTipoAula" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Trimestre">
+      <EntityTypeMapping TypeName="AcadmixModel.Trimestre">
+        <MappingFragment StoreEntitySet="Trimestre">
+          <ScalarProperty Name="numeroTrimestre" ColumnName="numeroTrimestre" />
+          <ScalarProperty Name="idTrimestre" ColumnName="idTrimestre" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

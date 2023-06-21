@@ -512,6 +512,90 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.AreasController.Get">
+            <summary>
+            Obtiene un listado de las Areas registradas.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AreasController.Get(System.Int32)">
+            <summary>
+            Obtiene un area en específico.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AreasController.Post(Models.Administration.AreasModel)">
+            <summary>
+            Agrega una nueva area (se necesita permiso de administrador).
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AreasController.Put(System.Int32,Models.Administration.AreasModel)">
+            <summary>
+            Actualiza la información de una area.
+            </summary>
+            <param name="idArea"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AsignaturasController.Get">
+            <summary>
+            Obtiene un listado de las asignaturas registradas.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AsignaturasController.Get(System.Int32)">
+            <summary>
+            Obtiene una asignatura en específico.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AsignaturasController.Post(Models.Administration.AsignaturasModel)">
+            <summary>
+            Agrega una nueva asignatura (se necesita permiso de administrador).
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AsignaturasController.Put(System.Int32,Models.Administration.AsignaturasModel)">
+            <summary>
+            Actualiza la información de una asignatura.
+            </summary>
+            <param name="idAsignatura"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.CarrerasController.Get">
+            <summary>
+            Obtiene un listado de las carreras registradas.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.CarrerasController.Get(System.Int32)">
+            <summary>
+            Obtiene una carrera en específico.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.CarrerasController.Post(Models.Administration.CarrerasModel)">
+            <summary>
+            Agrega una nueva carrera (se necesita permiso de administrador).
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.CarrerasController.Put(System.Int32,Models.Administration.CarrerasModel)">
+            <summary>
+            Actualiza la información de una carrera.
+            </summary>
+            <param name="idCarrera"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="T:WebAPI.Controllers.PerfilesController">
             <summary>
             API para manejar los perfiles o roles del sistema.
