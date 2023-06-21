@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AcadmixModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Perfiles">
+    <Key>
+      <PropertyRef Name="idPerfil" />
+    </Key>
+    <Property Name="idPerfil" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PorDefecto" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="AcadmixEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Perfiles" EntityType="Self.Perfiles" />
+    <EntitySet Name="PerfilesVistas" EntityType="AcadmixModel.PerfilesVistas" />
+    <EntitySet Name="Usuarios" EntityType="AcadmixModel.Usuarios" />
+    <EntitySet Name="Vistas" EntityType="AcadmixModel.Vistas" />
+    <EntitySet Name="EstadosUsuarios" EntityType="AcadmixModel.EstadosUsuarios" />
+    <EntitySet Name="Area" EntityType="AcadmixModel.Area" />
+    <EntitySet Name="Asignatura" EntityType="AcadmixModel.Asignatura" />
+    <EntitySet Name="Asignatura_Pensum" EntityType="AcadmixModel.Asignatura_Pensum" />
+    <EntitySet Name="Aula" EntityType="AcadmixModel.Aula" />
+    <EntitySet Name="Calificacion" EntityType="AcadmixModel.Calificacion" />
+    <EntitySet Name="Carrera" EntityType="AcadmixModel.Carrera" />
+    <EntitySet Name="Dependencia" EntityType="AcadmixModel.Dependencia" />
+    <EntitySet Name="Dia_Semana" EntityType="AcadmixModel.Dia_Semana" />
+    <EntitySet Name="Estudiante" EntityType="AcadmixModel.Estudiante" />
+    <EntitySet Name="Listado_Estudiantes" EntityType="AcadmixModel.Listado_Estudiantes" />
+    <EntitySet Name="Maestro" EntityType="AcadmixModel.Maestro" />
+    <EntitySet Name="Modalidad" EntityType="AcadmixModel.Modalidad" />
+    <EntitySet Name="Pensum" EntityType="AcadmixModel.Pensum" />
+    <EntitySet Name="Periodo" EntityType="AcadmixModel.Periodo" />
+    <EntitySet Name="Publicacion" EntityType="AcadmixModel.Publicacion" />
+    <EntitySet Name="Seccion_Asignatura" EntityType="AcadmixModel.Seccion_Asignatura" />
+    <EntitySet Name="SeccionHorarioDetalle" EntityType="AcadmixModel.SeccionHorarioDetalle" />
+    <EntitySet Name="Tipo_Aula" EntityType="AcadmixModel.Tipo_Aula" />
+    <EntitySet Name="Trimestre" EntityType="AcadmixModel.Trimestre" />
+  </EntityContainer>
+  <EntityType Name="PerfilesVistas">
+    <Key>
+      <PropertyRef Name="idPerfilVista" />
+    </Key>
+    <Property Name="idPerfilVista" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idPerfil" Type="Int32" Nullable="false" />
+    <Property Name="idVista" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Usuarios">
+    <Key>
+      <PropertyRef Name="idUsuario" />
+    </Key>
+    <Property Name="idUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CorreoElectronico" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="idPerfil" Type="Int32" Nullable="false" />
+    <Property Name="idEstado" Type="Int32" Nullable="false" />
+    <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Nombres" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Apellidos" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Telefono" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="UltimoIngreso" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="Vistas">
+    <Key>
+      <PropertyRef Name="idVista" />
+    </Key>
+    <Property Name="idVista" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="URL" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Principal" Type="Boolean" Nullable="false" />
+    <Property Name="IconClass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Sidebar" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="EstadosUsuarios">
+    <Key>
+      <PropertyRef Name="idEstado" />
+    </Key>
+    <Property Name="idEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Area">
+    <Key>
+      <PropertyRef Name="idArea" />
+    </Key>
+    <Property Name="idArea" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="idEncargado" Type="Int32" Nullable="false" />
+    <Property Name="esActivo" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Asignatura">
+    <Key>
+      <PropertyRef Name="idAsignatura" />
+    </Key>
+    <Property Name="idAsignatura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombreAsignatura" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="codigoAsignatura" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+    <Property Name="idArea" Type="Int32" Nullable="false" />
+    <Property Name="creditos" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Asignatura_Pensum">
+    <Key>
+      <PropertyRef Name="idAsignaturaPensum" />
+    </Key>
+    <Property Name="idAsignaturaPensum" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAsignatura" Type="Int32" Nullable="false" />
+    <Property Name="idPensum" Type="Int32" Nullable="false" />
+    <Property Name="idTrimestre" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Aula">
+    <Key>
+      <PropertyRef Name="idAula" />
+    </Key>
+    <Property Name="idAula" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="idTipoAula" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Calificacion">
+    <Key>
+      <PropertyRef Name="idCalificacion" />
+    </Key>
+    <Property Name="idCalificacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="calificacion1" Type="Int32" Nullable="false" />
+    <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Carrera">
+    <Key>
+      <PropertyRef Name="idCarrera" />
+    </Key>
+    <Property Name="idCarrera" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="duracionTrimestres" Type="Int32" Nullable="false" />
+    <Property Name="creditos" Type="Int32" Nullable="false" />
+    <Property Name="idArea" Type="Int32" Nullable="false" />
+    <Property Name="esActivo" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Dependencia">
+    <Key>
+      <PropertyRef Name="idDependencia" />
+    </Key>
+    <Property Name="idDependencia" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAsignatura" Type="Int32" Nullable="false" />
+    <Property Name="idPrerrequisito" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Dia_Semana">
+    <Key>
+      <PropertyRef Name="idDia" />
+    </Key>
+    <Property Name="idDia" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dia" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Estudiante">
+    <Key>
+      <PropertyRef Name="idEstudiante" />
+    </Key>
+    <Property Name="idEstudiante" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idUsuario" Type="Int32" Nullable="false" />
+    <Property Name="idCarrera" Type="Int32" Nullable="false" />
+    <Property Name="trimestresCursados" Type="Int32" Nullable="false" />
+    <Property Name="asignaturasAprobadas" Type="Int32" Nullable="false" />
+    <Property Name="idPensum" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Listado_Estudiantes">
+    <Key>
+      <PropertyRef Name="idListadoEstudiante" />
+    </Key>
+    <Property Name="idListadoEstudiante" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idSeccion" Type="Int32" Nullable="false" />
+    <Property Name="idEstudiante" Type="Int32" Nullable="false" />
+    <Property Name="idPeriodo" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Maestro">
+    <Key>
+      <PropertyRef Name="idMaestro" />
+    </Key>
+    <Property Name="idMaestro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idUsuario" Type="Int32" Nullable="false" />
+    <Property Name="credencial" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="idArea" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Modalidad">
+    <Key>
+      <PropertyRef Name="idModalidad" />
+    </Key>
+    <Property Name="idModalidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Pensum">
+    <Key>
+      <PropertyRef Name="idPensum" />
+    </Key>
+    <Property Name="idPensum" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombrePensum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="anioPensum" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+    <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="idCarrera" Type="Int32" Nullable="false" />
+    <Property Name="limiteCreditoTrimestral" Type="Int32" Nullable="false" />
+    <Property Name="esActivo" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Periodo">
+    <Key>
+      <PropertyRef Name="idPeriodo" />
+    </Key>
+    <Property Name="idPeriodo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="incioPeriodo" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="finPeriodo" Type="DateTime" Nullable="false" Precision="0" />
+  </EntityType>
+  <EntityType Name="Publicacion">
+    <Key>
+      <PropertyRef Name="idPublicacion" />
+    </Key>
+    <Property Name="idPublicacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idListadoEstudiante" Type="Int32" Nullable="false" />
+    <Property Name="idCalificacion" Type="Int32" Nullable="false" />
+    <Property Name="fechaPublicacion" Type="DateTime" Nullable="false" Precision="0" />
+  </EntityType>
+  <EntityType Name="Seccion_Asignatura">
+    <Key>
+      <PropertyRef Name="idSeccion" />
+    </Key>
+    <Property Name="idSeccion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="codigoSeccion" Type="Int32" Nullable="false" />
+    <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="idModalidad" Type="Int32" Nullable="false" />
+    <Property Name="capacidadMax" Type="Int32" Nullable="false" />
+    <Property Name="idAsignatura" Type="Int32" Nullable="false" />
+    <Property Name="idMaestro" Type="Int32" Nullable="false" />
+    <Property Name="esActivo" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SeccionHorarioDetalle">
+    <Key>
+      <PropertyRef Name="idSeccionHorario" />
+    </Key>
+    <Property Name="idSeccionHorario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idSecciom" Type="Int32" Nullable="false" />
+    <Property Name="idAula" Type="Int32" Nullable="false" />
+    <Property Name="idDia" Type="Int32" Nullable="false" />
+    <Property Name="horaDesde" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="horaHasta" Type="Time" Nullable="false" Precision="7" />
+  </EntityType>
+  <EntityType Name="Tipo_Aula">
+    <Key>
+      <PropertyRef Name="idTipoAula" />
+    </Key>
+    <Property Name="idTipoAula" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tipo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Trimestre">
+    <Key>
+      <PropertyRef Name="idTrimestre" />
+    </Key>
+    <Property Name="idTrimestre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="numeroTrimestre" Type="Int32" Nullable="false" />
+  </EntityType>
+</Schema>
