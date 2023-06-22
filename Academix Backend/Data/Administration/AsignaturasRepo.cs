@@ -22,7 +22,8 @@ namespace Data.Administration
                     nombreAsignatura = u.NombreAsignatura,
                     codigoAsignatura = u.CodigoAsignatura,
                     idArea = u.idArea,
-                    creditos = u.Creditos
+                    creditos = u.Creditos,
+                    idCarrera = u.idCarrera
                    
                 }),
                 (DB, filter) => (from u in DB.Set<Asignatura>().Where(filter)
@@ -34,7 +35,8 @@ namespace Data.Administration
                                      CodigoAsignatura = u.codigoAsignatura,
                                      idArea = u.idArea,
                                      Area = a.nombre,
-                                     Creditos = u.creditos
+                                     Creditos = u.creditos,
+                                     idCarrera = u.idCarrera
                                  })
             )
             { }

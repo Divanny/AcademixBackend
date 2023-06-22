@@ -30,5 +30,7 @@ namespace Models.Administration
         [Required(ErrorMessage = "Debe especificar el apellido")]
         public string Apellidos { get; set; }
         public string Telefono { get; set; }
+        public EstudiantesModel InfoEstudiante { get ; set; }
+        public MaestroModel InfoMaestro { get ; set; }
     }
 }

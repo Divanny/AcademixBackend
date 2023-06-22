@@ -568,6 +568,34 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.AulaController.Get">
+            <summary>
+            Obtiene un listado de las aulas registradas.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AulaController.Get(System.Int32)">
+            <summary>
+            Obtiene un aula en específico.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AulaController.Post(Models.Administration.AulaModel)">
+            <summary>
+            Agrega una nueva aula (se necesita permiso de administrador).
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AulaController.Put(System.Int32,Models.Administration.AulaModel)">
+            <summary>
+            Actualiza la información de una aula.
+            </summary>
+            <param name="idAula"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebAPI.Controllers.CarrerasController.Get">
             <summary>
             Obtiene un listado de las carreras registradas.
@@ -596,6 +624,34 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.EstudiantesController.Get">
+            <summary>
+            Obtiene un listado de los estudiantes registrados.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.EstudiantesController.Get(System.Int32)">
+            <summary>
+            Obtiene un estudiante en específico.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.EstudiantesController.Post(Models.Administration.EstudiantesModel)">
+            <summary>
+            Agrega un nuevo estudiante (se necesita permiso de administrador).
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.EstudiantesController.Put(System.Int32,Models.Administration.EstudiantesModel)">
+            <summary>
+            Actualiza la información de un estudiante.
+            </summary>
+            <param name="idEstudiante"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebAPI.Controllers.MaestrosController.Get">
             <summary>
             Obtiene un listado de los Maestros registrados.
@@ -621,6 +677,34 @@
             Actualiza la información de un maestro.
             </summary>
             <param name="idMaestro"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PensumController.Get">
+            <summary>
+            Obtiene un listado de los pensum registrados.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PensumController.Get(System.Int32)">
+            <summary>
+            Obtiene un pensum en específico.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PensumController.Post(Models.Administration.PensumModel)">
+            <summary>
+            Agrega un nuevo pensum (se necesita permiso de administrador).
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PensumController.Put(System.Int32,Models.Administration.PensumModel)">
+            <summary>
+            Actualiza la información de un pensum.
+            </summary>
+            <param name="idPensum"></param>
             <param name="model"></param>
             <returns></returns>
         </member>

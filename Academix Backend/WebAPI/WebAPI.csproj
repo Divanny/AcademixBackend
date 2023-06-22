@@ -348,9 +348,12 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AreasController.cs" />
     <Compile Include="Controllers\AsignaturasController.cs" />
+    <Compile Include="Controllers\AulaController.cs" />
     <Compile Include="Controllers\CarrerasController.cs" />
+    <Compile Include="Controllers\EstudiantesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MaestrosController.cs" />
+    <Compile Include="Controllers\PensumController.cs" />
     <Compile Include="Controllers\PerfilesController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Global.asax.cs">

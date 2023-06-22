@@ -14,7 +14,8 @@ namespace Models.Administration
         public int idArea { get; set; }
         public string Area { get; set; }
         public int Creditos { get; set; }
-        
-        
+        public int idCarrera { get; set; }
+
+
     }
 }

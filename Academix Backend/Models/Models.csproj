@@ -44,8 +44,11 @@
   <ItemGroup>
     <Compile Include="Administration\AreasModel.cs" />
     <Compile Include="Administration\AsignaturasModel.cs" />
+    <Compile Include="Administration\AulaModel.cs" />
     <Compile Include="Administration\CarrerasModel.cs" />
+    <Compile Include="Administration\EstudiantesModel.cs" />
     <Compile Include="Administration\MaestroModel.cs" />
+    <Compile Include="Administration\PensumModel.cs" />
     <Compile Include="Administration\PerfilesModel.cs" />
     <Compile Include="Administration\UsuariosModel.cs" />
     <Compile Include="Administration\VistasModel.cs" />
@@ -53,6 +56,7 @@
     <Compile Include="Common\OperationResult.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Enums\EstadosUsuarios.cs" />
+    <Compile Include="Enums\PerfilesEnum.cs" />
     <Compile Include="Enums\VistasEnum.cs" />
     <Compile Include="Identity.cs" />
     <Compile Include="Principal.cs" />

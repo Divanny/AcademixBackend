@@ -56,8 +56,11 @@
   <ItemGroup>
     <Compile Include="Administration\AreasRepo.cs" />
     <Compile Include="Administration\AsignaturasRepo.cs" />
+    <Compile Include="Administration\AulaRepo.cs" />
     <Compile Include="Administration\CarrerasRepo.cs" />
+    <Compile Include="Administration\EstudiantesRepo.cs" />
     <Compile Include="Administration\MaestrosRepo.cs" />
+    <Compile Include="Administration\PensumRepo.cs" />
     <Compile Include="Administration\PerfilesRepo.cs" />
     <Compile Include="Administration\UsuariosRepo.cs" />
     <Compile Include="Common\Logger.cs" />
