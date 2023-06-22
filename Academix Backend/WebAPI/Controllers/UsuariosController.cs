@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Helpers;
 using WebAPI.Infraestructure;
 using System.Web.Http;
+using Data.Entities;
 
 namespace WebAPI.Controllers
 {
@@ -20,8 +21,19 @@ namespace WebAPI.Controllers
     [RoutePrefix("api/Usuarios")]
     public class UsuariosController : ApiBaseController
     {
-        UsuariosRepo usuariosRepo = new UsuariosRepo();
-        PerfilesRepo perfilesRepo = new PerfilesRepo();
+        public AcadmixEntities academixEntities { get; set; }
+        public UsuariosRepo usuariosRepo { get; set; }
+        public PerfilesRepo perfilesRepo { get; set; }
+        public MaestrosRepo maestrosRepo { get; set; }
+        public EstudiantesRepo estudiantesRepo { get; set; }
+        public UsuariosController()
+        {
+            academixEntities = new AcadmixEntities();
+            usuariosRepo = new UsuariosRepo(academixEntities);
+            perfilesRepo = new PerfilesRepo(academixEntities);
+            maestrosRepo = new MaestrosRepo(academixEntities);
+            estudiantesRepo = new EstudiantesRepo(academixEntities);
+        }
 
         /// <summary>
         /// Obtiene un listado de los usuarios registrados.
@@ -60,37 +72,75 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
-                UsuariosModel usuario = usuariosRepo.GetByUsername(model.NombreUsuario);
-                if (usuario != null)
+                using (var trx = academixEntities.Database.BeginTransaction())
                 {
-                    return new OperationResult(false, "Este usuario ya está registrado");
+                    try
+                    {
+                        UsuariosModel usuario = usuariosRepo.GetByUsername(model.NombreUsuario);
+                        if (usuario != null)
+                        {
+                            return new OperationResult(false, "Este usuario ya está registrado");
+                        }
+
+                        if (model.Password == null || model.Password == "")
+                        {
+                            return new OperationResult(false, "Se debe colocar una contraseña válida", Validation.Errors);
+                        }
+
+
+                        model.PasswordEncrypted = Cipher.Encrypt(model.Password, Properties.Settings.Default.JwtSecret);
+
+                        if (model.idEstado == 0)
+                        {
+                            model.idEstado = (int)EstadoUsuarioEnum.Activo;
+                        }
+
+                        model.FechaRegistro = DateTime.Now;
+                        model.UltimoIngreso = DateTime.Now;
+
+                        if (model.idPerfil == 0)
+                        {
+                            var DefaultProfile = perfilesRepo.GetDefaultProfile();
+                            model.idPerfil = DefaultProfile.idPerfil;
+                        }
+
+                        var created = usuariosRepo.Add(model);
+
+                        if (model.idPerfil == (int)PerfilesEnum.Estudiante)
+                        {
+                            if (model.InfoEstudiante != null)
+                            {
+                                model.InfoEstudiante.idUsuario = created.idUsuario;
+                                estudiantesRepo.Add(model.InfoEstudiante);
+                            }
+                            else
+                            {
+                                return new OperationResult(false, "No se ha proporcionado información del estudiante");
+                            }
+                        }
+                        else if (model.idPerfil == (int)PerfilesEnum.Maestro)
+                        {
+                            if (model.InfoMaestro != null)
+                            {
+                                model.InfoMaestro.idUsuario = created.idUsuario;
+                                maestrosRepo.Add(model.InfoMaestro);
+                            }
+                            else
+                            {
+                                return new OperationResult(false, "No se ha proporcionado información del maestro");
+                            }
+                        }
+
+                        trx.Commit();
+                        return new OperationResult(true, "Se creado este usuario satisfactoriamente", created);
+
+                    }
+                    catch
+                    {
+                        trx.Rollback();
+                        return new OperationResult(false, "Error en la inserción de datos");
+                    }
                 }
-
-                if (model.Password == null || model.Password == "")
-                {
-                    return new OperationResult(false, "Se debe colocar una contraseña válida", Validation.Errors);
-                }
-
-
-                model.PasswordEncrypted = Cipher.Encrypt(model.Password, Properties.Settings.Default.JwtSecret);
-
-                if (model.idEstado == 0)
-                {
-                    model.idEstado = (int)EstadoUsuarioEnum.Activo;
-                }
-
-                model.FechaRegistro = DateTime.Now;
-                model.UltimoIngreso = DateTime.Now;
-
-                if (model.idPerfil == 0)
-                {
-                    var DefaultProfile = perfilesRepo.GetDefaultProfile();
-                    model.idPerfil = DefaultProfile.idPerfil;
-                }
-
-                var created = usuariosRepo.Add(model);
-                usuariosRepo.SaveChanges();
-                return new OperationResult(true, "Se creado este usuario satisfactoriamente", created);
             }
             else
             {

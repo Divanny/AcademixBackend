@@ -16,6 +16,7 @@ namespace Models.Administration
         public int idArea { get; set; }
         public string Area { get; set; }
         public int CantEstudiantes { get; set; }
+        public int CantAsignaturas { get; set; }
         public bool esActivo { get; set; }
     }
 }

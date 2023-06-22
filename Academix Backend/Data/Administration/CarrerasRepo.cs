@@ -27,7 +27,6 @@ namespace Data.Administration
 
                }),
                (DB, filter) => (from u in DB.Set<Carrera>().Where(filter)
-                                join e in DB.Set<Estudiante>() on u.idCarrera equals e.idCarrera
                                 join a in DB.Set<Area>() on u.idArea equals a.idArea
                                 select new CarrerasModel()
                                 {
@@ -39,6 +38,7 @@ namespace Data.Administration
                                     idArea = u.idArea,
                                     Area = a.nombre,
                                     CantEstudiantes = DB.Set<Estudiante>().Count(x => x.idCarrera == u.idCarrera),
+                                    CantAsignaturas = DB.Set<Asignatura>().Count(x => x.idCarrera == u.idCarrera),
                                     esActivo = u.esActivo
                                 })
            )

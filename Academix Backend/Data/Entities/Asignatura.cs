@@ -19,5 +19,6 @@ namespace Data.Entities
         public string codigoAsignatura { get; set; }
         public int idArea { get; set; }
         public int creditos { get; set; }
+        public int idCarrera { get; set; }
     }
 }

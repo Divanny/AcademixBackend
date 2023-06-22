@@ -22,8 +22,9 @@
           <Property Name="idAsignatura" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombreAsignatura" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="codigoAsignatura" Type="varchar" MaxLength="7" Nullable="false" />
-          <Property Name="idArea" Type="int" Nullable="false" />
+          <Property Name="idArea" Type="int" />
           <Property Name="creditos" Type="int" Nullable="false" />
+          <Property Name="idCarrera" Type="int" />
         </EntityType>
         <EntityType Name="Asignatura_Pensum">
           <Key>
@@ -364,8 +365,9 @@
           <Property Name="idAsignatura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombreAsignatura" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="codigoAsignatura" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
-          <Property Name="idArea" Type="Int32" Nullable="false" />
+          <Property Name="idArea" Type="Int32" />
           <Property Name="creditos" Type="Int32" Nullable="false" />
+          <Property Name="idCarrera" Type="Int32" />
         </EntityType>
         <EntityType Name="Asignatura_Pensum">
           <Key>
@@ -605,6 +607,7 @@
           <EntitySetMapping Name="Asignatura">
             <EntityTypeMapping TypeName="AcadmixModel.Asignatura">
               <MappingFragment StoreEntitySet="Asignatura">
+                <ScalarProperty Name="idCarrera" ColumnName="idCarrera" />
                 <ScalarProperty Name="creditos" ColumnName="creditos" />
                 <ScalarProperty Name="idArea" ColumnName="idArea" />
                 <ScalarProperty Name="codigoAsignatura" ColumnName="codigoAsignatura" />
