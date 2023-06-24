@@ -794,6 +794,14 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.UsuariosController.CambiarContraseña(System.Int32,System.String)">
+            <summary>
+            Cambia la contraseña de un usuario
+            </summary>
+            <param name="idUsuario"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebAPI.Controllers.UsuariosController.GetEstadosUsuarios">
             <summary>
             Obtiene los diferentes estados que puede estar un usuario.

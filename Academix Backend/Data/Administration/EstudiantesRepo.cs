@@ -23,9 +23,6 @@ namespace Data.Administration
                  trimestresCursados = u.trimestresCursados,
                  asignaturasAprobadas = u.asignaturasAprobadas,
                  idPensum = u.idPensum
-                 
-
-
              }),
              (DB, filter) => (from e in DB.Set<Estudiante>().Where(filter)
                               join c in DB.Set<Carrera>() on e.idCarrera equals c.idCarrera

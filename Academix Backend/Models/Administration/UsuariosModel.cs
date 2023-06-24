@@ -19,15 +19,17 @@ namespace Models.Administration
         [Required(ErrorMessage = "Debe especificar una contraseña válida")]
         public string Password { get; set; }
         public string PasswordEncrypted { get; set; }
+        [Required(ErrorMessage = "Debe especificar el perfil")]
         public int idPerfil { get; set; }
         public string Perfil { get; set; }
+        [Required(ErrorMessage = "Debe especificar el estado")]
         public int idEstado { get; set; }
         public string Estado { get; set; }
         public System.DateTime FechaRegistro { get; set; }
         public System.DateTime UltimoIngreso { get; set; }
         [Required(ErrorMessage = "Debe especificar el nombre")]
         public string Nombres { get; set; }
-        [Required(ErrorMessage = "Debe especificar el apellido")]
+        [Required(ErrorMessage = "Debe especificar los apellidos")]
         public string Apellidos { get; set; }
         public string Telefono { get; set; }
         public EstudiantesModel InfoEstudiante { get ; set; }

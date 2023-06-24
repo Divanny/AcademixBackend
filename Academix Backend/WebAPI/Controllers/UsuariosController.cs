@@ -79,12 +79,14 @@ namespace WebAPI.Controllers
                         UsuariosModel usuario = usuariosRepo.GetByUsername(model.NombreUsuario);
                         if (usuario != null)
                         {
-                            return new OperationResult(false, "Este usuario ya está registrado");
+                            Validation.Errors.Add(nameof(model.NombreUsuario), "Este usuario ya está registrado");
+                            return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
                         }
 
                         if (model.Password == null || model.Password == "")
                         {
-                            return new OperationResult(false, "Se debe colocar una contraseña válida", Validation.Errors);
+                            Validation.Errors.Add(nameof(model.Password), "Se debe colocar una contraseña válida");
+                            return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
                         }
 
 
@@ -108,6 +110,10 @@ namespace WebAPI.Controllers
 
                         if (model.idPerfil == (int)PerfilesEnum.Estudiante)
                         {
+                            if (!ValidateModel(model.InfoEstudiante))
+                            {
+                                return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+                            }
                             if (model.InfoEstudiante != null)
                             {
                                 model.InfoEstudiante.idUsuario = created.idUsuario;
@@ -120,6 +126,10 @@ namespace WebAPI.Controllers
                         }
                         else if (model.idPerfil == (int)PerfilesEnum.Maestro)
                         {
+                            if (!ValidateModel(model.InfoMaestro))
+                            {
+                                return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+                            }
                             if (model.InfoMaestro != null)
                             {
                                 model.InfoMaestro.idUsuario = created.idUsuario;
@@ -161,27 +171,56 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
-                UsuariosModel usuario = usuariosRepo.Get(x => x.idUsuario == idUsuario).FirstOrDefault();
-
-                if (usuario == null)
+                using (var trx = academixEntities.Database.BeginTransaction())
                 {
-                    return new OperationResult(false, "Este usuario no existe.");
-                }
-
-                var usuarioExists = usuariosRepo.Get(x => x.NombreUsuario == model.NombreUsuario).FirstOrDefault();
-
-                if (usuarioExists != null)
-                {
-                    if (usuarioExists.idUsuario != idUsuario)
+                    try
                     {
-                        return new OperationResult(false, "Este usuario ya está registrado");
+                        UsuariosModel usuario = usuariosRepo.Get(x => x.idUsuario == idUsuario).FirstOrDefault();
+
+                        if (usuario == null)
+                        {
+                            return new OperationResult(false, "Este usuario no existe.");
+                        }
+
+                        var usuarioExists = usuariosRepo.Get(x => x.NombreUsuario == model.NombreUsuario).FirstOrDefault();
+
+                        if (usuarioExists != null)
+                        {
+                            if (usuarioExists.idUsuario != idUsuario)
+                            {
+                                return new OperationResult(false, "Este usuario ya está registrado");
+                            }
+                        }
+
+                        model.UltimoIngreso = DateTime.Now;
+
+                        if (model.idPerfil == (int)PerfilesEnum.Estudiante)
+                        {
+                            if (!ValidateModel(model.InfoEstudiante))
+                            {
+                                return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+                            }
+                            estudiantesRepo.Edit(model.InfoEstudiante, model.InfoEstudiante.idEstudiante);
+                        }
+                        else if (model.idPerfil == (int)PerfilesEnum.Maestro)
+                        {
+                            if (!ValidateModel(model.InfoMaestro))
+                            {
+                                return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+                            }
+                            maestrosRepo.Edit(model.InfoMaestro, model.InfoMaestro.idMaestro);
+                        }
+
+                        usuariosRepo.Edit(model, idUsuario);
+                        trx.Commit();
+                        return new OperationResult(true, "Se ha actualizado satisfactoriamente");
+                    }
+                    catch (Exception ex)
+                    {
+                        trx.Rollback();
+                        return new OperationResult(false, "Error en la inserción de datos");
                     }
                 }
-
-                model.UltimoIngreso = DateTime.Now;
-
-                usuariosRepo.Edit(model, idUsuario);
-                return new OperationResult(true, "Se ha actualizado satisfactoriamente");
             }
             else
             {
@@ -189,6 +228,12 @@ namespace WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Cambia la contraseña de un usuario
+        /// </summary>
+        /// <param name="idUsuario"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         [Route("CambiarContraseña")]
         [HttpPut]
         //[Autorizar(AllowAnyProfile = true)]
