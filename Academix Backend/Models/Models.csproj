@@ -46,6 +46,8 @@
     <Compile Include="Administration\AsignaturasModel.cs" />
     <Compile Include="Administration\AulaModel.cs" />
     <Compile Include="Administration\CarrerasModel.cs" />
+    <Compile Include="Administration\AdministradorDashboardModel.cs" />
+    <Compile Include="Administration\EstudiantesDashboardModel.cs" />
     <Compile Include="Administration\EstudiantesModel.cs" />
     <Compile Include="Administration\MaestroModel.cs" />
     <Compile Include="Administration\PensumModel.cs" />

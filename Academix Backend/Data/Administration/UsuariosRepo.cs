@@ -31,27 +31,35 @@ namespace Data.Administration
                 UltimoIngreso = u.UltimoIngreso,
                 Telefono = u.Telefono
             }),
-            (DB, filter) => (from u in DB.Set<Usuarios>().Where(filter)
-                             join p in DB.Set<Perfiles>() on u.idPerfil equals p.idPerfil
-                             join e in DB.Set<EstadosUsuarios>() on u.idEstado equals e.idEstado
-                             //join s in DB.Set<Estudiante>() on u.idUsuario equals s.idUsuario
-                             select new UsuariosModel()
-                             {
-                                 idUsuario = u.idUsuario,
-                                 Nombres = u.Nombres,
-                                 Apellidos = u.Apellidos,
-                                 NombreUsuario = u.NombreUsuario,
-                                 CorreoElectronico = u.CorreoElectronico,
-                                 PasswordEncrypted = u.Password,
-                                 idPerfil = u.idPerfil,
-                                 Perfil = p.Nombre,
-                                 idEstado = u.idEstado,
-                                 Estado = e.Nombre,
-                                 FechaRegistro = u.FechaRegistro,
-                                 UltimoIngreso = u.UltimoIngreso,
-                                 Telefono = u.Telefono,
-                                 //InfoEstudiante = Estudiante(x => x.idUsuario == u.idUsuario)
-                             })
+            (DB, filter) =>
+            {
+                EstudiantesRepo estudiantesRepo = new EstudiantesRepo(dbContext);
+                MaestrosRepo maestrosRepo = new MaestrosRepo(dbContext);
+
+                return (from u in DB.Set<Usuarios>().Where(filter)
+                        join p in DB.Set<Perfiles>() on u.idPerfil equals p.idPerfil
+                        join e in DB.Set<EstadosUsuarios>() on u.idEstado equals e.idEstado
+                        let infoEstudiante = estudiantesRepo.Get(x => x.idUsuario == u.idUsuario).FirstOrDefault()
+                        let infoMaestro = maestrosRepo.Get(x => x.idUsuario == u.idUsuario).FirstOrDefault()
+                        select new UsuariosModel()
+                        {
+                            idUsuario = u.idUsuario,
+                            Nombres = u.Nombres,
+                            Apellidos = u.Apellidos,
+                            NombreUsuario = u.NombreUsuario,
+                            CorreoElectronico = u.CorreoElectronico,
+                            PasswordEncrypted = u.Password,
+                            idPerfil = u.idPerfil,
+                            Perfil = p.Nombre,
+                            idEstado = u.idEstado,
+                            Estado = e.Nombre,
+                            FechaRegistro = u.FechaRegistro,
+                            UltimoIngreso = u.UltimoIngreso,
+                            InfoEstudiante = infoEstudiante,
+                            InfoMaestro = infoMaestro,
+                            Telefono = u.Telefono
+                        });
+            }
         )
         { }
 

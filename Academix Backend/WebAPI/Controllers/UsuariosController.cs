@@ -81,21 +81,15 @@ namespace WebAPI.Controllers
                         UsuariosModel usuario = usuariosRepo.GetByUsername(model.NombreUsuario);
                         if (usuario != null)
                         {
-                            return new OperationResult(false, "Este usuario ya está registrado");
+                            Validation.Errors.Add(nameof(model.NombreUsuario), "Este usuario ya está registrado");
+                            return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
                         }
 
-                       
-
-                            var PasswordValidation = utilities.ValidarContraseña(model.Password);
-
-                            if (!PasswordValidation.Success)
-                            {
-                                return PasswordValidation;
-                            }
-
-                            usuario.PasswordEncrypted = Cipher.Encrypt(model.Password, Properties.Settings.Default.JwtSecret);
-                            return new OperationResult(true, "La contraseña se ha actualizado satisfactoriamente");
-                        
+                        if (model.Password == null || model.Password == "")
+                        {
+                            Validation.Errors.Add(nameof(model.Password), "Se debe colocar una contraseña válida");
+                            return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+                        }
 
 
                         model.PasswordEncrypted = Cipher.Encrypt(model.Password, Properties.Settings.Default.JwtSecret);
@@ -118,6 +112,10 @@ namespace WebAPI.Controllers
 
                         if (model.idPerfil == (int)PerfilesEnum.Estudiante)
                         {
+                            if (!ValidateModel(model.InfoEstudiante))
+                            {
+                                return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+                            }
                             if (model.InfoEstudiante != null)
                             {
                                 model.InfoEstudiante.idUsuario = created.idUsuario;
@@ -130,6 +128,10 @@ namespace WebAPI.Controllers
                         }
                         else if (model.idPerfil == (int)PerfilesEnum.Maestro)
                         {
+                            if (!ValidateModel(model.InfoMaestro))
+                            {
+                                return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+                            }
                             if (model.InfoMaestro != null)
                             {
                                 model.InfoMaestro.idUsuario = created.idUsuario;
@@ -181,19 +183,6 @@ namespace WebAPI.Controllers
                         {
                             return new OperationResult(false, "Este usuario no existe.");
                         }
-                        
-
-                           var PasswordValidation = utilities.ValidarContraseña(model.Password);
-
-                           if (!PasswordValidation.Success)
-                           {
-                               return PasswordValidation;
-                           }
-
-                           usuario.PasswordEncrypted = Cipher.Encrypt(model.Password, Properties.Settings.Default.JwtSecret);
-                           usuariosRepo.Edit(usuario, idUsuario);
-                           return new OperationResult(true, "La contraseña se ha actualizado satisfactoriamente");
-                        
 
                         var usuarioExists = usuariosRepo.Get(x => x.NombreUsuario == model.NombreUsuario).FirstOrDefault();
 
@@ -207,44 +196,33 @@ namespace WebAPI.Controllers
 
                         model.UltimoIngreso = DateTime.Now;
 
-                         usuariosRepo.Edit(model, idUsuario);
-
                         if (model.idPerfil == (int)PerfilesEnum.Estudiante)
                         {
-                            if (model.InfoEstudiante != null)
+                            if (!ValidateModel(model.InfoEstudiante))
                             {
-                                model.InfoEstudiante.idUsuario = model.InfoEstudiante.idUsuario;
-                                estudiantesRepo.Add(model.InfoEstudiante);
+                                return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
                             }
-                            else
-                            {
-                                return new OperationResult(false, "No se ha proporcionado información del estudiante");
-                            }
+                            estudiantesRepo.Edit(model.InfoEstudiante, model.InfoEstudiante.idEstudiante);
                         }
                         else if (model.idPerfil == (int)PerfilesEnum.Maestro)
                         {
-                            if (model.InfoMaestro != null)
+                            if (!ValidateModel(model.InfoMaestro))
                             {
-                                model.InfoMaestro.idUsuario = model.InfoEstudiante.idUsuario;
-                                maestrosRepo.Add(model.InfoMaestro);
+                                return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
                             }
-                            else
-                            {
-                                return new OperationResult(false, "No se ha proporcionado información del maestro");
-                            }
+                            maestrosRepo.Edit(model.InfoMaestro, model.InfoMaestro.idMaestro);
                         }
 
-
+                        usuariosRepo.Edit(model, idUsuario);
                         trx.Commit();
                         return new OperationResult(true, "Se ha actualizado satisfactoriamente");
                     }
-                    catch 
+                    catch (Exception ex)
                     {
                         trx.Rollback();
                         return new OperationResult(false, "Error en la inserción de datos");
                     }
                 }
-                        
             }
             else
             {
@@ -252,6 +230,12 @@ namespace WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Cambia la contraseña de un usuario
+        /// </summary>
+        /// <param name="idUsuario"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         [Route("CambiarContraseña")]
         [HttpPut]
         //[Autorizar(AllowAnyProfile = true)]
