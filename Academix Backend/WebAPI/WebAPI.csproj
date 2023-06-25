@@ -356,6 +356,7 @@
     <Compile Include="Controllers\MaestrosController.cs" />
     <Compile Include="Controllers\PensumController.cs" />
     <Compile Include="Controllers\PerfilesController.cs" />
+    <Compile Include="Controllers\SeccionAsignaturaController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -405,6 +406,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <None Include="Properties\PublishProfiles\Academix - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\Academix - Web Deploy.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -26,6 +26,8 @@ namespace WebAPI.Controllers
         public PerfilesRepo perfilesRepo { get; set; }
         public MaestrosRepo maestrosRepo { get; set; }
         public EstudiantesRepo estudiantesRepo { get; set; }
+    
+        Utilities utilities = new Utilities();
         public UsuariosController()
         {
             academixEntities = new AcadmixEntities();
@@ -246,9 +248,8 @@ namespace WebAPI.Controllers
                 return new OperationResult(false, "Este usuario no existe.");
             }
 
-            if (password != null && password != "")
-            {
-                Utilities utilities = new Utilities();
+            
+                
                 var PasswordValidation = utilities.ValidarContraseña(password);
 
                 if (!PasswordValidation.Success)
@@ -259,7 +260,7 @@ namespace WebAPI.Controllers
                 usuario.PasswordEncrypted = Cipher.Encrypt(password, Properties.Settings.Default.JwtSecret);
                 usuariosRepo.Edit(usuario, idUsuario);
                 return new OperationResult(true, "La contraseña se ha actualizado satisfactoriamente");
-            }
+            
 
             return new OperationResult(false, "Los datos ingresados no son válidos");
         }
