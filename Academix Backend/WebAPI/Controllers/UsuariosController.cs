@@ -26,6 +26,8 @@ namespace WebAPI.Controllers
         public PerfilesRepo perfilesRepo { get; set; }
         public MaestrosRepo maestrosRepo { get; set; }
         public EstudiantesRepo estudiantesRepo { get; set; }
+    
+        Utilities utilities = new Utilities();
         public UsuariosController()
         {
             academixEntities = new AcadmixEntities();
@@ -82,10 +84,18 @@ namespace WebAPI.Controllers
                             return new OperationResult(false, "Este usuario ya está registrado");
                         }
 
-                        if (model.Password == null || model.Password == "")
-                        {
-                            return new OperationResult(false, "Se debe colocar una contraseña válida", Validation.Errors);
-                        }
+                       
+
+                            var PasswordValidation = utilities.ValidarContraseña(model.Password);
+
+                            if (!PasswordValidation.Success)
+                            {
+                                return PasswordValidation;
+                            }
+
+                            usuario.PasswordEncrypted = Cipher.Encrypt(model.Password, Properties.Settings.Default.JwtSecret);
+                            return new OperationResult(true, "La contraseña se ha actualizado satisfactoriamente");
+                        
 
 
                         model.PasswordEncrypted = Cipher.Encrypt(model.Password, Properties.Settings.Default.JwtSecret);
@@ -161,27 +171,80 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
-                UsuariosModel usuario = usuariosRepo.Get(x => x.idUsuario == idUsuario).FirstOrDefault();
-
-                if (usuario == null)
+                using (var trx = academixEntities.Database.BeginTransaction())
                 {
-                    return new OperationResult(false, "Este usuario no existe.");
-                }
-
-                var usuarioExists = usuariosRepo.Get(x => x.NombreUsuario == model.NombreUsuario).FirstOrDefault();
-
-                if (usuarioExists != null)
-                {
-                    if (usuarioExists.idUsuario != idUsuario)
+                    try
                     {
-                        return new OperationResult(false, "Este usuario ya está registrado");
+                        UsuariosModel usuario = usuariosRepo.Get(x => x.idUsuario == idUsuario).FirstOrDefault();
+
+                        if (usuario == null)
+                        {
+                            return new OperationResult(false, "Este usuario no existe.");
+                        }
+                        
+
+                           var PasswordValidation = utilities.ValidarContraseña(model.Password);
+
+                           if (!PasswordValidation.Success)
+                           {
+                               return PasswordValidation;
+                           }
+
+                           usuario.PasswordEncrypted = Cipher.Encrypt(model.Password, Properties.Settings.Default.JwtSecret);
+                           usuariosRepo.Edit(usuario, idUsuario);
+                           return new OperationResult(true, "La contraseña se ha actualizado satisfactoriamente");
+                        
+
+                        var usuarioExists = usuariosRepo.Get(x => x.NombreUsuario == model.NombreUsuario).FirstOrDefault();
+
+                        if (usuarioExists != null)
+                        {
+                            if (usuarioExists.idUsuario != idUsuario)
+                            {
+                                return new OperationResult(false, "Este usuario ya está registrado");
+                            }
+                        }
+
+                        model.UltimoIngreso = DateTime.Now;
+
+                         usuariosRepo.Edit(model, idUsuario);
+
+                        if (model.idPerfil == (int)PerfilesEnum.Estudiante)
+                        {
+                            if (model.InfoEstudiante != null)
+                            {
+                                model.InfoEstudiante.idUsuario = model.InfoEstudiante.idUsuario;
+                                estudiantesRepo.Add(model.InfoEstudiante);
+                            }
+                            else
+                            {
+                                return new OperationResult(false, "No se ha proporcionado información del estudiante");
+                            }
+                        }
+                        else if (model.idPerfil == (int)PerfilesEnum.Maestro)
+                        {
+                            if (model.InfoMaestro != null)
+                            {
+                                model.InfoMaestro.idUsuario = model.InfoEstudiante.idUsuario;
+                                maestrosRepo.Add(model.InfoMaestro);
+                            }
+                            else
+                            {
+                                return new OperationResult(false, "No se ha proporcionado información del maestro");
+                            }
+                        }
+
+
+                        trx.Commit();
+                        return new OperationResult(true, "Se ha actualizado satisfactoriamente");
+                    }
+                    catch 
+                    {
+                        trx.Rollback();
+                        return new OperationResult(false, "Error en la inserción de datos");
                     }
                 }
-
-                model.UltimoIngreso = DateTime.Now;
-
-                usuariosRepo.Edit(model, idUsuario);
-                return new OperationResult(true, "Se ha actualizado satisfactoriamente");
+                        
             }
             else
             {
@@ -201,9 +264,8 @@ namespace WebAPI.Controllers
                 return new OperationResult(false, "Este usuario no existe.");
             }
 
-            if (password != null && password != "")
-            {
-                Utilities utilities = new Utilities();
+            
+                
                 var PasswordValidation = utilities.ValidarContraseña(password);
 
                 if (!PasswordValidation.Success)
@@ -214,7 +276,7 @@ namespace WebAPI.Controllers
                 usuario.PasswordEncrypted = Cipher.Encrypt(password, Properties.Settings.Default.JwtSecret);
                 usuariosRepo.Edit(usuario, idUsuario);
                 return new OperationResult(true, "La contraseña se ha actualizado satisfactoriamente");
-            }
+            
 
             return new OperationResult(false, "Los datos ingresados no son válidos");
         }

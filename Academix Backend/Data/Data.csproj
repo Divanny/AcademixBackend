@@ -62,6 +62,8 @@
     <Compile Include="Administration\MaestrosRepo.cs" />
     <Compile Include="Administration\PensumRepo.cs" />
     <Compile Include="Administration\PerfilesRepo.cs" />
+    <Compile Include="Administration\SeccionAsignaturaRepo.cs" />
+    <Compile Include="Administration\SeccionHorarioDetalleRepo.cs" />
     <Compile Include="Administration\UsuariosRepo.cs" />
     <Compile Include="Common\Logger.cs" />
     <Compile Include="Common\Mailing.cs" />
