@@ -34,6 +34,7 @@ namespace Data.Administration
             (DB, filter) => (from u in DB.Set<Usuarios>().Where(filter)
                              join p in DB.Set<Perfiles>() on u.idPerfil equals p.idPerfil
                              join e in DB.Set<EstadosUsuarios>() on u.idEstado equals e.idEstado
+                             //join s in DB.Set<Estudiante>() on u.idUsuario equals s.idUsuario
                              select new UsuariosModel()
                              {
                                  idUsuario = u.idUsuario,
@@ -48,7 +49,8 @@ namespace Data.Administration
                                  Estado = e.Nombre,
                                  FechaRegistro = u.FechaRegistro,
                                  UltimoIngreso = u.UltimoIngreso,
-                                 Telefono = u.Telefono
+                                 Telefono = u.Telefono,
+                                 //InfoEstudiante = Estudiante(x => x.idUsuario == u.idUsuario)
                              })
         )
         { }

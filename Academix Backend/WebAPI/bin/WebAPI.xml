@@ -761,6 +761,34 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.SeccionAsignaturaController.Get">
+            <summary>
+            Obtiene un listado de las secciones registradas.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.SeccionAsignaturaController.Get(System.Int32)">
+            <summary>
+            Obtiene una seccion en específico.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.SeccionAsignaturaController.Post(Models.Administration.SeccionAsignaturaModel)">
+            <summary>
+            Agrega una nueva seccion (se necesita permiso de administrador).
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.SeccionAsignaturaController.Put(System.Int32,Models.Administration.SeccionAsignaturaModel)">
+            <summary>
+            Actualiza la información de un usuario.
+            </summary>
+            <param name="idSeccion"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="T:WebAPI.Controllers.UsuariosController">
             <summary>
             API para manejar los usuarios del sistema.
