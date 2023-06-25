@@ -16,7 +16,6 @@ namespace Models.Administration
         [Required(ErrorMessage = "Debe seleccionar un correo electrónico")]
         [MaxLength(100, ErrorMessage = "El correo electrónico no puede exceder los 100 carácteres")]
         public string CorreoElectronico { get; set; }
-        [Required(ErrorMessage = "Debe especificar una contraseña válida")]
         public string Password { get; set; }
         public string PasswordEncrypted { get; set; }
         [Required(ErrorMessage = "Debe especificar el perfil")]
