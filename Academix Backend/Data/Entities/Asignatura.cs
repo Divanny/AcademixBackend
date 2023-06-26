@@ -20,6 +20,6 @@ namespace Data.Entities
         public Nullable<int> idArea { get; set; }
         public int creditos { get; set; }
         public Nullable<int> idCarrera { get; set; }
-        public Nullable<bool> esActivo { get; set; }
+        public bool esActivo { get; set; }
     }
 }

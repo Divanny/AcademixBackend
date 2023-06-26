@@ -12,11 +12,14 @@ namespace Data.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class EstatusSolicitudesSoporte
+    public partial class LogError
     {
-        public int idEstatus { get; set; }
-        public string Nombre { get; set; }
-        public bool FinalizaSolicitud { get; set; }
-        public string Severity { get; set; }
+        public int idLogError { get; set; }
+        public int idUsuario { get; set; }
+        public System.DateTime Fecha { get; set; }
+        public string Mensaje { get; set; }
+        public string StackTrace { get; set; }
+        public string Origen { get; set; }
+        public string Tipo { get; set; }
     }
 }

@@ -25,7 +25,7 @@
           <Property Name="idArea" Type="int" />
           <Property Name="creditos" Type="int" Nullable="false" />
           <Property Name="idCarrera" Type="int" />
-          <Property Name="esActivo" Type="bit" />
+          <Property Name="esActivo" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Asignatura_Pensum">
           <Key>
@@ -117,6 +117,29 @@
           <Property Name="idSeccion" Type="int" Nullable="false" />
           <Property Name="idEstudiante" Type="int" Nullable="false" />
           <Property Name="idPeriodo" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LogActividad">
+          <Key>
+            <PropertyRef Name="idLog" />
+          </Key>
+          <Property Name="idLog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="URL" Type="varchar" MaxLength="350" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="Metodo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="Data" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="LogError">
+          <Key>
+            <PropertyRef Name="idLogError" />
+          </Key>
+          <Property Name="idLogError" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="Mensaje" Type="varchar(max)" Nullable="false" />
+          <Property Name="StackTrace" Type="varchar(max)" Nullable="false" />
+          <Property Name="Origen" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Maestro">
           <Key>
@@ -275,6 +298,8 @@
           <EntitySet Name="EstatusSolicitudesSoporte" EntityType="Self.EstatusSolicitudesSoporte" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Estudiante" EntityType="Self.Estudiante" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Listado_Estudiantes" EntityType="Self.Listado_Estudiantes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogActividad" EntityType="Self.LogActividad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogError" EntityType="Self.LogError" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Maestro" EntityType="Self.Maestro" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Modalidad" EntityType="Self.Modalidad" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pensum" EntityType="Self.Pensum" Schema="dbo" store:Type="Tables" />
@@ -329,6 +354,8 @@
           <EntitySet Name="Tipo_Aula" EntityType="AcadmixModel.Tipo_Aula" />
           <EntitySet Name="Trimestre" EntityType="AcadmixModel.Trimestre" />
           <EntitySet Name="EstatusSolicitudesSoporte" EntityType="AcadmixModel.EstatusSolicitudesSoporte" />
+          <EntitySet Name="LogActividad" EntityType="AcadmixModel.LogActividad" />
+          <EntitySet Name="LogError" EntityType="AcadmixModel.LogError" />
           <EntitySet Name="SolicitudesSoporte" EntityType="AcadmixModel.SolicitudesSoporte" />
         </EntityContainer>
         <EntityType Name="PerfilesVistas">
@@ -395,7 +422,7 @@
           <Property Name="idArea" Type="Int32" />
           <Property Name="creditos" Type="Int32" Nullable="false" />
           <Property Name="idCarrera" Type="Int32" />
-          <Property Name="esActivo" Type="Boolean" />
+          <Property Name="esActivo" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Asignatura_Pensum">
           <Key>
@@ -565,6 +592,29 @@
           <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="FinalizaSolicitud" Type="Boolean" Nullable="false" />
           <Property Name="Severity" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LogActividad">
+          <Key>
+            <PropertyRef Name="idLog" />
+          </Key>
+          <Property Name="idLog" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="URL" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="false" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="Metodo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LogError">
+          <Key>
+            <PropertyRef Name="idLogError" />
+          </Key>
+          <Property Name="idLogError" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Mensaje" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StackTrace" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Origen" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SolicitudesSoporte">
           <Key>
@@ -851,6 +901,31 @@
                 <ScalarProperty Name="FinalizaSolicitud" ColumnName="FinalizaSolicitud" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="idEstatus" ColumnName="idEstatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogActividad">
+            <EntityTypeMapping TypeName="AcadmixModel.LogActividad">
+              <MappingFragment StoreEntitySet="LogActividad">
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Metodo" ColumnName="Metodo" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="idLog" ColumnName="idLog" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogError">
+            <EntityTypeMapping TypeName="AcadmixModel.LogError">
+              <MappingFragment StoreEntitySet="LogError">
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Origen" ColumnName="Origen" />
+                <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+                <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idLogError" ColumnName="idLogError" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

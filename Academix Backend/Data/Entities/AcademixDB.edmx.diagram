@@ -30,7 +30,9 @@
         <EntityTypeShape EntityType="AcadmixModel.Tipo_Aula" Width="1.5" PointX="12.75" PointY="0.75" />
         <EntityTypeShape EntityType="AcadmixModel.Trimestre" Width="1.5" PointX="2.75" PointY="12.75" />
         <EntityTypeShape EntityType="AcadmixModel.EstatusSolicitudesSoporte" Width="1.5" PointX="5.375" PointY="13.75" />
-        <EntityTypeShape EntityType="AcadmixModel.SolicitudesSoporte" Width="1.5" PointX="7.375" PointY="13.75" />
+        <EntityTypeShape EntityType="AcadmixModel.LogActividad" Width="1.5" PointX="7.375" PointY="13.75" />
+        <EntityTypeShape EntityType="AcadmixModel.LogError" Width="1.5" PointX="9.375" PointY="13.75" />
+        <EntityTypeShape EntityType="AcadmixModel.SolicitudesSoporte" Width="1.5" PointX="11.375" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

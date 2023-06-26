@@ -50,6 +50,8 @@ namespace Data.Entities
         public virtual DbSet<Tipo_Aula> Tipo_Aula { get; set; }
         public virtual DbSet<Trimestre> Trimestre { get; set; }
         public virtual DbSet<EstatusSolicitudesSoporte> EstatusSolicitudesSoporte { get; set; }
+        public virtual DbSet<LogActividad> LogActividad { get; set; }
+        public virtual DbSet<LogError> LogError { get; set; }
         public virtual DbSet<SolicitudesSoporte> SolicitudesSoporte { get; set; }
     }
 }

@@ -17,26 +17,18 @@ namespace WebAPI.Controllers
     [RoutePrefix("api/SeccionAsignatura")]
     public class SeccionAsignaturaController : ApiBaseController
     {
-        //public AcadmixEntities academixEntities { get; set; }
-        //public UsuariosRepo usuariosRepo { get; set; }
-        //public PerfilesRepo perfilesRepo { get; set; }
-        //public MaestrosRepo maestrosRepo { get; set; }
-        //public EstudiantesRepo estudiantesRepo { get; set; }
-        //public SeccionAsignaturaRepo seccionAsignaturaRepo { get; set; }
-        //public SeccionHorarioDetalleRepo seccionHorarioDetalleRepo { get; set; }
+        public AcadmixEntities academixEntities { get; set; }
+        public SeccionAsignaturaRepo seccionAsignaturaRepo { get; set; }
+        public SeccionHorarioDetalleRepo seccionHorarioDetalleRepo { get; set; }
 
         Utilities utilities = new Utilities();
-        SeccionAsignaturaRepo seccionAsignaturaRepo = new SeccionAsignaturaRepo();
-        //public SeccionAsignaturaController()
-        //{
-        //    academixEntities = new AcadmixEntities();
-        //    usuariosRepo = new UsuariosRepo(academixEntities);
-        //    perfilesRepo = new PerfilesRepo(academixEntities);
-        //    maestrosRepo = new MaestrosRepo(academixEntities);
-        //    estudiantesRepo = new EstudiantesRepo(academixEntities);
-        //    seccionHorarioDetalleRepo = new SeccionHorarioDetalleRepo(academixEntities);
-        //    seccionAsignaturaRepo = new SeccionAsignaturaRepo(academixEntities);
-        //}
+
+        public SeccionAsignaturaController()
+        {
+            academixEntities = new AcadmixEntities();
+            seccionHorarioDetalleRepo = new SeccionHorarioDetalleRepo(academixEntities);
+            seccionAsignaturaRepo = new SeccionAsignaturaRepo(academixEntities);
+        }
 
         /// <summary>
         /// Obtiene un listado de las secciones registradas.
@@ -48,12 +40,13 @@ namespace WebAPI.Controllers
         public List<SeccionAsignaturaModel> Get()
         {
             List<SeccionAsignaturaModel> secciones = seccionAsignaturaRepo.Get().ToList();
+
             foreach (var item in secciones)
             {
                 item.detalleSeccion = GetHorariosDetalles(item.idSeccion);
             }
             return secciones;
-            
+
         }
 
         /// <summary>
@@ -81,53 +74,70 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
-               
-                       //-> Manejar el estado de las secciones
-                        
-                        //if (model.esActivo == false)
-                        //{
-                        //    model.esActivo = (int)EstadoUsuarioEnum.Activo;
-                        //}
 
-                       
+                try
+                {
+                    Seccion_Asignatura created;
 
-                        
 
-                        if(model.idModalidad == 3)
+                    if (model.idModalidad == (int)ModalidadesEnum.Asignaturaasincrónica)
+                    {
+                        if (model.detalleSeccion != null)
                         {
-                            return new OperationResult(false, "Se ha creado la seccion Asincronica");
+                            return new OperationResult(false, "No se puede agregar horario a una seccion Asincronica");
                         }
                         else
                         {
-                           if(model.detalleSeccion != null)
-                           {
-                        List<SeccionHorarioDetalleModel> maestroDetalle = seccionAsignaturaRepo.GetHorarioByMaesto(model.idMaestro);
-                        List <SeccionHorarioDetalleModel> detalles = seccionAsignaturaRepo.GetHorarioByAsignatura(model.idAsignatura);
-                                 if (detalles == null) 
-                                 {
-                                     return new OperationResult(false, "Ya existe una seccion en ese horario para esta asignatura");
-                                 }
-
-                                var created = seccionAsignaturaRepo.Add(model);
-                                seccionAsignaturaRepo.SaveChanges();
-                                return new OperationResult(true, "Se ha creado esta seccion satisfactoriamente", created);
-                                
-                           }
-
-                           else
-                           {
-                               return new OperationResult(false, "No se ha proporcionado información del detalle de la seccion");
-                           }
-                            
+                            created = seccionAsignaturaRepo.Add(model);
+                            seccionAsignaturaRepo.SaveChanges();
+                            return new OperationResult(true, "Se ha creado la seccion Asincronica", created);
                         }
 
-                        
+                    }
+                    else
+                    {
+                        if (model.detalleSeccion != null)
+                        {
+                            foreach (var item in model.detalleSeccion)
+                            {
+                                if (item.horaHasta <= item.horaDesde)
+                                {
+                                    return new OperationResult(false, "No se puede crear una hora de finalizacion mayor que la de inicio");
+                                }
+                                if (!seccionAsignaturaRepo.ValidarChoquesdeHora(model.idMaestro, item.idDia, item.horaDesde, item.horaHasta, 0))
+                                {
+                                    return new OperationResult(false, $"El maestro no tiene disponibilidad para el dia {(DiasSemanaEnum)item.idDia} en la hora proporcionada");
+                                }
+                               
+                            }
+                            created = seccionAsignaturaRepo.Add(model);
+                            seccionAsignaturaRepo.SaveChanges();
+                            return new OperationResult(true, "Se ha creado la seccion", created);
 
-                        
-                        
+
+                        }
+
+                        else
+                        {
+                            return new OperationResult(false, "No se ha proporcionado información del detalle de la seccion");
+                        }
+
+                    }
 
                     
-                
+                }
+                catch
+                {
+
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
+
+
+
+
+
             }
             else
             {
@@ -148,42 +158,65 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
-               
-                        //-> Manejar el estado de las secciones
 
-                        //if (model.esActivo == false)
-                        //{
-                        //    model.esActivo = (int)EstadoUsuarioEnum.Activo;
-                        //}
+                try
+                {
+                    Seccion_Asignatura created;
 
-                        if (model.idModalidad == 3)
+
+                    if (model.idModalidad == (int)ModalidadesEnum.Asignaturaasincrónica)
+                    {
+                        if (model.detalleSeccion != null)
                         {
-                            return new OperationResult(false, "Se ha creado la seccion Asincronica");
+                            return new OperationResult(false, "No se puede agregar horario a una seccion Asincronica");
                         }
                         else
                         {
-                            if (model.detalleSeccion != null)
+                            seccionAsignaturaRepo.Edit(model,idSeccion);
+                            seccionAsignaturaRepo.SaveChanges();
+                            return new OperationResult(true, "Se ha creado la seccion Asincronica",model);
+                        }
+
+                    }
+                    else
+                    {
+                        if (model.detalleSeccion != null)
+                        {
+                            foreach (var item in model.detalleSeccion)
                             {
-                                seccionAsignaturaRepo.Edit(model);
-                                seccionAsignaturaRepo.SaveChanges();
-                                return new OperationResult(true, "Se ha creado esta seccion satisfactoriamente",model);
+                                if (item.horaHasta <= item.horaDesde)
+                                {
+                                    return new OperationResult(false, "No se puede crear una hora de finalizacion mayor que la de inicio");
+                                }
+                                if (!seccionAsignaturaRepo.ValidarChoquesdeHora(model.idMaestro, item.idDia, item.horaDesde, item.horaHasta, model.idSeccion))
+                                {
+                                    return new OperationResult(false, $"El maestro no tiene disponibilidad para el dia {(DiasSemanaEnum)item.idDia} en la hora proporcionada");
+                                }
 
                             }
+                            seccionAsignaturaRepo.Edit(model, idSeccion);
+                            seccionAsignaturaRepo.SaveChanges();
+                            return new OperationResult(true, "Se ha creado la seccion", model);
 
-                            else
-                            {
-                                return new OperationResult(false, "No se ha proporcionado información del detalle de la seccion");
-                            }
 
                         }
 
+                        else
+                        {
+                            return new OperationResult(false, "No se ha proporcionado información del detalle de la seccion");
+                        }
+
+                    }
 
 
+                }
+                catch(Exception ex)
+                {
+                    seccionAsignaturaRepo.LogError(ex);
 
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
 
-
-                    
-                
             }
             else
             {
