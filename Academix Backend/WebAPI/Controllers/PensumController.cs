@@ -15,6 +15,7 @@ namespace WebAPI.Controllers
     public class PensumController : ApiBaseController
     {
         PensumRepo pensumRepo = new PensumRepo();
+        AsignaturaPensumRepo asignaturaPensumRepo = new AsignaturaPensumRepo();
 
         /// <summary>
         /// Obtiene un listado de los pensum registrados.
@@ -91,6 +92,24 @@ namespace WebAPI.Controllers
 
                 pensumRepo.Edit(model, idPensum);
                 return new OperationResult(true, "Se ha actualizado satisfactoriamente");
+            }
+            else
+            {
+                return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+            }
+        }
+        [Route("PostAsignaturaPensum")]
+        [HttpPost]
+        //[Autorizar(AllowAnyProfile = true)]
+        public OperationResult PostAsignaturaPensum([FromBody] AsignaturaPensumModel model)
+        {
+            if (ValidateModel(model))
+            {
+
+
+                var created = asignaturaPensumRepo.Add(model);
+                asignaturaPensumRepo.SaveChanges();
+                return new OperationResult(true, "Se ha creado este Asignatura Pensum satisfactoriamente", created);
             }
             else
             {

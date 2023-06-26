@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -43,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Administration\AreasModel.cs" />
+    <Compile Include="Administration\AsignaturaPensumModel.cs" />
     <Compile Include="Administration\AsignaturasModel.cs" />
     <Compile Include="Administration\AulaModel.cs" />
     <Compile Include="Administration\CarrerasModel.cs" />
@@ -54,18 +58,23 @@
     <Compile Include="Administration\PerfilesModel.cs" />
     <Compile Include="Administration\SeccionAsignaturaModel.cs" />
     <Compile Include="Administration\SeccionHorarioDetalleModel.cs" />
+    <Compile Include="Administration\TipoAulaModel.cs" />
     <Compile Include="Administration\UsuariosModel.cs" />
     <Compile Include="Administration\VistasModel.cs" />
     <Compile Include="Common\LogInResult.cs" />
     <Compile Include="Common\OperationResult.cs" />
     <Compile Include="Credentials.cs" />
+    <Compile Include="Enums\DiasSemanaEnum.cs" />
     <Compile Include="Enums\EstadosUsuarios.cs" />
+    <Compile Include="Enums\ModalidadesEnum.cs" />
     <Compile Include="Enums\PerfilesEnum.cs" />
     <Compile Include="Enums\VistasEnum.cs" />
     <Compile Include="Identity.cs" />
     <Compile Include="Principal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -40,6 +40,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -55,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Administration\AreasRepo.cs" />
+    <Compile Include="Administration\AsignaturaPensumRepo.cs" />
     <Compile Include="Administration\AsignaturasRepo.cs" />
     <Compile Include="Administration\AulaRepo.cs" />
     <Compile Include="Administration\CarrerasRepo.cs" />
@@ -64,6 +68,7 @@
     <Compile Include="Administration\PerfilesRepo.cs" />
     <Compile Include="Administration\SeccionAsignaturaRepo.cs" />
     <Compile Include="Administration\SeccionHorarioDetalleRepo.cs" />
+    <Compile Include="Administration\TipoAulaRepo.cs" />
     <Compile Include="Administration\UsuariosRepo.cs" />
     <Compile Include="Common\Logger.cs" />
     <Compile Include="Common\Mailing.cs" />
@@ -113,10 +118,19 @@
     <Compile Include="Entities\EstadosUsuarios.cs">
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\EstatusSolicitudesSoporte.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Estudiante.cs">
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Listado_Estudiantes.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\LogActividad.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\LogError.cs">
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Maestro.cs">
@@ -144,6 +158,9 @@
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Seccion_Asignatura.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SolicitudesSoporte.cs">
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Tipo_Aula.cs">
