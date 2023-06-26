@@ -58,6 +58,7 @@
     <Compile Include="Administration\AsignaturasRepo.cs" />
     <Compile Include="Administration\AulaRepo.cs" />
     <Compile Include="Administration\CarrerasRepo.cs" />
+    <Compile Include="Administration\SolicitudesSoporteRepo.cs" />
     <Compile Include="Administration\EstudiantesRepo.cs" />
     <Compile Include="Administration\MaestrosRepo.cs" />
     <Compile Include="Administration\PensumRepo.cs" />
@@ -113,6 +114,9 @@
     <Compile Include="Entities\EstadosUsuarios.cs">
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\EstatusSolicitudesSoporte.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Estudiante.cs">
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
@@ -144,6 +148,9 @@
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Seccion_Asignatura.cs">
+      <DependentUpon>AcademixDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SolicitudesSoporte.cs">
       <DependentUpon>AcademixDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Tipo_Aula.cs">

@@ -194,6 +194,7 @@ namespace WebAPI.Controllers
                             }
                         }
 
+                        model.PasswordEncrypted = Cipher.Encrypt(model.Password, Properties.Settings.Default.JwtSecret);
                         model.UltimoIngreso = DateTime.Now;
 
                         if (model.idPerfil == (int)PerfilesEnum.Estudiante)

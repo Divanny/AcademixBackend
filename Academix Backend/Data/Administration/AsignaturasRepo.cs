@@ -33,10 +33,10 @@ namespace Data.Administration
                                      idAsignatura = u.idAsignatura,
                                      NombreAsignatura = u.nombreAsignatura,
                                      CodigoAsignatura = u.codigoAsignatura,
-                                     idArea = u.idArea,
+                                     idArea = u.idArea ?? 0,
                                      Area = a.nombre,
                                      Creditos = u.creditos,
-                                     idCarrera = u.idCarrera
+                                     idCarrera = u.idCarrera ?? 0
                                  })
             )
             { }
@@ -49,6 +49,5 @@ namespace Data.Administration
         {
             return this.Get(x => x.codigoAsignatura == codigoAsignatura).FirstOrDefault();
         }
-
     }
 }

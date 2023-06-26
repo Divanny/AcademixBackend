@@ -8,10 +8,8 @@ namespace Models.Administration
 {
     public class EstudiantesDashboardModel
     {
-        public int CantidadEstudiantes { get; set; }
-        public int CantidadMaestros { get; set; }
-        public int CantidadSolicitudSoporte { get; set; }
-        public object GraficaNumeroEstudiantes { get; set; }
-        public object GraficaSolicitudesSoporte { get; set; }
+        public EstudiantesModel InfoEstudiante { get; set; }
+        public UsuariosModel InfoUsuario { get; set; }
+        public object AsignaturasSeleccionadas { get; set; }
     }
 }

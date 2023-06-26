@@ -54,12 +54,14 @@
     <Compile Include="Administration\PerfilesModel.cs" />
     <Compile Include="Administration\SeccionAsignaturaModel.cs" />
     <Compile Include="Administration\SeccionHorarioDetalleModel.cs" />
+    <Compile Include="Administration\SolicitudesSoporteModel.cs" />
     <Compile Include="Administration\UsuariosModel.cs" />
     <Compile Include="Administration\VistasModel.cs" />
     <Compile Include="Common\LogInResult.cs" />
     <Compile Include="Common\OperationResult.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Enums\EstadosUsuarios.cs" />
+    <Compile Include="Enums\EstatusSolicitudSoportes.cs" />
     <Compile Include="Enums\PerfilesEnum.cs" />
     <Compile Include="Enums\VistasEnum.cs" />
     <Compile Include="Identity.cs" />

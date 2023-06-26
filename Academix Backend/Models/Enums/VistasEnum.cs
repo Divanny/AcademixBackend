@@ -8,6 +8,15 @@ namespace Models.Enums
 {
     public enum VistasEnum
     {
-        Home = 0,
+        Inicio = 1,
+        GestionarUsuarios = 4,
+        GestionarPerfiles = 5,
+        Pensum = 6,
+        SeleccióndeAsignaturas = 7,
+        SolicitarSoporte = 8,
+        CambiarContraseña = 11,
+        MiPerfil = 12,
+        HistorialAcademico = 13,
+        Login = 14
     }
 }

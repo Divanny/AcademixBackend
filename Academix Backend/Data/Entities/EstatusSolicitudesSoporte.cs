@@ -12,11 +12,11 @@ namespace Data.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Maestro
+    public partial class EstatusSolicitudesSoporte
     {
-        public int idMaestro { get; set; }
-        public int idUsuario { get; set; }
-        public string credencial { get; set; }
-        public int idArea { get; set; }
+        public int idEstatus { get; set; }
+        public string Nombre { get; set; }
+        public bool FinalizaSolicitud { get; set; }
+        public string Severity { get; set; }
     }
 }

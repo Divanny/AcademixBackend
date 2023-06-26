@@ -25,6 +25,7 @@
           <Property Name="idArea" Type="int" />
           <Property Name="creditos" Type="int" Nullable="false" />
           <Property Name="idCarrera" Type="int" />
+          <Property Name="esActivo" Type="bit" />
         </EntityType>
         <EntityType Name="Asignatura_Pensum">
           <Key>
@@ -87,6 +88,15 @@
           <Property Name="idEstado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="EstatusSolicitudesSoporte">
+          <Key>
+            <PropertyRef Name="idEstatus" />
+          </Key>
+          <Property Name="idEstatus" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FinalizaSolicitud" Type="bit" Nullable="false" />
+          <Property Name="Severity" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Estudiante">
           <Key>
@@ -196,6 +206,19 @@
           <Property Name="horaDesde" Type="time" Precision="7" Nullable="false" />
           <Property Name="horaHasta" Type="time" Precision="7" Nullable="false" />
         </EntityType>
+        <EntityType Name="SolicitudesSoporte">
+          <Key>
+            <PropertyRef Name="idSolicitud" />
+          </Key>
+          <Property Name="idSolicitud" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="Mensaje" Type="varchar(max)" Nullable="false" />
+          <Property Name="FechaSolicitud" Type="datetime" Nullable="false" />
+          <Property Name="idEstatus" Type="int" Nullable="false" />
+          <Property Name="FechaUltimoEstatus" Type="datetime" Nullable="false" />
+          <Property Name="idAsignadoA" Type="int" Nullable="false" />
+          <Property Name="Respuesta" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="Tipo_Aula">
           <Key>
             <PropertyRef Name="idTipoAula" />
@@ -249,6 +272,7 @@
           <EntitySet Name="Dependencia" EntityType="Self.Dependencia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dia_Semana" EntityType="Self.Dia_Semana" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EstadosUsuarios" EntityType="Self.EstadosUsuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EstatusSolicitudesSoporte" EntityType="Self.EstatusSolicitudesSoporte" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Estudiante" EntityType="Self.Estudiante" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Listado_Estudiantes" EntityType="Self.Listado_Estudiantes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Maestro" EntityType="Self.Maestro" Schema="dbo" store:Type="Tables" />
@@ -260,6 +284,7 @@
           <EntitySet Name="Publicacion" EntityType="Self.Publicacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Seccion_Asignatura" EntityType="Self.Seccion_Asignatura" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SeccionHorarioDetalle" EntityType="Self.SeccionHorarioDetalle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SolicitudesSoporte" EntityType="Self.SolicitudesSoporte" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tipo_Aula" EntityType="Self.Tipo_Aula" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trimestre" EntityType="Self.Trimestre" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
@@ -303,6 +328,8 @@
           <EntitySet Name="SeccionHorarioDetalle" EntityType="AcadmixModel.SeccionHorarioDetalle" />
           <EntitySet Name="Tipo_Aula" EntityType="AcadmixModel.Tipo_Aula" />
           <EntitySet Name="Trimestre" EntityType="AcadmixModel.Trimestre" />
+          <EntitySet Name="EstatusSolicitudesSoporte" EntityType="AcadmixModel.EstatusSolicitudesSoporte" />
+          <EntitySet Name="SolicitudesSoporte" EntityType="AcadmixModel.SolicitudesSoporte" />
         </EntityContainer>
         <EntityType Name="PerfilesVistas">
           <Key>
@@ -368,6 +395,7 @@
           <Property Name="idArea" Type="Int32" />
           <Property Name="creditos" Type="Int32" Nullable="false" />
           <Property Name="idCarrera" Type="Int32" />
+          <Property Name="esActivo" Type="Boolean" />
         </EntityType>
         <EntityType Name="Asignatura_Pensum">
           <Key>
@@ -529,6 +557,28 @@
           <Property Name="idTrimestre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="numeroTrimestre" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="EstatusSolicitudesSoporte">
+          <Key>
+            <PropertyRef Name="idEstatus" />
+          </Key>
+          <Property Name="idEstatus" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FinalizaSolicitud" Type="Boolean" Nullable="false" />
+          <Property Name="Severity" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SolicitudesSoporte">
+          <Key>
+            <PropertyRef Name="idSolicitud" />
+          </Key>
+          <Property Name="idSolicitud" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="Mensaje" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FechaSolicitud" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="idEstatus" Type="Int32" Nullable="false" />
+          <Property Name="FechaUltimoEstatus" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="idAsignadoA" Type="Int32" Nullable="false" />
+          <Property Name="Respuesta" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -607,6 +657,7 @@
           <EntitySetMapping Name="Asignatura">
             <EntityTypeMapping TypeName="AcadmixModel.Asignatura">
               <MappingFragment StoreEntitySet="Asignatura">
+                <ScalarProperty Name="esActivo" ColumnName="esActivo" />
                 <ScalarProperty Name="idCarrera" ColumnName="idCarrera" />
                 <ScalarProperty Name="creditos" ColumnName="creditos" />
                 <ScalarProperty Name="idArea" ColumnName="idArea" />
@@ -790,6 +841,30 @@
               <MappingFragment StoreEntitySet="Trimestre">
                 <ScalarProperty Name="numeroTrimestre" ColumnName="numeroTrimestre" />
                 <ScalarProperty Name="idTrimestre" ColumnName="idTrimestre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EstatusSolicitudesSoporte">
+            <EntityTypeMapping TypeName="AcadmixModel.EstatusSolicitudesSoporte">
+              <MappingFragment StoreEntitySet="EstatusSolicitudesSoporte">
+                <ScalarProperty Name="Severity" ColumnName="Severity" />
+                <ScalarProperty Name="FinalizaSolicitud" ColumnName="FinalizaSolicitud" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="idEstatus" ColumnName="idEstatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SolicitudesSoporte">
+            <EntityTypeMapping TypeName="AcadmixModel.SolicitudesSoporte">
+              <MappingFragment StoreEntitySet="SolicitudesSoporte">
+                <ScalarProperty Name="Respuesta" ColumnName="Respuesta" />
+                <ScalarProperty Name="idAsignadoA" ColumnName="idAsignadoA" />
+                <ScalarProperty Name="FechaUltimoEstatus" ColumnName="FechaUltimoEstatus" />
+                <ScalarProperty Name="idEstatus" ColumnName="idEstatus" />
+                <ScalarProperty Name="FechaSolicitud" ColumnName="FechaSolicitud" />
+                <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idSolicitud" ColumnName="idSolicitud" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
