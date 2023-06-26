@@ -1,4 +1,5 @@
 ﻿using Data.Administration;
+using Data.Entities;
 using Models.Administration;
 using Models.Common;
 using System;
@@ -15,6 +16,7 @@ namespace WebAPI.Controllers
     public class AulaController : ApiBaseController
     {
         AulaRepo aulaRepo = new AulaRepo();
+        TipoAulaRepo tipoAulaRepo = new TipoAulaRepo();
 
         /// <summary>
         /// Obtiene un listado de las aulas registradas.
@@ -96,6 +98,14 @@ namespace WebAPI.Controllers
             {
                 return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
             }
+        }
+
+        [Route("GetTipoAula")]
+        [HttpGet]
+        //[Autorizar(AllowAnyProfile = true)]
+        public List<TipoAulaModel> GetTipoAula()
+        {
+            return tipoAulaRepo.Get().ToList();
         }
     }
 }

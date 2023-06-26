@@ -51,7 +51,7 @@ namespace Data.Administration
         { }
         public IEnumerable<SeccionHorarioDetalleModel> GetHorariosDetalles(int idSeccion)
         {
-            return from u in dbContext.Set<SeccionHorarioDetalle>().Where(u => u.idSecciom == idSeccion)
+            return from u in dbContext.Set<SeccionHorarioDetalle>().Where(u => u.idSecciom == idSeccion )
                    join a in dbContext.Set<Aula>() on u.idAula equals a.idAula
                    join d in dbContext.Set<Dia_Semana>() on u.idDia equals d.idDia
                    select new SeccionHorarioDetalleModel()
@@ -66,106 +66,53 @@ namespace Data.Administration
                       horaHasta = u.horaHasta,
                    };
         }
+
+
+        public  bool ValidarChoquesdeHora(int idMaestro, int diaId, TimeSpan horaDesde, TimeSpan horaHasta, int idSeccion)
+        {
+            SeccionHorarioDetalleRepo seccionHorarioDetalleRepo = new SeccionHorarioDetalleRepo();
+
+
+            var HorariosProfesor = this.Get()
+                .Where(x => x.idMaestro == idMaestro && x.idSeccion != idSeccion)
+                .ToList();
+
+            foreach(var detallesItem in HorariosProfesor)
+            {
+                detallesItem.detalleSeccion = seccionHorarioDetalleRepo.Get()
+                .Where(x => x.idSecciom == detallesItem.idSeccion && x.idDia == diaId ).ToList();
+
+            }
+
+
+            bool Disponible = false;
+
+            foreach (var item in HorariosProfesor)
+            {
+                 Disponible = !item.detalleSeccion
+                    .Where(x =>
+                    horaDesde == x.horaDesde
+                    || horaHasta == x.horaHasta
+                    || (horaDesde >= x.horaDesde && horaDesde < x.horaHasta)
+                    || (horaHasta > x.horaDesde && horaHasta <= x.horaHasta)
+                    || (horaHasta > x.horaHasta && horaDesde < x.horaDesde)
+
+                   ).Any();
+                if (Disponible == false) 
+                {
+                    return Disponible;
+                }
+
+            }
+
+            return Disponible;
+
+
+
+
+        }
+
         
-
-        //public async Task<bool> ValidarChoquesdeHora(int IdProfesor, int diaId, TimeSpan horaDesde, TimeSpan horaHasta,int idSeccion)
-        //{
-
-
-        //    var HorariosProfesor = await _context.Profesor_Disponibilidad_Horarios.AsNoTracking()
-        //        .Where(x => x.ProfesorId == IdProfesor && x.DiaId == diaId
-        //        && x.idSeccion != idSeccion)
-
-        //        .ToListAsync();
-
-        //    bool Disponible = !HorariosProfesor
-        //    .Where(x =>
-        //            horaDesde == x.horaDesde
-        //            || horaHasta == x.horaHasta
-        //            || (horaDesde  >= x.horaDesde && horaDesde < x.horaHasta)
-        //            || (horaHasta > x.horaDesde && horaHasta <= x.horaHasta)
-        //            || (horaHasta >x.horaHasta && horaDesde < x.horaDesde)
-
-        //           ).Any();
-
-        //    return Disponible;
-
-
-
-
-        //}
-
-        //public async Task<int> CrearDisponibilidadHorario(ProfesorDisponibilidadHorarioViewModel entidad)
-        //{
-        //    int id = 0;
-        //    if (entidad is null) return 0;
-
-
-        //    if (TimeSpan.Parse(ConvertTime.convertTo24hFormat(entidad.PrHoHasta)) <= TimeSpan.Parse(ConvertTime.convertTo24hFormat(entidad.PrHoDesde)))
-        //        return 0;
-
-        //    if (entidad.ProfesorDisponibilidadHorarioId == 0)
-        //    {
-
-                
-
-        //        var estaDisponible = await ValidarChoquesdeHora(entidad.ProfesorId, entidad.SedeId, entidad.DiaId, entidad.PrHoDesde, entidad.PrHoHasta, entidad.ProfesorDisponibilidadHorarioId).ConfigureAwait(false);
-
-
-        //        if (estaDisponible == true)
-        //        {
-        //            var profDisponibilidadHorario = new Profesor_Disponibilidad_Horario
-        //            {
-        //                CompanyId = entidad.CompanyId,
-        //                SedeId = entidad.SedeId,
-        //                ProfesorId = entidad.ProfesorId,
-        //                DiaId = entidad.DiaId,
-        //                PrHoDesde = entidad.PrHoDesde,
-        //                PrHoHasta = entidad.PrHoHasta,
-        //                PrHoFechaCreacion = DateTime.Now,
-
-        //            };
-
-        //            await _context.Profesor_Disponibilidad_Horarios.AddAsync(profDisponibilidadHorario).ConfigureAwait(false);
-        //            await _context.SaveChangesAsync().ConfigureAwait(false);
-        //            id = (int)profDisponibilidadHorario.ProfesorDisponibilidadHorarioId;
-
-
-        //        }
-
-
-        //    }
-        //    return id;
-        //}
-
-        public List<SeccionHorarioDetalleModel> GetHorarioByAsignatura(int idAsignatura)
-        {
-            var secciones = this.Get(x => x.idAsignatura == idAsignatura).ToList();
-            List<SeccionHorarioDetalleModel> detalles = new List<SeccionHorarioDetalleModel>();
-
-            foreach (var seccion in secciones)
-            {
-                var seccionDetalles = GetHorariosDetalles(seccion.idSeccion);
-                detalles.AddRange(seccionDetalles);
-            }
-
-
-            return detalles;
-        }
-        public List<SeccionHorarioDetalleModel> GetHorarioByMaesto(int idMaestro)
-        {
-            var secciones = this.Get(x => x.idMaestro == idMaestro).ToList();
-            List<SeccionHorarioDetalleModel> detalles = new List<SeccionHorarioDetalleModel>();
-
-            foreach (var seccion in secciones)
-            {
-                var seccionDetalles = GetHorariosDetalles(seccion.idSeccion);
-                detalles.AddRange(seccionDetalles);
-            }
-
-
-            return detalles;
-        }
 
 
 

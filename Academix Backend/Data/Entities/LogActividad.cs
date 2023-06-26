@@ -12,14 +12,13 @@ namespace Data.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Asignatura
+    public partial class LogActividad
     {
-        public int idAsignatura { get; set; }
-        public string nombreAsignatura { get; set; }
-        public string codigoAsignatura { get; set; }
-        public Nullable<int> idArea { get; set; }
-        public int creditos { get; set; }
-        public Nullable<int> idCarrera { get; set; }
-        public bool esActivo { get; set; }
+        public int idLog { get; set; }
+        public string URL { get; set; }
+        public int idUsuario { get; set; }
+        public string Metodo { get; set; }
+        public System.DateTime Fecha { get; set; }
+        public string Data { get; set; }
     }
 }
