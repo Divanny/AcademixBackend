@@ -44,7 +44,7 @@ namespace Data.Administration
                                  })
             )
             { }
-        public AsignaturasModel GetByUsername(string nombreAsignatura)
+        public AsignaturasModel GetByName(string nombreAsignatura)
         {
             return this.Get(x => x.nombreAsignatura == nombreAsignatura).FirstOrDefault();
         }

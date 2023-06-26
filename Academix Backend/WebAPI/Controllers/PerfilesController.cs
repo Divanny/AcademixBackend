@@ -49,6 +49,8 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
+                try
+                {
                 var ifExist = perfilesRepo.Get(x => x.Nombre == model.Nombre).FirstOrDefault();
 
                 if (ifExist != null)
@@ -59,6 +61,16 @@ namespace WebAPI.Controllers
                 var created = perfilesRepo.Add(model);
                 perfilesRepo.Log(created);
                 return new OperationResult(true, "Se ha creado satisfactoriamente", created);
+
+                }
+                catch (Exception ex)
+                {
+
+                    perfilesRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
                 return new OperationResult(false, "Los datos suministrados no son válidos", Validation.Errors);
@@ -76,9 +88,21 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
+                try
+                {
                 perfilesRepo.Edit(model);
                 perfilesRepo.Log(model);
                 return new OperationResult(true, "Se ha actualizado satisfactoriamente", model);
+
+                }
+                catch (Exception ex)
+                {
+
+                    perfilesRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
                 return new OperationResult(false, "Los datos suministrados no son válidos", Validation.Errors);
@@ -95,9 +119,22 @@ namespace WebAPI.Controllers
         {
             try
             {
+
+                try
+                {
+
                 perfilesRepo.Delete(idPerfil);
                 perfilesRepo.Log(idPerfil);
                 return new OperationResult(true, "Se ha eliminado satisfactoriamente");
+                }
+                catch (Exception ex)
+                {
+
+                    perfilesRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             catch (Exception ex)
             {

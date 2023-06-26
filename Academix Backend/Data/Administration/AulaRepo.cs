@@ -36,5 +36,10 @@ namespace Data.Administration
                               })
          )
         { }
+
+        public AulaModel GetByName(string nombreAula)
+        {
+            return this.Get(x => x.nombre == nombreAula).FirstOrDefault();
+        }
     }
 }

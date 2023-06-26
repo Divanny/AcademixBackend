@@ -126,9 +126,9 @@ namespace WebAPI.Controllers
 
                     
                 }
-                catch
+                catch(Exception ex)
                 {
-
+                    seccionAsignaturaRepo.LogError(ex);
 
                     return new OperationResult(false, "Error en la inserción de datos");
                 }

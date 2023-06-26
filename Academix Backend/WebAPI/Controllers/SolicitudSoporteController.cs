@@ -78,6 +78,8 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
+                try
+                {
                 model.idEstatus = (int)EstatusSolicitudSoporteEnum.PendienteaEnviar;
                 model.idUsuario = OnlineUser.GetUserId();
                 model.FechaSolicitud = DateTime.Now;
@@ -85,6 +87,16 @@ namespace WebAPI.Controllers
                 var created = solicitudesSoporteRepo.Add(model);
                 solicitudesSoporteRepo.SaveChanges();
                 return new OperationResult(true, "Se ha creado esta solicitud satisfactoriamente", created);
+
+                }
+                catch (Exception ex)
+                {
+
+                    solicitudesSoporteRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
             {
@@ -105,6 +117,10 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
+
+                try
+                {
+
                 SolicitudesSoporteModel solicitud = solicitudesSoporteRepo.Get(x => x.idSolicitud == idSolicitud).FirstOrDefault();
 
                 if (solicitud == null)
@@ -114,6 +130,15 @@ namespace WebAPI.Controllers
 
                 solicitudesSoporteRepo.Edit(model, idSolicitud);
                 return new OperationResult(true, "Se ha actualizado satisfactoriamente");
+                }
+                catch (Exception ex)
+                {
+
+                    solicitudesSoporteRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
             {

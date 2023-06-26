@@ -147,8 +147,10 @@ namespace WebAPI.Controllers
                         return new OperationResult(true, "Se creado este usuario satisfactoriamente", created);
 
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        usuariosRepo.LogError(ex);
+
                         trx.Rollback();
                         return new OperationResult(false, "Error en la inserción de datos");
                     }
@@ -220,6 +222,7 @@ namespace WebAPI.Controllers
                     }
                     catch (Exception ex)
                     {
+                        usuariosRepo.LogError(ex);
                         trx.Rollback();
                         return new OperationResult(false, "Error en la inserción de datos");
                     }
