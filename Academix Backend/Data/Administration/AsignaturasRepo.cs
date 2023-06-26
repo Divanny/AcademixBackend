@@ -53,6 +53,5 @@ namespace Data.Administration
         {
             return this.Get(x => x.codigoAsignatura == codigoAsignatura).FirstOrDefault();
         }
-
     }
 }

@@ -512,6 +512,71 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:WebAPI.Controllers.SolicitudSoporteController">
+            <summary>
+            API para manejar las solicitudes de soporte
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.SolicitudSoporteController.Get">
+            <summary>
+            Obtiene un listado de todos las solicitudes de soporte no atendidas.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.SolicitudSoporteController.Get(System.Int32)">
+            <summary>
+            Obtiene una solicitud en específico.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.SolicitudSoporteController.GetMisSolicitudes">
+            <summary>
+            Obtiene todas las solicitudes realizadas por un usuario
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.SolicitudSoporteController.Post(Models.Administration.SolicitudesSoporteModel)">
+            <summary>
+            Agrega una nuevo solicitud de soporte
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.SolicitudSoporteController.Put(System.Int32,Models.Administration.SolicitudesSoporteModel)">
+            <summary>
+            Actualiza la información de una solicitud de soporte.
+            </summary>
+            <param name="idSolicitud"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.SolicitudSoporteController.CambiarEstatus(System.Int32,System.Int32,System.String)">
+            <summary>
+            Cambia el estatus de una solicitud
+            </summary>
+            <param name="idSolicitud"></param>
+            <param name="idEstatus"></param>
+            <param name="Mensaje"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WebAPI.Controllers.DashboardController">
+            <summary>
+            API para manejar los diferentes Dashboard
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.DashboardController.Estudiantes">
+            <summary>
+            Obtiene toda la información principal del home de Estudiantes.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.DashboardController.Administrador">
+            <summary>
+            Obtiene toda la información principal del home de Administradores.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:WebAPI.Controllers.AreasController.Get">
             <summary>
             Obtiene un listado de las Areas registradas.

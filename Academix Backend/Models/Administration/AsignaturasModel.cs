@@ -17,7 +17,5 @@ namespace Models.Administration
         public int idCarrera { get; set; }
         public string Carrera { get; set; }
         public bool esActivo { get; set; }
-
-
     }
 }
