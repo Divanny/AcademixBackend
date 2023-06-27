@@ -1,4 +1,5 @@
 ﻿using Data.Administration;
+using Data.Entities;
 using Models.Administration;
 using Models.Common;
 using System;
@@ -54,11 +55,27 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
+                try
+                {
 
+                PensumModel pensum = pensumRepo.GetByName(model.nombrePensum);
+                if(pensum != null)
+                {
+                        return new OperationResult(false, "Ya existe un pensum con este nombre");
+                }
 
                 var created = pensumRepo.Add(model);
                 pensumRepo.SaveChanges();
                 return new OperationResult(true, "Se ha creado este pensum satisfactoriamente", created);
+                }
+                catch (Exception ex)
+                {
+
+                    pensumRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
             {
@@ -79,6 +96,9 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
+                try
+                {
+
                 PensumModel pensum = pensumRepo.Get(x => x.idPensum == idPensum).FirstOrDefault();
 
                 if (pensum == null)
@@ -86,12 +106,25 @@ namespace WebAPI.Controllers
                     return new OperationResult(false, "Este pensum no existe.");
                 }
 
-
+                PensumModel pensumName = pensumRepo.GetByName(model.nombrePensum);
+                if (pensum != null)
+                {
+                        return new OperationResult(false, "Ya existe un pensum con este nombre");
+                }
 
 
 
                 pensumRepo.Edit(model, idPensum);
                 return new OperationResult(true, "Se ha actualizado satisfactoriamente");
+                }
+                catch (Exception ex)
+                {
+
+                    pensumRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
             {
@@ -105,11 +138,21 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
-
+                try
+                {
 
                 var created = asignaturaPensumRepo.Add(model);
                 asignaturaPensumRepo.SaveChanges();
                 return new OperationResult(true, "Se ha creado este Asignatura Pensum satisfactoriamente", created);
+                }
+                catch (Exception ex)
+                {
+
+                    pensumRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
             {

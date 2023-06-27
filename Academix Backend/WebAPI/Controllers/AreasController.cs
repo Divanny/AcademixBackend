@@ -53,15 +53,26 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
-                AreasModel area = areasRepo.GetByUsername(model.nombre);
-                if (area != null)
+                try
                 {
-                    return new OperationResult(false, "Esta area ya está registrada");
+                    AreasModel area = areasRepo.GetByUsername(model.nombre);
+                    if (area != null)
+                    {
+                        return new OperationResult(false, "Esta area ya está registrada");
+                    }
+
+                    var created = areasRepo.Add(model);
+                    areasRepo.SaveChanges();
+                    return new OperationResult(true, "Se ha creado esta area satisfactoriamente", created);
+                }
+                catch (Exception ex)
+                {
+                    areasRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
                 }
 
-                var created = areasRepo.Add(model);
-                areasRepo.SaveChanges();
-                return new OperationResult(true, "Se ha creado esta area satisfactoriamente", created);
+                
             }
             else
             {
@@ -82,6 +93,8 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
+                try
+                {
                 AreasModel areas = areasRepo.Get(x => x.idArea == idArea).FirstOrDefault();
 
                 if (areas == null)
@@ -101,8 +114,18 @@ namespace WebAPI.Controllers
 
 
 
-                areasRepo.Edit(model, idArea);
-                return new OperationResult(true, "Se ha actualizado satisfactoriamente");
+                    areasRepo.Edit(model, idArea);
+                    return new OperationResult(true, "Se ha actualizado satisfactoriamente");
+
+                }
+                catch (Exception ex) 
+                { 
+
+                    areasRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
             {

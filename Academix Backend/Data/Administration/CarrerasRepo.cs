@@ -43,7 +43,7 @@ namespace Data.Administration
                                 })
            )
         { }
-        public CarrerasModel GetByUsername(string nombreCarrera)
+        public CarrerasModel GetByCarreraName(string nombreCarrera)
         {
             return this.Get(x => x.nombre == nombreCarrera).FirstOrDefault();
         }

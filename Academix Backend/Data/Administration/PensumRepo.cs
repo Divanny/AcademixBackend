@@ -43,5 +43,10 @@ namespace Data.Administration
          )
         { }
 
+        public PensumModel GetByName(string nombrePensum)
+        {
+            return this.Get(x => x.nombrePensum == nombrePensum).FirstOrDefault();
+        }
+
     }
 }

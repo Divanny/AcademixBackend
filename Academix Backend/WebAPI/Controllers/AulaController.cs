@@ -55,11 +55,27 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
-
+                try
+                {
+                AulaModel aula = aulaRepo.GetByName(model.nombre);
+                if (aula != null)
+                {
+                    return new OperationResult(false, "Este nombre para un aula ya está registrado");
+                }
 
                 var created = aulaRepo.Add(model);
                 aulaRepo.SaveChanges();
                 return new OperationResult(true, "Se ha creado esta aula satisfactoriamente", created);
+
+                }
+                catch (Exception ex)
+                {
+
+                    aulaRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
             {
@@ -80,19 +96,32 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
+                try
+                {
+
                 AulaModel aula = aulaRepo.Get(x => x.idAula == idAula).FirstOrDefault();
 
                 if (aula == null)
                 {
                     return new OperationResult(false, "Esta aula no existe.");
                 }
-
-
-
-
+                    AulaModel aulaName = aulaRepo.GetByName(model.nombre);
+                if(aulaName != null) 
+                {
+                        return new OperationResult(false, "Ya existe un aula con este nombre");
+                }
 
                 aulaRepo.Edit(model, idAula);
                 return new OperationResult(true, "Se ha actualizado satisfactoriamente");
+                }
+                catch (Exception ex)
+                {
+
+                    aulaRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
             {

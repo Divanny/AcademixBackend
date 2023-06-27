@@ -53,7 +53,10 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
-                CarrerasModel asignatura = carrerasRepo.GetByUsername(model.nombre);
+                try
+                {
+
+                CarrerasModel asignatura = carrerasRepo.GetByCarreraName(model.nombre);
                 if (asignatura != null)
                 {
                     return new OperationResult(false, "Esta carrera ya está registrada");
@@ -62,6 +65,15 @@ namespace WebAPI.Controllers
                 var created = carrerasRepo.Add(model);
                 carrerasRepo.SaveChanges();
                 return new OperationResult(true, "Se ha creado esta carrera satisfactoriamente", created);
+                }
+                catch (Exception ex)
+                {
+
+                    carrerasRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
             {

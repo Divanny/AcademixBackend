@@ -53,7 +53,10 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
-                AsignaturasModel asignatura = asignaturasRepo.GetByUsername(model.NombreAsignatura);
+                try
+                {
+
+                AsignaturasModel asignatura = asignaturasRepo.GetByName(model.NombreAsignatura);
                 if (asignatura != null)
                 {
                     return new OperationResult(false, "Esta asignatura ya está registrado");
@@ -66,6 +69,15 @@ namespace WebAPI.Controllers
                 var created = asignaturasRepo.Add(model);
                 asignaturasRepo.SaveChanges();
                 return new OperationResult(true, "Se ha creado esta asignatura satisfactoriamente", created);
+                }
+                catch (Exception ex)
+                {
+
+                    asignaturasRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
             {
@@ -86,6 +98,9 @@ namespace WebAPI.Controllers
         {
             if (ValidateModel(model))
             {
+                try
+                {
+
                 AsignaturasModel asignaturas = asignaturasRepo.Get(x => x.idAsignatura == idAsignatura).FirstOrDefault();
 
                 if (asignaturas == null)
@@ -107,6 +122,15 @@ namespace WebAPI.Controllers
 
                 asignaturasRepo.Edit(model, idAsignatura);
                 return new OperationResult(true, "Se ha actualizado satisfactoriamente");
+                }
+                catch (Exception ex)
+                {
+
+                    asignaturasRepo.LogError(ex);
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
             }
             else
             {
