@@ -58,11 +58,15 @@ namespace WebAPI.Controllers
             return solicitudesSoportes;
         }
 
+        /// <summary>
+        /// Obtiene una bandeja de las solictudes de soporte sin responder
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetBandejaSolicitudes")]
         public List<SolicitudesSoporteModel> GetBandejaSolicitudes()
         {
-            List<SolicitudesSoporteModel> solicitudesSoportes = solicitudesSoporteRepo.Get(x => x.idEstatus == (int)EstatusSolicitudSoporteEnum.Enrevisión).ToList();
+            List<SolicitudesSoporteModel> solicitudesSoportes = solicitudesSoporteRepo.Get(x => x.idEstatus == (int)EstatusSolicitudSoporteEnum.Enrevisión || x.idEstatus == (int)EstatusSolicitudSoporteEnum.PendienteaRevisión).ToList();
             return solicitudesSoportes;
         }
 
@@ -80,13 +84,14 @@ namespace WebAPI.Controllers
             {
                 try
                 {
-                model.idEstatus = (int)EstatusSolicitudSoporteEnum.PendienteaEnviar;
-                model.idUsuario = OnlineUser.GetUserId();
-                model.FechaSolicitud = DateTime.Now;
+                    model.idEstatus = (int)EstatusSolicitudSoporteEnum.PendienteaEnviar;
+                    model.idUsuario = OnlineUser.GetUserId();
+                    model.FechaSolicitud = DateTime.Now;
+                    model.FechaUltimoEstatus = DateTime.Now;
 
-                var created = solicitudesSoporteRepo.Add(model);
-                solicitudesSoporteRepo.SaveChanges();
-                return new OperationResult(true, "Se ha creado esta solicitud satisfactoriamente", created);
+                    var created = solicitudesSoporteRepo.Add(model);
+                    solicitudesSoporteRepo.SaveChanges();
+                    return new OperationResult(true, "Se ha creado esta solicitud satisfactoriamente", created);
 
                 }
                 catch (Exception ex)
@@ -121,15 +126,15 @@ namespace WebAPI.Controllers
                 try
                 {
 
-                SolicitudesSoporteModel solicitud = solicitudesSoporteRepo.Get(x => x.idSolicitud == idSolicitud).FirstOrDefault();
+                    SolicitudesSoporteModel solicitud = solicitudesSoporteRepo.Get(x => x.idSolicitud == idSolicitud).FirstOrDefault();
 
-                if (solicitud == null)
-                {
-                    return new OperationResult(false, "Esta solicitud no existe.");
-                }
+                    if (solicitud == null)
+                    {
+                        return new OperationResult(false, "Esta solicitud no existe.");
+                    }
 
-                solicitudesSoporteRepo.Edit(model, idSolicitud);
-                return new OperationResult(true, "Se ha actualizado satisfactoriamente");
+                    solicitudesSoporteRepo.Edit(model, idSolicitud);
+                    return new OperationResult(true, "Se ha actualizado satisfactoriamente");
                 }
                 catch (Exception ex)
                 {
@@ -145,6 +150,55 @@ namespace WebAPI.Controllers
                 return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
             }
         }
+
+        /// <summary>
+        /// Enviar la solicitud de un usuario a bandeja
+        /// </summary>
+        /// <param name="idSolicitud"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("Enviar")]
+        //[Autorizar(AllowAnyProfile = true)]
+        public OperationResult Enviar(int idSolicitud)
+        {
+            SolicitudesSoporteModel solicitud = solicitudesSoporteRepo.Get(x => x.idSolicitud == idSolicitud).FirstOrDefault();
+
+            if (solicitud == null)
+            {
+                return new OperationResult(false, "Esta solicitud no existe.");
+            }
+
+            solicitud.idEstatus = (int)EstatusSolicitudSoporteEnum.PendienteaRevisión;
+            solicitud.FechaUltimoEstatus = DateTime.Now;
+            solicitudesSoporteRepo.Edit(solicitud, idSolicitud);
+            return new OperationResult(true, "Se ha enviado satisfactoriamente");
+        }
+
+        [HttpPut]
+        [Route("Asignar")]
+        //[Autorizar(AllowAnyProfile = true)]
+        public OperationResult Asignar(int idSolicitud)
+        {
+            SolicitudesSoporteModel solicitud = solicitudesSoporteRepo.Get(x => x.idSolicitud == idSolicitud).FirstOrDefault();
+
+            if (solicitud == null)
+            {
+                return new OperationResult(false, "Esta solicitud no existe.");
+            }
+
+            if (solicitud.idAsignadoA != null && solicitud.idAsignadoA != 0)
+            {
+                return new OperationResult(false, $"Esta ya está asignada a {solicitud.AsignadoA}.");
+            }
+
+            solicitud.idEstatus = (int)EstatusSolicitudSoporteEnum.Enrevisión;
+            solicitud.FechaUltimoEstatus = DateTime.Now;
+            solicitud.idAsignadoA = OnlineUser.GetUserId();
+            solicitudesSoporteRepo.Edit(solicitud, idSolicitud);
+
+            return new OperationResult(true, "Se ha asignado satisfactoriamente");
+        }
+
 
         /// <summary>
         /// Cambia el estatus de una solicitud
@@ -174,7 +228,22 @@ namespace WebAPI.Controllers
             }
 
             solicitudesSoporteRepo.Edit(solicitud, idSolicitud);
-            return new OperationResult(true, "Se ha actualizado satisfactoriamente");
+
+            solicitud = solicitudesSoporteRepo.Get(x => x.idSolicitud == idSolicitud).FirstOrDefault();
+
+            return new OperationResult(true, $"El estatus ha cambiado a {solicitud.Estatus} satisfactoriamente");
+        }
+
+        /// <summary>
+        /// Obtiene todos los estatus que puede pasar una solicitud de soporte
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetEstatusSolicitud")]
+        public List<EstatusSolicitudesSoporte> GetEstatusSolicitud()
+        {
+            List<EstatusSolicitudesSoporte> estatusSolicitud = solicitudesSoporteRepo.dbContext.Set<EstatusSolicitudesSoporte>().ToList();
+            return estatusSolicitud;
         }
     }
 }
