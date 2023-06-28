@@ -37,6 +37,7 @@ namespace Data.Administration
                                   descripcion = u.descripcion,
                                   idCarrera = u.idCarrera,
                                   Carrera = c.nombre,
+                                  CantAsignaturas = DB.Set<Asignatura_Pensum>().Count(x => x.idPensum == u.idCarrera),
                                   limiteCreditoTrimestral = u.limiteCreditoTrimestral,
                                   esActivo = u.esActivo
                               })
