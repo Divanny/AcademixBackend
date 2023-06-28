@@ -44,6 +44,7 @@ namespace Data.Administration
                                   Respuesta = s.Respuesta,
                                   FechaSolicitud = s.FechaSolicitud,
                                   FechaUltimoEstatus = s.FechaUltimoEstatus,
+                                  Severity = e.Severity
                               })
          )
         { }
