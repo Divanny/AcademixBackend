@@ -556,6 +556,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.SolicitudSoporteController.GetBandejaSolicitudes">
+            <summary>
+            Obtiene una bandeja de las solictudes de soporte sin responder
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:WebAPI.Controllers.SolicitudSoporteController.Post(Models.Administration.SolicitudesSoporteModel)">
             <summary>
             Agrega una nuevo solicitud de soporte
@@ -571,6 +577,13 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.SolicitudSoporteController.Enviar(System.Int32)">
+            <summary>
+            Enviar la solicitud de un usuario a bandeja
+            </summary>
+            <param name="idSolicitud"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebAPI.Controllers.SolicitudSoporteController.CambiarEstatus(System.Int32,System.Int32,System.String)">
             <summary>
             Cambia el estatus de una solicitud
@@ -578,6 +591,12 @@
             <param name="idSolicitud"></param>
             <param name="idEstatus"></param>
             <param name="Mensaje"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.SolicitudSoporteController.GetEstatusSolicitud">
+            <summary>
+            Obtiene todos los estatus que puede pasar una solicitud de soporte
+            </summary>
             <returns></returns>
         </member>
         <member name="T:WebAPI.Controllers.DashboardController">
@@ -946,6 +965,12 @@
             <param name="encryptedText">String to be decrypted</param>
             <param name="password">Password used during encryption</param>
             <exception cref="T:System.FormatException"></exception>
+        </member>
+        <member name="M:WebAPI.Infraestructure.OnlineUser.GetUserId">
+            <summary>
+            Obtiene el ID del usuario en línea
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:WebAPI.Infraestructure.SessionData">
             <summary>

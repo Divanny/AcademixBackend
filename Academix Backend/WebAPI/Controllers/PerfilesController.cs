@@ -24,8 +24,8 @@ namespace WebAPI.Controllers
         /// Obtiene un listado de todos los perfiles del sistema.
         /// </summary>
         /// <returns></returns>
-        //[Autorizar(VistasEnum.GestionarPerfiles)]
         [HttpGet]
+        [Autorizar(VistasEnum.GestionarPerfiles)]
         public List<PerfilesModel> Get()
         {
             List<PerfilesModel> perfiles = perfilesRepo.Get().ToList();
@@ -43,8 +43,8 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        //[Autorizar(VistasEnum.GestionarPerfiles)]
         [HttpPost]
+        [Autorizar(VistasEnum.GestionarPerfiles)]
         public OperationResult Post(PerfilesModel model)
         {
             if (ValidateModel(model))
@@ -82,8 +82,8 @@ namespace WebAPI.Controllers
         /// <param name="idPerfil"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        //[Autorizar(VistasEnum.GestionarPerfiles)]
         [HttpPut]
+        [Autorizar(VistasEnum.GestionarPerfiles)]
         public OperationResult Put(int idPerfil, PerfilesModel model)
         {
             if (ValidateModel(model))
@@ -113,8 +113,8 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="idPerfil"></param>
         /// <returns></returns>
-        //[Autorizar(VistasEnum.GestionarPerfiles)]
         [HttpDelete]
+        [Autorizar(VistasEnum.GestionarPerfiles)]
         public OperationResult Delete(int idPerfil)
         {
             try
@@ -150,6 +150,7 @@ namespace WebAPI.Controllers
         //[Autorizar(VistasEnum.GestionarPerfiles)]
         [HttpGet]
         [Route("GetUsuarios")]
+        [Autorizar(VistasEnum.GestionarPerfiles)]
         public List<UsuariosModel> GetUsuarios(int idPerfil)
         {
             return perfilesRepo.GetUsuarios(idPerfil).ToList();
@@ -164,6 +165,7 @@ namespace WebAPI.Controllers
         //[Autorizar(VistasEnum.GestionarPerfiles)]
         [HttpGet]
         [Route("GetPermisos")]
+        [Autorizar(VistasEnum.GestionarPerfiles)]
         public List<VistasModel> GetPermisos(int idPerfil)
         {
             return perfilesRepo.GetPermisos(idPerfil).ToList();
@@ -173,9 +175,9 @@ namespace WebAPI.Controllers
         /// Obtiene un listado de todas las vistas del sistema.
         /// </summary>
         /// <returns></returns>
-        //[Autorizar(VistasEnum.GestionarPerfiles)]
         [HttpGet]
         [Route("GetVistas")]
+        [Autorizar(VistasEnum.GestionarPerfiles)]
         public List<VistasModel> GetVistas()
         {
             return perfilesRepo.GetVistas().ToList();

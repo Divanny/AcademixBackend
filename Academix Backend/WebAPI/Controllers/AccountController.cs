@@ -67,24 +67,35 @@ namespace WebAPI.Controllers
         [HttpPost]
         public OperationResult Post([FromBody] Credentials credentials)
         {
-            if (ValidateModel(credentials))
+            try
             {
-                Authentication auth = new Authentication();
-                LogInResult result = auth.LogIn(credentials);
-
-                if (result.IsSuccessful)
+                if (ValidateModel(credentials))
                 {
-                    using (var dbc = new AcadmixEntities())
-                    {
-                        var logger = new Data.Common.Logger(dbc);
-                        logger.LogHttpRequest(result.idUsuario, null);
-                    }
-                }
+                    Authentication auth = new Authentication();
+                    LogInResult result = auth.LogIn(credentials);
 
-                return new OperationResult(result.IsSuccessful, result.Message, result.UserValidated, result.Token);
+                    if (result.IsSuccessful)
+                    {
+                        using (var dbc = new AcadmixEntities())
+                        {
+                            var logger = new Data.Common.Logger(dbc);
+                            logger.LogHttpRequest(result.idUsuario, null);
+                        }
+                    }
+
+                    return new OperationResult(result.IsSuccessful, result.Message, result.UserValidated, result.Token);
+                }
+                else
+                    return new OperationResult(false, "Los datos suministrados no son válidos", Validation.Errors);
             }
-            else
-                return new OperationResult(false, "Los datos suministrados no son válidos", Validation.Errors);
+            catch (Exception ex) {
+                using (var dbc = new AcadmixEntities())
+                {
+                    var logger = new Data.Common.Logger(dbc);
+                    logger.LogError(ex);
+                    return new OperationResult(false, "Error al iniciar sesión");
+                }
+            }
         }
 
         /// <summary>

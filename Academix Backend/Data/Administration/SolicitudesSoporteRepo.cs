@@ -28,21 +28,23 @@ namespace Data.Administration
              }),
              (DB, filter) => (from s in DB.Set<SolicitudesSoporte>().Where(filter)
                               join u in DB.Set<Usuarios>() on s.idUsuario equals u.idUsuario
-                              join a in DB.Set<Usuarios>() on s.idAsignadoA equals a.idUsuario
                               join e in DB.Set<EstatusSolicitudesSoporte>() on s.idEstatus equals e.idEstatus
+                              join pc in DB.Set<Usuarios>() on s.idAsignadoA equals pc.idUsuario into usuarioAsignado
+                              from pc in usuarioAsignado.DefaultIfEmpty()
                               select new SolicitudesSoporteModel()
                               {
                                   idSolicitud = s.idSolicitud,
                                   idUsuario = s.idUsuario,
                                   Usuario = u.NombreUsuario,
                                   idAsignadoA = s.idAsignadoA,
-                                  AsignadoA = a.NombreUsuario,
+                                  AsignadoA = (pc != null) ? pc.NombreUsuario : "",
                                   idEstatus = s.idEstatus,
                                   Estatus = e.Nombre,
                                   Mensaje = s.Mensaje,
                                   Respuesta = s.Respuesta,
                                   FechaSolicitud = s.FechaSolicitud,
                                   FechaUltimoEstatus = s.FechaUltimoEstatus,
+                                  Severity = e.Severity
                               })
          )
         { }

@@ -63,9 +63,7 @@ namespace Data.Common
             dbContext.Set<Entity>().Attach(entity);
             dbContext.Set<Entity>().Add(entity);
 
-            SaveChanges();
-            logger.LogHttpRequest(entity);
-            
+            SaveChanges();            
 
             return entity;
         }
@@ -80,7 +78,6 @@ namespace Data.Common
             dbContext.Entry(entity).State = EntityState.Modified;
 
             SaveChanges();
-            logger.LogHttpRequest(model);
         }
         /// <summary>
         /// Edits an item with its id
@@ -93,7 +90,6 @@ namespace Data.Common
             dbContext.Entry(entity).CurrentValues.SetValues(toEntity.Map(model));
 
             SaveChanges();
-            logger.LogHttpRequest(model);
         }
         /// <summary>
         /// Deletes an item
@@ -105,7 +101,6 @@ namespace Data.Common
             dbContext.Entry(entity).State = EntityState.Deleted;
 
             SaveChanges();
-            logger.LogHttpRequest(id);
         }
         /// <summary>
         /// Gets a collection of model type

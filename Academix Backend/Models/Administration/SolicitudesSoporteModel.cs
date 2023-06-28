@@ -21,5 +21,6 @@ namespace Models.Administration
         public int idAsignadoA { get; set; }
         public string AsignadoA { get; set; }
         public string Respuesta { get; set; }
+        public string Severity { get; set; }
     }
 }

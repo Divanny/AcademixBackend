@@ -22,7 +22,7 @@ namespace Data.Common
             LogActividad log = new LogActividad()
             {
                 URL = HttpContext.Current.Request.RawUrl.ToString(),
-                idUsuario = 1,
+                idUsuario = OnlineUser.GetUserId(),
                 Metodo = HttpContext.Current.Request.HttpMethod.ToString(),
                 Fecha = DateTime.Now,
                 Data = data == null ? String.Empty : JsonConvert.SerializeObject(data)

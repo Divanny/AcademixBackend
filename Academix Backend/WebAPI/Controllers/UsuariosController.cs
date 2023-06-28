@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
         public PerfilesRepo perfilesRepo { get; set; }
         public MaestrosRepo maestrosRepo { get; set; }
         public EstudiantesRepo estudiantesRepo { get; set; }
-    
+
         Utilities utilities = new Utilities();
         public UsuariosController()
         {
@@ -43,7 +43,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         // GET api/Usuarios
         [HttpGet]
-        //[Autorizar(AllowAnyProfile = true)]
+        [Autorizar(AllowAnyProfile = true)]
         public List<UsuariosModel> Get()
         {
             return usuariosRepo.Get().ToList();
@@ -56,7 +56,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         // GET api/Usuarios/5
         [HttpGet]
-        //[Autorizar(AllowAnyProfile = true)]
+        [Autorizar(AllowAnyProfile = true)]
         public UsuariosModel Get(int id)
         {
             return usuariosRepo.Get(x => x.idUsuario == id).FirstOrDefault();
@@ -69,7 +69,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         // POST api/Usuarios
         [HttpPost]
-        //[Autorizar(AllowAnyProfile = true)]
+        [Autorizar(VistasEnum.GestionarUsuarios)]
         public OperationResult Post([FromBody] UsuariosModel model)
         {
             if (ValidateModel(model))
@@ -147,7 +147,7 @@ namespace WebAPI.Controllers
                         return new OperationResult(true, "Se creado este usuario satisfactoriamente", created);
 
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         usuariosRepo.LogError(ex);
 
@@ -170,7 +170,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         // PUT api/Usuarios/5
         [HttpPut]
-        //[Autorizar(AllowAnyProfile = true)]
+        [Autorizar(VistasEnum.GestionarUsuarios)]
         public OperationResult Put(int idUsuario, [FromBody] UsuariosModel model)
         {
             if (ValidateModel(model))
@@ -196,7 +196,15 @@ namespace WebAPI.Controllers
                             }
                         }
 
-                        model.PasswordEncrypted = Cipher.Encrypt(model.Password, Properties.Settings.Default.JwtSecret);
+                        if (model.Password == null)
+                        {
+                            model.PasswordEncrypted = usuario.PasswordEncrypted;
+                        }
+                        else
+                        {
+                            model.PasswordEncrypted = Cipher.Encrypt(model.Password, Properties.Settings.Default.JwtSecret);
+                        }
+
                         model.UltimoIngreso = DateTime.Now;
 
                         if (model.idPerfil == (int)PerfilesEnum.Estudiante)
@@ -242,7 +250,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [Route("CambiarContraseña")]
         [HttpPut]
-        //[Autorizar(AllowAnyProfile = true)]
+        [Autorizar(AllowAnyProfile = true)]
         public OperationResult CambiarContraseña(int idUsuario, string password)
         {
             UsuariosModel usuario = usuariosRepo.Get(x => x.idUsuario == idUsuario).FirstOrDefault();
@@ -252,19 +260,17 @@ namespace WebAPI.Controllers
                 return new OperationResult(false, "Este usuario no existe.");
             }
 
-            
-                
-                var PasswordValidation = utilities.ValidarContraseña(password);
+            var PasswordValidation = utilities.ValidarContraseña(password);
 
-                if (!PasswordValidation.Success)
-                {
-                    return PasswordValidation;
-                }
+            if (!PasswordValidation.Success)
+            {
+                return PasswordValidation;
+            }
 
-                usuario.PasswordEncrypted = Cipher.Encrypt(password, Properties.Settings.Default.JwtSecret);
-                usuariosRepo.Edit(usuario, idUsuario);
-                return new OperationResult(true, "La contraseña se ha actualizado satisfactoriamente");
-            
+            usuario.PasswordEncrypted = Cipher.Encrypt(password, Properties.Settings.Default.JwtSecret);
+            usuariosRepo.Edit(usuario, idUsuario);
+            return new OperationResult(true, "La contraseña se ha actualizado satisfactoriamente");
+
 
             return new OperationResult(false, "Los datos ingresados no son válidos");
         }
@@ -276,7 +282,7 @@ namespace WebAPI.Controllers
         // GET api/Usuarios/GetEstadosUsuarios
         [Route("GetEstadosUsuarios")]
         [HttpGet]
-        //[Autorizar(AllowAnyProfile = true)]
+        [Autorizar(AllowAnyProfile = true)]
         public object GetEstadosUsuarios()
         {
             return usuariosRepo.GetEstadosUsuarios();
