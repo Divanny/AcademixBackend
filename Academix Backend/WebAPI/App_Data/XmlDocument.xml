@@ -512,6 +512,26 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.ListadoEstudiantesController.Get">
+            <summary>
+            Obtiene un listado de las Areas registradas.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ListadoEstudiantesController.Get(System.Int32)">
+            <summary>
+            Obtiene un area en específico.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ListadoEstudiantesController.Post(Models.Administration.ListadoEstudiantesModel)">
+            <summary>
+            Agrega una nueva area (se necesita permiso de administrador).
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="T:WebAPI.Controllers.SolicitudSoporteController">
             <summary>
             API para manejar las solicitudes de soporte
@@ -771,6 +791,12 @@
             </summary>
             <param name="idPensum"></param>
             <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PensumController.GetTrimestre">
+            <summary>
+            Obtiene un listado de los Trimestres registrados.
+            </summary>
             <returns></returns>
         </member>
         <member name="T:WebAPI.Controllers.PerfilesController">

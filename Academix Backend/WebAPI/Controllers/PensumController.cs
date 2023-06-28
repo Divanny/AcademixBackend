@@ -17,6 +17,7 @@ namespace WebAPI.Controllers
     {
         PensumRepo pensumRepo = new PensumRepo();
         AsignaturaPensumRepo asignaturaPensumRepo = new AsignaturaPensumRepo();
+        TrimestreRepo trimestreRepo = new TrimestreRepo();  
 
         /// <summary>
         /// Obtiene un listado de los pensum registrados.
@@ -106,11 +107,6 @@ namespace WebAPI.Controllers
                     return new OperationResult(false, "Este pensum no existe.");
                 }
 
-                PensumModel pensumName = pensumRepo.GetByName(model.nombrePensum);
-                if (pensum != null)
-                {
-                        return new OperationResult(false, "Ya existe un pensum con este nombre");
-                }
 
 
 
@@ -158,6 +154,19 @@ namespace WebAPI.Controllers
             {
                 return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
             }
+        }
+
+        /// <summary>
+        /// Obtiene un listado de los Trimestres registrados.
+        /// </summary>
+        /// <returns></returns>
+        // GET api/Pensum
+        [Route("GetTrimestre")]
+        [HttpGet]
+        //[Autorizar(AllowAnyProfile = true)]
+        public List<TrimestreModel> GetTrimestre()
+        {
+            return trimestreRepo.Get().ToList();
         }
     }
 }

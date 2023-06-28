@@ -85,7 +85,7 @@ namespace Data.Administration
             }
 
 
-            bool Disponible = false;
+            bool Disponible = true;
 
             foreach (var item in HorariosProfesor)
             {
