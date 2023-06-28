@@ -1,7 +1,10 @@
-﻿using Models.Common;
+﻿using Data.Entities;
+using Models.Common;
+using Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,5 +47,40 @@ namespace Data.Common
             // Si todos los criterios son satisfechos, entonces la contraseña es segura
             return new OperationResult(true, "La contraseña es segura");
         }
+        //public int GetActualPeriodo()
+        //{
+        //    AcadmixEntities acadmixEntities = new AcadmixEntities();
+        //    var periodo = acadmixEntities.Periodo.Where(x => x.incioPeriodo >= DateTime.Now && x.finPeriodo <= DateTime.Now).FirstOrDefault();
+        //    return periodo.idPeriodo;
+
+
+        //}
+
+        public int ObtenerTrimestreActual()
+        {
+            DateTime fechaActual = DateTime.Now;
+            int mes = fechaActual.Month;
+
+            if (mes >= 2 && mes <= 4)
+            {
+                return (int)PeriodosEnum.febero_abril;
+            }
+            else if (mes >= 5 && mes <= 7)
+            {
+                return (int)PeriodosEnum.mayo_julio;
+            }
+            else if (mes >= 8 && mes <= 10)
+            {
+                return (int)PeriodosEnum.agosto_octubre;
+            }
+            else
+            {
+                return (int)PeriodosEnum.noviembre_enero;
+            }
+        }
+        
+
+
+
     }
 }

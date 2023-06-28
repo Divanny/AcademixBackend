@@ -14,6 +14,7 @@ namespace Models.Administration
         public string descripcion { get; set; }
         public int idCarrera { get; set; }
         public string Carrera { get; set; }
+        public int CantAsignaturas { get; set; }
         public int limiteCreditoTrimestral { get; set; }
         public bool esActivo { get; set; }
     }

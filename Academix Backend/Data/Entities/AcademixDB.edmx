@@ -117,6 +117,7 @@
           <Property Name="idSeccion" Type="int" Nullable="false" />
           <Property Name="idEstudiante" Type="int" Nullable="false" />
           <Property Name="idPeriodo" Type="int" Nullable="false" />
+          <Property Name="anioPeriodo" Type="char" MaxLength="4" Nullable="false" />
         </EntityType>
         <EntityType Name="LogActividad">
           <Key>
@@ -193,8 +194,7 @@
           </Key>
           <Property Name="idPeriodo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="incioPeriodo" Type="date" Nullable="false" />
-          <Property Name="finPeriodo" Type="date" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="Publicacion">
           <Key>
@@ -256,6 +256,7 @@
           </Key>
           <Property Name="idTrimestre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="numeroTrimestre" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Usuarios">
           <Key>
@@ -497,6 +498,7 @@
           <Property Name="idSeccion" Type="Int32" Nullable="false" />
           <Property Name="idEstudiante" Type="Int32" Nullable="false" />
           <Property Name="idPeriodo" Type="Int32" Nullable="false" />
+          <Property Name="anioPeriodo" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="Maestro">
           <Key>
@@ -533,8 +535,7 @@
           </Key>
           <Property Name="idPeriodo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="incioPeriodo" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="finPeriodo" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Publicacion">
           <Key>
@@ -583,6 +584,7 @@
           </Key>
           <Property Name="idTrimestre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="numeroTrimestre" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="EstatusSolicitudesSoporte">
           <Key>
@@ -792,6 +794,7 @@
           <EntitySetMapping Name="Listado_Estudiantes">
             <EntityTypeMapping TypeName="AcadmixModel.Listado_Estudiantes">
               <MappingFragment StoreEntitySet="Listado_Estudiantes">
+                <ScalarProperty Name="anioPeriodo" ColumnName="anioPeriodo" />
                 <ScalarProperty Name="idPeriodo" ColumnName="idPeriodo" />
                 <ScalarProperty Name="idEstudiante" ColumnName="idEstudiante" />
                 <ScalarProperty Name="idSeccion" ColumnName="idSeccion" />
@@ -834,8 +837,7 @@
           <EntitySetMapping Name="Periodo">
             <EntityTypeMapping TypeName="AcadmixModel.Periodo">
               <MappingFragment StoreEntitySet="Periodo">
-                <ScalarProperty Name="finPeriodo" ColumnName="finPeriodo" />
-                <ScalarProperty Name="incioPeriodo" ColumnName="incioPeriodo" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="idPeriodo" ColumnName="idPeriodo" />
               </MappingFragment>
@@ -889,6 +891,7 @@
           <EntitySetMapping Name="Trimestre">
             <EntityTypeMapping TypeName="AcadmixModel.Trimestre">
               <MappingFragment StoreEntitySet="Trimestre">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
                 <ScalarProperty Name="numeroTrimestre" ColumnName="numeroTrimestre" />
                 <ScalarProperty Name="idTrimestre" ColumnName="idTrimestre" />
               </MappingFragment>
