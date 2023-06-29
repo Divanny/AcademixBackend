@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.Administration
 {
-    public class AsignaturasRepo : Repository<Asignatura,AsignaturasModel>
+    public class AsignaturasRepo : Repository<Asignatura, AsignaturasModel>
     {
 
         public AsignaturasRepo(DbContext dbContext = null) : base
@@ -25,25 +25,27 @@ namespace Data.Administration
                 creditos = u.Creditos,
                 idCarrera = u.idCarrera,
                 esActivo = u.esActivo
-                   
-                }),
-                (DB, filter) => (from u in DB.Set<Asignatura>().Where(filter)
-                                 join a in DB.Set<Area>() on u.idArea equals a.idArea
-                                 join c in DB.Set<Carrera>() on u.idCarrera equals c.idCarrera
-                                 select new AsignaturasModel()
-                                 {
-                                     idAsignatura = u.idAsignatura,
-                                     NombreAsignatura = u.nombreAsignatura,
-                                     CodigoAsignatura = u.codigoAsignatura,
-                                     idArea = a.idArea,
-                                     Area = a.nombre,
-                                     Creditos = u.creditos,
-                                     idCarrera = c.idCarrera,
-                                     Carrera = c.nombre,
-                                     esActivo = u.esActivo
-                                 })
-            )
-            { }
+
+            }),
+            (DB, filter) => (from u in DB.Set<Asignatura>().Where(filter)
+                             join a in DB.Set<Area>() on u.idArea equals a.idArea into area
+                             from a in area.DefaultIfEmpty()
+                             join c in DB.Set<Carrera>() on u.idCarrera equals c.idCarrera into carrera
+                             from c in carrera.DefaultIfEmpty()
+                             select new AsignaturasModel()
+                             {
+                                 idAsignatura = u.idAsignatura,
+                                 NombreAsignatura = u.nombreAsignatura,
+                                 CodigoAsignatura = u.codigoAsignatura,
+                                 idArea = a != null ? a.idArea : (int?)null,
+                                 Area = a != null ? a.nombre : null,
+                                 Creditos = u.creditos,
+                                 idCarrera = c != null ? c.idCarrera : (int?)null,
+                                 Carrera = c != null ? c.nombre : null,
+                                 esActivo = u.esActivo
+                             })
+        )
+        { }
         public AsignaturasModel GetByName(string nombreAsignatura)
         {
             return this.Get(x => x.nombreAsignatura == nombreAsignatura).FirstOrDefault();

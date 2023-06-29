@@ -14,6 +14,9 @@ using WebAPI.Infraestructure;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// API para manejar los estudiantes de las diferentes secciones.
+    /// </summary>
     public class ListadoEstudiantesController : ApiBaseController
     {
         ListadoEstudiantesRepo listadoEstudiantesRepo = new ListadoEstudiantesRepo();

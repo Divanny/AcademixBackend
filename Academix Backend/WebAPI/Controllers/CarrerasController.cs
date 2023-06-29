@@ -11,6 +11,9 @@ using WebAPI.Infraestructure;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// API para manejar las carreras.
+    /// </summary>
     [RoutePrefix("api/Carreras")]
     public class CarrerasController : ApiBaseController
     {

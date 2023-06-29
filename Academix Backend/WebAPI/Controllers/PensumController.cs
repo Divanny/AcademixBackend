@@ -12,11 +12,13 @@ using WebAPI.Infraestructure;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// API para manejar todo lo relacionado a los pensum
+    /// </summary>
     [RoutePrefix("api/Pensum")]
     public class PensumController : ApiBaseController
     {
         PensumRepo pensumRepo = new PensumRepo();
-        AsignaturaPensumRepo asignaturaPensumRepo = new AsignaturaPensumRepo();
         TrimestreRepo trimestreRepo = new TrimestreRepo();  
 
         /// <summary>
@@ -128,7 +130,48 @@ namespace WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtiene un listado de asignaturas por trimestre de todos los pensum.
+        /// </summary>
+        /// <returns></returns>
+        [Route("GetAsignaturasPensum")]
+        [HttpGet]
+        public List<AsignaturaPensumModel> GetAsignaturasPensum()
+        {
+            return pensumRepo.GetAsignaturasPensum();
+        }
 
+        /// <summary>
+        /// Obtiene un listado de asignaturas por trimestre un pensum en específico
+        /// </summary>
+        /// <returns></returns>
+        [Route("GetAsignaturasPensum/{idPensum}")]
+        [HttpGet]
+        public List<AsignaturaPensumModel> GetAsignaturasPensum(int idPensum)
+        {
+            return pensumRepo.GetAsignaturasPensum().Where(x => x.idPensum == idPensum).ToList();
+        }
+
+        /// <summary>
+        /// Obtiene un listado de las asignaturas de un trimestre de un pensum en específico
+        /// </summary>
+        /// <param name="idPensum"></param>
+        /// <param name="idTrimestre"></param>
+        /// <returns></returns>
+        [Route("GetAsignaturasTrimestrePensum")]
+        [HttpGet]
+        public List<AsignaturaPensumModel> GetAsignaturasTrimestrePensum(int idPensum, int idTrimestre)
+        {
+            return pensumRepo.GetAsignaturasPensum().Where(x => x.idPensum == idPensum && x.idTrimestre == idTrimestre).ToList();
+        }
+
+        /// <summary>
+        /// Agregar y actualizar las asignaturas de un trimestre de un pensum en específico
+        /// </summary>
+        /// <param name="idPensum"></param>
+        /// <param name="idTrimestre"></param>
+        /// <param name="idAsignaturas"></param>
+        /// <returns></returns>
         [Route("PostAsignaturaPensum")]
         [HttpPost]
         //[Autorizar(AllowAnyProfile = true)]
