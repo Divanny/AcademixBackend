@@ -512,6 +512,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:WebAPI.Controllers.ListadoEstudiantesController">
+            <summary>
+            API para manejar los estudiantes de las diferentes secciones.
+            </summary>
+        </member>
         <member name="M:WebAPI.Controllers.ListadoEstudiantesController.Get">
             <summary>
             Obtiene un listado de las Areas registradas.
@@ -700,6 +705,11 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="T:WebAPI.Controllers.CarrerasController">
+            <summary>
+            API para manejar las carreras.
+            </summary>
+        </member>
         <member name="M:WebAPI.Controllers.CarrerasController.Get">
             <summary>
             Obtiene un listado de las carreras registradas.
@@ -784,6 +794,11 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="T:WebAPI.Controllers.PensumController">
+            <summary>
+            API para manejar todo lo relacionado a los pensum
+            </summary>
+        </member>
         <member name="M:WebAPI.Controllers.PensumController.Get">
             <summary>
             Obtiene un listado de los pensum registrados.
@@ -810,6 +825,35 @@
             </summary>
             <param name="idPensum"></param>
             <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PensumController.GetAsignaturasPensum">
+            <summary>
+            Obtiene un listado de asignaturas por trimestre de todos los pensum.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PensumController.GetAsignaturasPensum(System.Int32)">
+            <summary>
+            Obtiene un listado de asignaturas por trimestre un pensum en específico
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PensumController.GetAsignaturasTrimestrePensum(System.Int32,System.Int32)">
+            <summary>
+            Obtiene un listado de las asignaturas de un trimestre de un pensum en específico
+            </summary>
+            <param name="idPensum"></param>
+            <param name="idTrimestre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PensumController.PostAsignaturaPensum(System.Int32,System.Int32,System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Agregar y actualizar las asignaturas de un trimestre de un pensum en específico
+            </summary>
+            <param name="idPensum"></param>
+            <param name="idTrimestre"></param>
+            <param name="idAsignaturas"></param>
             <returns></returns>
         </member>
         <member name="M:WebAPI.Controllers.PensumController.GetTrimestre">
