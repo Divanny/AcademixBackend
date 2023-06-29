@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
     public class PensumController : ApiBaseController
     {
         PensumRepo pensumRepo = new PensumRepo();
-        AsignaturaPensumRepo asignaturaPensumRepo = new AsignaturaPensumRepo();
+        //AsignaturaPensumRepo asignaturaPensumRepo = new AsignaturaPensumRepo();
         TrimestreRepo trimestreRepo = new TrimestreRepo();  
 
         /// <summary>
