@@ -127,32 +127,28 @@ namespace WebAPI.Controllers
                 return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
             }
         }
+
+
         [Route("PostAsignaturaPensum")]
         [HttpPost]
         //[Autorizar(AllowAnyProfile = true)]
-        public OperationResult PostAsignaturaPensum([FromBody] AsignaturaPensumModel model)
+        public OperationResult PostAsignaturaPensum(int idPensum, int idTrimestre, List<int> idAsignaturas)
         {
-            if (ValidateModel(model))
+            if (idAsignaturas != null)
             {
                 try
                 {
-
-                var created = asignaturaPensumRepo.Add(model);
-                asignaturaPensumRepo.SaveChanges();
-                return new OperationResult(true, "Se ha creado este Asignatura Pensum satisfactoriamente", created);
+                    return pensumRepo.PostAsignaturaPensum(idPensum, idTrimestre, idAsignaturas);
                 }
                 catch (Exception ex)
                 {
-
                     pensumRepo.LogError(ex);
-
                     return new OperationResult(false, "Error en la inserción de datos");
                 }
-
             }
             else
             {
-                return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+                return new OperationResult(false, "No se han enviado las asignaturas");
             }
         }
 

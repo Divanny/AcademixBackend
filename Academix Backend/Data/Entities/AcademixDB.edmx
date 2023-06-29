@@ -20,7 +20,7 @@
             <PropertyRef Name="idAsignatura" />
           </Key>
           <Property Name="idAsignatura" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="nombreAsignatura" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nombreAsignatura" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="codigoAsignatura" Type="varchar" MaxLength="7" Nullable="false" />
           <Property Name="idArea" Type="int" />
           <Property Name="creditos" Type="int" Nullable="false" />
@@ -418,7 +418,7 @@
             <PropertyRef Name="idAsignatura" />
           </Key>
           <Property Name="idAsignatura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombreAsignatura" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nombreAsignatura" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="codigoAsignatura" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
           <Property Name="idArea" Type="Int32" />
           <Property Name="creditos" Type="Int32" Nullable="false" />
