@@ -108,7 +108,11 @@ namespace WebAPI.Controllers
                                 {
                                     return new OperationResult(false, $"El maestro no tiene disponibilidad para el dia {(DiasSemanaEnum)item.idDia} en la hora proporcionada");
                                 }
-                               
+                                if (!seccionAsignaturaRepo.ValidarChoquesdeHoraAula(item.idAula, item.idDia, item.horaDesde, item.horaHasta, 0))
+                                {
+                                    return new OperationResult(false, $"El aula no tiene disponibilidad para el dia {(DiasSemanaEnum)item.idDia} en la hora proporcionada");
+                                }
+
                             }
                             created = seccionAsignaturaRepo.Add(model);
                             seccionAsignaturaRepo.SaveChanges();
@@ -191,6 +195,10 @@ namespace WebAPI.Controllers
                                 if (!seccionAsignaturaRepo.ValidarChoquesdeHora(model.idMaestro, item.idDia, item.horaDesde, item.horaHasta, model.idSeccion))
                                 {
                                     return new OperationResult(false, $"El maestro no tiene disponibilidad para el dia {(DiasSemanaEnum)item.idDia} en la hora proporcionada");
+                                }
+                                if (!seccionAsignaturaRepo.ValidarChoquesdeHoraAula(item.idAula, item.idDia, item.horaDesde, item.horaHasta, model.idSeccion))
+                                {
+                                    return new OperationResult(false, $"El aula no tiene disponibilidad para el dia {(DiasSemanaEnum)item.idDia} en la hora proporcionada");
                                 }
 
                             }

@@ -1,17 +1,20 @@
 ﻿using Data.Common;
 using Data.Entities;
 using Models.Administration;
+using Models.Common;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Data.Administration
 {
-    public class PensumRepo:Repository<Pensum,PensumModel>
+    public class PensumRepo : Repository<Pensum, PensumModel>
     {
+        public AsignaturasRepo asignaturasRepo = new AsignaturasRepo();
         public PensumRepo(DbContext dbContext = null) : base
          (
              dbContext ?? new AcadmixEntities(),
@@ -49,5 +52,63 @@ namespace Data.Administration
             return this.Get(x => x.nombrePensum == nombrePensum).FirstOrDefault();
         }
 
+        //public List<AsignaturaPensumModel> GetAsignaturasPensum() {
+
+
+        //    var asignaturasSet = dbContext.Set<Asignatura_Pensum>().ToList();
+        //    var Trimestres= asignaturasSet.GroupBy(m => m.idTrimestre);
+
+        //    List<AsignaturaPensumModel> asignaturaPensumModels = new List<AsignaturaPensumModel>(); 
+
+        //    if (asignaturasSet != null)
+        //    {
+        //        AsignaturaPensumModel asignaturaModel = new AsignaturaPensumModel();
+        //        foreach(var asignatura in asignaturasSet)
+        //        {
+        //            asignaturaModel.Asignaturas.Add(asignaturasRepo.Get(x => x.idAsignatura == asignatura.idAsignatura).FirstOrDefault();
+        //        }
+        //    }
+
+        //    return asignaturaPensumModels;
+        //}
+
+        public OperationResult PostAsignaturaPensum(int idPensum, int idTrimestre, List<int> idAsignaturas)
+        {
+            var asignaturasSet = dbContext.Set<Asignatura_Pensum>();
+            if (idAsignaturas != null && idAsignaturas.Count() > 0)
+            {
+                var pensum = this.Get(x => x.idPensum == idPensum).FirstOrDefault();
+
+                var asignaturas = asignaturasRepo.Get(x => idAsignaturas.Contains(x.idAsignatura)).ToList();
+                int sumaCreditos = 0;
+
+
+                foreach (var asignatura in asignaturas)
+                {
+                    sumaCreditos += asignatura.Creditos;
+                }
+
+                if (sumaCreditos >= pensum.limiteCreditoTrimestral)
+                {
+                    return new OperationResult(false, "Las asignaturas han excedido la cantidad de límite de créditos trmimestral");
+                }
+
+                asignaturasSet.RemoveRange(asignaturasSet.Where(p => p.idPensum == idPensum && p.idTrimestre == idTrimestre));
+
+                asignaturasSet.AddRange(idAsignaturas.Select(p => new Asignatura_Pensum()
+                {
+                    idPensum = idPensum,
+                    idTrimestre = idTrimestre,
+                    idAsignatura = p
+                }));
+
+                SaveChanges();
+                return new OperationResult(true, "Se han guardado las asignaturas satisfactoriamente");
+            }
+            else
+            {
+                return new OperationResult(false, "No se han enviado las asignaturas");
+            }
+        }
     }
 }

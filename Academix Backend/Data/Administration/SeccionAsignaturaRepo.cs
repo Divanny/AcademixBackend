@@ -22,31 +22,39 @@ namespace Data.Administration
                codigoSeccion = u.codigoSeccion,
                descripcion = u.descripcion,
                idModalidad = u.idModalidad,
-               capacidadMax = u.capacidadMax,   
+               capacidadMax = u.capacidadMax,
                idAsignatura = u.idAsignatura,
                idMaestro = u.idMaestro,
                esActivo = u.esActivo,
            }),
-           (DB, filter) => (from u in DB.Set<Seccion_Asignatura>().Where(filter)
-                            join m in DB.Set<Modalidad>() on u.idModalidad equals m.idModalidad
-                            join a in DB.Set<Asignatura>() on u.idAsignatura equals a.idAsignatura
-                            join p in DB.Set<Maestro>() on u.idMaestro equals p.idMaestro
-                            join s in DB.Set<Usuarios>() on p.idUsuario equals s.idUsuario 
-                            select new SeccionAsignaturaModel()
-                            {
-                                idSeccion = u.idSeccion,
-                                codigoSeccion = u.codigoSeccion,
-                                descripcion = u.descripcion,
-                                idModalidad = u.idModalidad,
-                                Modalidad = m.nombre,
-                                capacidadMax = u.capacidadMax,
-                                idAsignatura = u.idAsignatura,
-                                Asignatura = a.nombreAsignatura,
-                                idMaestro = u.idMaestro,
-                                Maestro = s.Nombres + " " + s.Apellidos,
-                                esActivo = u.esActivo,
+           (DB, filter) => 
+           {
+               SeccionHorarioDetalleRepo seccionHorarioDetalleRepo = new SeccionHorarioDetalleRepo(dbContext);
 
-                            })
+              return( from u in DB.Set<Seccion_Asignatura>().Where(filter)
+               join m in DB.Set<Modalidad>() on u.idModalidad equals m.idModalidad
+               join a in DB.Set<Asignatura>() on u.idAsignatura equals a.idAsignatura
+               join p in DB.Set<Maestro>() on u.idMaestro equals p.idMaestro
+               join s in DB.Set<Usuarios>() on p.idUsuario equals s.idUsuario
+               let detalleHorario = seccionHorarioDetalleRepo.Get(x => x.idSecciom == u.idSeccion)
+               select new SeccionAsignaturaModel()
+               {
+                   idSeccion = u.idSeccion,
+                   codigoSeccion = u.codigoSeccion,
+                   descripcion = u.descripcion,
+                   idModalidad = u.idModalidad,
+                   Modalidad = m.nombre,
+                   capacidadMax = u.capacidadMax,
+                   idAsignatura = u.idAsignatura,
+                   Asignatura = a.nombreAsignatura,
+                   idMaestro = u.idMaestro,
+                   Maestro = s.Nombres + " " + s.Apellidos,
+                   esActivo = u.esActivo,
+                   detalleSeccion = detalleHorario
+
+
+               });
+           }   
        )
         { }
         public IEnumerable<SeccionHorarioDetalleModel> GetHorariosDetalles(int idSeccion)
@@ -65,6 +73,49 @@ namespace Data.Administration
                       horaDesde = u.horaDesde,
                       horaHasta = u.horaHasta,
                    };
+        }
+        public bool ValidarChoquesdeHoraAula(int idAula, int diaId, TimeSpan horaDesde, TimeSpan horaHasta, int idSeccion)
+        {
+            SeccionHorarioDetalleRepo seccionHorarioDetalleRepo = new SeccionHorarioDetalleRepo();
+
+
+            var HorariosProfesor = this.Get()
+                .Where(x => x.idSeccion != idSeccion)
+                .ToList();
+
+            foreach (var detallesItem in HorariosProfesor)
+            {
+                detallesItem.detalleSeccion = seccionHorarioDetalleRepo.Get()
+                .Where(x => x.idSecciom == detallesItem.idSeccion && x.idDia == diaId && x.idAula == idAula).ToList();
+
+            }
+
+
+            bool Disponible = true;
+
+            foreach (var item in HorariosProfesor)
+            {
+                Disponible = !item.detalleSeccion
+                   .Where(x =>
+                   horaDesde == x.horaDesde
+                   || horaHasta == x.horaHasta
+                   || (horaDesde >= x.horaDesde && horaDesde < x.horaHasta)
+                   || (horaHasta > x.horaDesde && horaHasta <= x.horaHasta)
+                   || (horaHasta > x.horaHasta && horaDesde < x.horaDesde)
+
+                  ).Any();
+                if (Disponible == false)
+                {
+                    return Disponible;
+                }
+
+            }
+
+            return Disponible;
+
+
+
+
         }
 
 

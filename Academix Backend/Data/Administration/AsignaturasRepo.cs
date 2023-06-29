@@ -53,5 +53,89 @@ namespace Data.Administration
         {
             return this.Get(x => x.codigoAsignatura == codigoAsignatura).FirstOrDefault();
         }
+
+        public override Asignatura Add(AsignaturasModel model)
+        {
+            using (var trx = dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+
+
+                    Asignatura created = base.Add(model);
+
+                    var detalleSet = dbContext.Set<Dependencia>();
+                    if (model.Dependencias != null && model.Dependencias.Count() > 0)
+                    {
+                        var newDetalleHorario = model.Dependencias.Where(v => v.idAsignatura == model.idAsignatura);
+                        if (newDetalleHorario != null)
+                        {
+                            detalleSet.AddRange(newDetalleHorario.Select(p => new Dependencia()
+                            {
+                                idDependencia = p.idAsignatura,
+                                idAsignatura = p.idAsignatura,
+                                idPrerrequisito = p.idPrerrequisito,
+                            }));
+                            SaveChanges();
+                        }
+                    }
+
+
+
+                    trx.Commit();
+                    return created;
+                }
+                catch (Exception E)
+                {
+                    trx.Rollback();
+                    throw E;
+                }
+            }
+        }
+
+        public override void Edit(AsignaturasModel model)
+        {
+            using (var trx = dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    base.Edit(model, model.idAsignatura);
+
+                    var detalleSet = dbContext.Set<Dependencia>();
+                    if (model.Dependencias != null && model.Dependencias.Count() > 0)
+                    {
+                        detalleSet.RemoveRange(detalleSet.Where(p => p.idAsignatura == model.idAsignatura));
+
+                        var newDetalleHorario = model.Dependencias.Where(v => v.idAsignatura == model.idAsignatura);
+                        if (newDetalleHorario != null)
+                        {
+                            detalleSet.AddRange(newDetalleHorario.Select(p => new Dependencia()
+                            {
+                                idDependencia = p.idAsignatura,
+                                idAsignatura = p.idAsignatura,
+                                idPrerrequisito = p.idPrerrequisito,
+                            }));
+                            SaveChanges();
+                        }
+                    }
+
+                    //if (model.Usuarios != null && model.Usuarios.Count() > 0)
+                    //{
+                    //    var usuariosIds = model.Usuarios.Select(u => u.idUsuario);
+                    //    var usuariosDarPerfil = dbContext.Set<Usuarios>().Where(u => usuariosIds.Contains(u.idUsuario)).ToList();
+                    //    usuariosDarPerfil.ForEach(u => u.idPerfil = model.idPerfil);
+                    //    SaveChanges();
+                    //}
+
+                    trx.Commit();
+                }
+                catch (Exception E)
+                {
+                    trx.Rollback();
+                    throw E;
+                }
+            }
+        }
     }
 }

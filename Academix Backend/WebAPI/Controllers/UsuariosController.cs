@@ -209,19 +209,55 @@ namespace WebAPI.Controllers
 
                         if (model.idPerfil == (int)PerfilesEnum.Estudiante)
                         {
-                            if (!ValidateModel(model.InfoEstudiante))
+                            if (model.InfoEstudiante != null)
                             {
-                                return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+                                if (!ValidateModel(model.InfoEstudiante))
+                                {
+                                    return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+                                }
+                            
+                                var estudiante = estudiantesRepo.Get(x => x.idUsuario == model.idUsuario).FirstOrDefault();
+                            
+                                if (estudiante != null)
+                                {
+                                    estudiantesRepo.Edit(model.InfoEstudiante, model.InfoEstudiante.idEstudiante);
+                                }
+                                else
+                                {
+                                    model.InfoEstudiante.idUsuario = usuario.idUsuario;
+                                    estudiantesRepo.Add(model.InfoEstudiante);
+                                }
+                            } 
+                            else
+                            {
+                                return new OperationResult(false, "Debe especificar la información del estudiante");
                             }
-                            estudiantesRepo.Edit(model.InfoEstudiante, model.InfoEstudiante.idEstudiante);
                         }
                         else if (model.idPerfil == (int)PerfilesEnum.Maestro)
                         {
-                            if (!ValidateModel(model.InfoMaestro))
+                            if (model.InfoMaestro != null)
                             {
-                                return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+                                if (!ValidateModel(model.InfoMaestro))
+                                {
+                                    return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
+                                }
+
+                                var maestro = maestrosRepo.Get(x => x.idUsuario == model.idUsuario).FirstOrDefault();
+
+                                if (maestro != null)
+                                {
+                                    maestrosRepo.Edit(model.InfoMaestro, model.InfoMaestro.idMaestro);
+                                }
+                                else
+                                {
+                                    model.InfoMaestro.idUsuario = usuario.idUsuario;
+                                    maestrosRepo.Add(model.InfoMaestro);
+                                }
                             }
-                            maestrosRepo.Edit(model.InfoMaestro, model.InfoMaestro.idMaestro);
+                            else
+                            {
+                                return new OperationResult(false, "Debe especificar la información del estudiante");
+                            }
                         }
 
                         usuariosRepo.Edit(model, idUsuario);

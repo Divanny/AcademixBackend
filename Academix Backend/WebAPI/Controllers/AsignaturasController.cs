@@ -1,6 +1,7 @@
 ﻿using Data.Administration;
 using Models.Administration;
 using Models.Common;
+using Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,19 +57,33 @@ namespace WebAPI.Controllers
                 try
                 {
 
-                AsignaturasModel asignatura = asignaturasRepo.GetByName(model.NombreAsignatura);
-                if (asignatura != null)
-                {
-                    return new OperationResult(false, "Esta asignatura ya está registrado");
-                }
-                asignatura = asignaturasRepo.GetByCode(model.CodigoAsignatura);
-                if (asignatura != null)
-                {
-                    return new OperationResult(false, "Este codigo de asignatura ya está registrado");
-                }
-                var created = asignaturasRepo.Add(model);
-                asignaturasRepo.SaveChanges();
-                return new OperationResult(true, "Se ha creado esta asignatura satisfactoriamente", created);
+                    AsignaturasModel asignatura = asignaturasRepo.GetByName(model.NombreAsignatura);
+                    if (asignatura != null)
+                    {
+                        return new OperationResult(false, "Esta asignatura ya está registrado");
+                    }
+                    asignatura = asignaturasRepo.GetByCode(model.CodigoAsignatura);
+                    if (asignatura != null)
+                    {
+                        return new OperationResult(false, "Este codigo de asignatura ya está registrado");
+                    }
+
+                    if (model.Dependencias != null)
+                    {
+                        foreach (var item in model.Dependencias)
+                        {
+                            if (item.idAsignatura == item.idPrerrequisito)
+                            {
+                                return new OperationResult(false, "No se puede tener de prerequisito la misma asignatura");
+                            } 
+
+                        }
+
+
+                    }
+                    var created = asignaturasRepo.Add(model);
+                    asignaturasRepo.SaveChanges();
+                    return new OperationResult(true, "Se ha creado esta asignatura satisfactoriamente", created);
                 }
                 catch (Exception ex)
                 {
@@ -117,10 +132,23 @@ namespace WebAPI.Controllers
                         return new OperationResult(false, "Esta asignatura ya esta registrada");
                     }
                 }
+                    if (model.Dependencias != null)
+                    {
+                        foreach (var item in model.Dependencias)
+                        {
+                            if (item.idAsignatura == item.idPrerrequisito)
+                            {
+                                return new OperationResult(false, "No se puede tener de prerequisito la misma asignatura");
+                            }
 
-                
+                        }
 
-                asignaturasRepo.Edit(model, idAsignatura);
+
+                    }
+
+
+
+                    asignaturasRepo.Edit(model, idAsignatura);
                 return new OperationResult(true, "Se ha actualizado satisfactoriamente");
                 }
                 catch (Exception ex)
