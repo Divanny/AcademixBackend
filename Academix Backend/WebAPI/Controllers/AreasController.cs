@@ -121,7 +121,7 @@ namespace WebAPI.Controllers
                 catch (Exception ex) 
                 { 
 
-                    areasRepo.LogError(ex);
+                    //areasRepo.LogError(ex);
 
                     return new OperationResult(false, "Error en la inserción de datos");
                 }

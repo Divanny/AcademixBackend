@@ -25,7 +25,7 @@ namespace Data.Administration
 
               }),
               (DB, filter) => (from a in DB.Set<Area>().Where(filter)
-                               join m in DB.Set<Maestro>() on a.idArea equals m.idMaestro
+                               join m in DB.Set<Maestro>() on a.idArea equals m.idArea
                                join u in DB.Set<Usuarios>() on m.idUsuario equals u.idUsuario
                                select new AreasModel()
                                {

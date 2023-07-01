@@ -43,7 +43,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         // GET api/Usuarios
         [HttpGet]
-        [Autorizar(AllowAnyProfile = true)]
+        //[Autorizar(AllowAnyProfile = true)]
         public List<UsuariosModel> Get()
         {
             return usuariosRepo.Get().ToList();
