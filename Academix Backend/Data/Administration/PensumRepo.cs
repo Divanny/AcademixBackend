@@ -15,6 +15,7 @@ namespace Data.Administration
     public class PensumRepo : Repository<Pensum, PensumModel>
     {
         public AsignaturasRepo asignaturasRepo = new AsignaturasRepo();
+        public TrimestreRepo trimestreRepo = new TrimestreRepo();
         public PensumRepo(DbContext dbContext = null) : base
          (
              dbContext ?? new AcadmixEntities(),
@@ -52,25 +53,23 @@ namespace Data.Administration
             return this.Get(x => x.nombrePensum == nombrePensum).FirstOrDefault();
         }
 
-        //public List<AsignaturaPensumModel> GetAsignaturasPensum() {
+        public List<AsignaturaPensumModel> GetAsignaturasPensum()
+        {
+            List<Asignatura_Pensum> asignaturasSet = dbContext.Set<Asignatura_Pensum>().ToList();
 
+            var asignaturasPensumModelList = asignaturasSet
+                .GroupBy(ap => new { ap.idPensum, ap.idTrimestre })
+                .Select(g => new AsignaturaPensumModel
+                {
+                    idPensum = g.Key.idPensum,
+                    idTrimestre = g.Key.idTrimestre,
+                    Trimestre = (trimestreRepo.Get(x => x.idTrimestre == g.Key.idTrimestre).FirstOrDefault()).descripcion, // Puedes personalizar cómo se muestra el trimestre
+                    Asignaturas = g.Select(ap => asignaturasRepo.Get(x => x.idAsignatura == ap.idAsignatura).FirstOrDefault()).ToList()
+                })
+                .ToList();
 
-        //    var asignaturasSet = dbContext.Set<Asignatura_Pensum>().ToList();
-        //    var Trimestres= asignaturasSet.GroupBy(m => m.idTrimestre);
-
-        //    List<AsignaturaPensumModel> asignaturaPensumModels = new List<AsignaturaPensumModel>(); 
-
-        //    if (asignaturasSet != null)
-        //    {
-        //        AsignaturaPensumModel asignaturaModel = new AsignaturaPensumModel();
-        //        foreach(var asignatura in asignaturasSet)
-        //        {
-        //            asignaturaModel.Asignaturas.Add(asignaturasRepo.Get(x => x.idAsignatura == asignatura.idAsignatura).FirstOrDefault();
-        //        }
-        //    }
-
-        //    return asignaturaPensumModels;
-        //}
+            return asignaturasPensumModelList;
+        }
 
         public OperationResult PostAsignaturaPensum(int idPensum, int idTrimestre, List<int> idAsignaturas)
         {
