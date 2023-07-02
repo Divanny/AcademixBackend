@@ -32,7 +32,7 @@ namespace Data.Administration
                                    idArea = a.idArea,
                                    nombre = a.nombre,
                                    descripcion = a.descripcion,
-                                   idEncargado = a.idEncargado,
+                                   idEncargado = m.idMaestro,
                                    Encargado = u.Nombres,
                                    CantCarreras = DB.Set<Carrera>().Count(c => c.idArea == a.idArea),
                                    esActivo = a.esActivo
