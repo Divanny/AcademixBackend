@@ -19,7 +19,7 @@
         <EntityTypeShape EntityType="AcadmixModel.Dependencia" Width="1.5" PointX="8.75" PointY="0.75" />
         <EntityTypeShape EntityType="AcadmixModel.Dia_Semana" Width="1.5" PointX="9.75" PointY="3.75" />
         <EntityTypeShape EntityType="AcadmixModel.Estudiante" Width="1.5" PointX="4.75" PointY="9.75" />
-        <EntityTypeShape EntityType="AcadmixModel.Listado_Estudiantes" Width="1.5" PointX="9.75" PointY="6.75" />
+        <EntityTypeShape EntityType="AcadmixModel.Listado_Estudiantes" Width="1.5" PointX="9.75" PointY="6.875" />
         <EntityTypeShape EntityType="AcadmixModel.Maestro" Width="1.5" PointX="9.75" PointY="9.75" />
         <EntityTypeShape EntityType="AcadmixModel.Modalidad" Width="1.5" PointX="10.75" PointY="0.75" />
         <EntityTypeShape EntityType="AcadmixModel.Pensum" Width="1.5" PointX="0.75" PointY="10.75" />

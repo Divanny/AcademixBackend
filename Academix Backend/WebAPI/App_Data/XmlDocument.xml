@@ -552,11 +552,24 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.ListadoEstudiantesController.GetMisAsignaturasActual">
+            <summary>
+            Obtiene todas las solicitudes realizadas por un usuario
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:WebAPI.Controllers.ListadoEstudiantesController.Post(Models.Administration.ListadoEstudiantesModel)">
             <summary>
             Agrega una nueva area (se necesita permiso de administrador).
             </summary>
             <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ListadoEstudiantesController.Delete(System.Int32)">
+            <summary>
+            Elimina un registro del listado estudiante.
+            </summary>
+            <param name="idPerfil"></param>
             <returns></returns>
         </member>
         <member name="T:WebAPI.Controllers.SolicitudSoporteController">
@@ -948,6 +961,12 @@
             Obtiene una seccion en específico.
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.SeccionAsignaturaController.GetMisSecciones">
+            <summary>
+            Obtiene todas las secciones enlazadas por un usuario
+            </summary>
             <returns></returns>
         </member>
         <member name="M:WebAPI.Controllers.SeccionAsignaturaController.Post(Models.Administration.SeccionAsignaturaModel)">

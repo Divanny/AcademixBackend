@@ -58,6 +58,7 @@
     <Compile Include="Administration\MaestroModel.cs" />
     <Compile Include="Administration\PensumModel.cs" />
     <Compile Include="Administration\PerfilesModel.cs" />
+    <Compile Include="Administration\PublicacionModel.cs" />
     <Compile Include="Administration\SeccionAsignaturaModel.cs" />
     <Compile Include="Administration\SeccionHorarioDetalleModel.cs" />
     <Compile Include="Administration\SolicitudesSoporteModel.cs" />
