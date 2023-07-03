@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Correo Electrónico</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: rgb(245, 245, 245);
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      border: 1px solid rgb(225, 225, 225);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .header h1 {
+      color: rgb(19, 152, 150);
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .header img {
+      width: 100px;
+      height: auto;
+      margin: 20px auto;
+    }
+    
+    .content {
+      padding: 20px;
+      border-top: 1px solid rgb(225, 225, 225);
+      border-bottom: 1px solid rgb(225, 225, 225);
+    }
+    
+    .content p {
+      margin: 0;
+      line-height: 1.5;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      color: rgb(150, 150, 150);
+      font-size: 12px;
+    }
+    
+    .footer p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://i.imgur.com/1POJ7ux.png" alt="Logo de Academix">
+      <h1>{{titulo}}</h1>
+    </div>
+    
+    <div class="content">
+      <p>{{cuerpo}}</p>
+    </div>
+    
+    <div class="footer">
+      <p>Este correo electrónico fue generado automáticamente. Por favor, no responda a este mensaje.</p>
+      <p>© 2023 Academix. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</body>
+</html>

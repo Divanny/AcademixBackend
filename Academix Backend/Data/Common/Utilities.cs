@@ -78,9 +78,17 @@ namespace Data.Common
                 return (int)PeriodosEnum.noviembre_enero;
             }
         }
-        
 
+        public string GenerateRandomPassword(int length)
+        {
+            string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            Random random = new Random();
 
+            string password = new string(Enumerable.Repeat(validChars, length)
+                                                  .Select(s => s[random.Next(s.Length)])
+                                                  .ToArray());
 
+            return password;
+        }
     }
 }
