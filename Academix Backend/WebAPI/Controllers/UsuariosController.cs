@@ -306,9 +306,6 @@ namespace WebAPI.Controllers
             usuario.PasswordEncrypted = Cipher.Encrypt(password, Properties.Settings.Default.JwtSecret);
             usuariosRepo.Edit(usuario, idUsuario);
             return new OperationResult(true, "La contraseña se ha actualizado satisfactoriamente");
-
-
-            return new OperationResult(false, "Los datos ingresados no son válidos");
         }
 
         /// <summary>

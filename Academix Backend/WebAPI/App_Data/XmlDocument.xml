@@ -506,10 +506,32 @@
             <param name="userName"></param>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.AccountController.ValidateUser(System.String)">
+            <summary>
+            Valida que el usuario colocado existe y retorna el correo electrónico parcialmente oculto
+            </summary>
+            <param name="NombreUsuario"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AccountController.ChangePassword(System.String,System.String)">
+            <summary>
+            Cambia la contraseña del usuario automáticamente
+            </summary>
+            <param name="NombreUsuario"></param>
+            <param name="CorreoElectronico"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebAPI.Controllers.AccountController.Put">
             <summary>
             Cierra sesión en el sistema.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AccountController.maskMail(System.String)">
+            <summary>
+            Retorna el correo electrónico parcialmente oculto. Ej: d*****@gmail.com
+            </summary>
+            <param name="email"></param>
             <returns></returns>
         </member>
         <member name="T:WebAPI.Controllers.ListadoEstudiantesController">
