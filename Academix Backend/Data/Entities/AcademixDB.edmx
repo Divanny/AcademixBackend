@@ -117,7 +117,7 @@
           <Property Name="idSeccion" Type="int" Nullable="false" />
           <Property Name="idEstudiante" Type="int" Nullable="false" />
           <Property Name="idPeriodo" Type="int" Nullable="false" />
-          <Property Name="anioPeriodo" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="anioPeriodo" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LogActividad">
           <Key>
@@ -498,7 +498,7 @@
           <Property Name="idSeccion" Type="Int32" Nullable="false" />
           <Property Name="idEstudiante" Type="Int32" Nullable="false" />
           <Property Name="idPeriodo" Type="Int32" Nullable="false" />
-          <Property Name="anioPeriodo" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="anioPeriodo" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Maestro">
           <Key>

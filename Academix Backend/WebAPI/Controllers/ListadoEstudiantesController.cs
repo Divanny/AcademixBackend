@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WebAPI.Infraestructure;
+using OnlineUser = WebAPI.Infraestructure.OnlineUser;
 
 namespace WebAPI.Controllers
 {
@@ -20,6 +21,7 @@ namespace WebAPI.Controllers
     public class ListadoEstudiantesController : ApiBaseController
     {
         ListadoEstudiantesRepo listadoEstudiantesRepo = new ListadoEstudiantesRepo();
+        SeccionAsignaturaRepo seccionAsignaturaRepo = new SeccionAsignaturaRepo();
 
         /// <summary>
         /// Obtiene un listado de las Areas registradas.
@@ -47,6 +49,39 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
+        /// Obtiene todas las solicitudes realizadas por un usuario
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetMisAsignaturasActual")]
+        public List<SeccionAsignaturaModel> GetMisAsignaturasActual()
+        {
+            AcadmixEntities academixEntities = new AcadmixEntities();
+
+            int idUsuario = OnlineUser.GetUserId();
+
+            var idEstudiante = academixEntities.Estudiante
+                           .Where(z => z.idUsuario == idUsuario)
+                           .Select(x => x.idEstudiante)
+                           .FirstOrDefault();
+
+            List<int> ids = academixEntities.Listado_Estudiantes
+                           .Where(z => z.idEstudiante == 9)
+                           .Select(x => x.idSeccion).ToList();
+
+            List<SeccionAsignaturaModel> seccionesEstudiante = new List<SeccionAsignaturaModel>();
+
+
+            foreach (var item in ids)
+            {
+                seccionesEstudiante = seccionAsignaturaRepo.Get(x => x.idMaestro == item).ToList();
+            }               
+
+           
+            return seccionesEstudiante;
+        }
+
+        /// <summary>
         /// Agrega una nueva area (se necesita permiso de administrador).
         /// </summary>
         /// <param name="model"></param>
@@ -64,6 +99,8 @@ namespace WebAPI.Controllers
                     Utilities utilities = new Utilities();
 
                     model.idPeriodo = utilities.ObtenerTrimestreActual();
+                    model.anioPeriodo = DateTime.Now.Year;
+
 
                     ListadoEstudiantesModel lista = listadoEstudiantesRepo.GetByIdSeccion(model.idSeccion,model.idEstudiante,model.anioPeriodo,model.idPeriodo);
                     if (lista != null)
@@ -121,47 +158,40 @@ namespace WebAPI.Controllers
             }
         }
 
-        ///// <summary>
-        ///// Actualiza la información de una area.
-        ///// </summary>
-        ///// <param name="idArea"></param>
-        ///// <param name="model"></param>
-        ///// <returns></returns>
-        //// PUT api/Areas/5
-        //[HttpPut]
-        ////[Autorizar(AllowAnyProfile = true)]
-        //public OperationResult Put(int idListado, [FromBody] ListadoEstudiantesModel model)
-        //{
-        //    if (ValidateModel(model))
-        //    {
-        //        try
-        //        {
-        //            ListadoEstudiantesModel listado = listadoEstudiantesRepo.Get(x => x.idListadoEstudiante == idListado).FirstOrDefault();
+        /// <summary>
+        /// Elimina un registro del listado estudiante.
+        /// </summary>
+        /// <param name="idPerfil"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        //[Autorizar(VistasEnum.GestionarPerfiles)]
+        public OperationResult Delete(int idListadoEstudiante)
+        {
+            try
+            {
 
-        //            if (listado == null)
-        //            {
-        //                return new OperationResult(false, "Esta area no existe.");
-        //            }
+                try
+                {
+
+                    listadoEstudiantesRepo.Delete(idListadoEstudiante);
+                    //perfilesRepo.Log(idPerfil);
+                    return new OperationResult(true, "Se ha eliminado satisfactoriamente");
+                }
+                catch (Exception ex)
+                {
+
+                    
+
+                    return new OperationResult(false, "Error en la inserción de datos");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(false, "No se ha podido eliminar este perfil");
+            }
+        }
 
 
-
-        //            areasRepo.Edit(model, idArea);
-        //            return new OperationResult(true, "Se ha actualizado satisfactoriamente");
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-
-        //            areasRepo.LogError(ex);
-
-        //            return new OperationResult(false, "Error en la inserción de datos");
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        return new OperationResult(false, "Los datos ingresados no son válidos", Validation.Errors);
-        //    }
-        //}
     }
 }

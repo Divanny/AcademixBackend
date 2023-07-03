@@ -18,6 +18,6 @@ namespace Data.Entities
         public int idSeccion { get; set; }
         public int idEstudiante { get; set; }
         public int idPeriodo { get; set; }
-        public string anioPeriodo { get; set; }
+        public int anioPeriodo { get; set; }
     }
 }

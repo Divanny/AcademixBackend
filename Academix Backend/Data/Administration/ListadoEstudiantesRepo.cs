@@ -45,7 +45,7 @@ namespace Data.Administration
          )
         { }
 
-        public ListadoEstudiantesModel GetByIdSeccion(int idSeccion,int idEstudiante, string anioPeriodo, int idPeriodo)
+        public ListadoEstudiantesModel GetByIdSeccion(int idSeccion,int idEstudiante, int anioPeriodo, int idPeriodo)
         {
             return this.Get(x => x.idSeccion == idSeccion && x.idEstudiante == idEstudiante && x.anioPeriodo == anioPeriodo && x.idPeriodo == idPeriodo).FirstOrDefault();
         }
@@ -66,7 +66,7 @@ namespace Data.Administration
             return capacidadMaxima;
         }
 
-        public int CupoActual(int idSeccion, string anioPeriodo, int idPeriodo)
+        public int CupoActual(int idSeccion, int anioPeriodo, int idPeriodo)
         {
             AcadmixEntities academixEntities = new AcadmixEntities();
 
@@ -100,7 +100,7 @@ namespace Data.Administration
         }
 
 
-        public int verificarSeccionRepetida(int idEstudiante, string anioPeriodo, int idPeriodo, int idSeccion)
+        public int verificarSeccionRepetida(int idEstudiante, int anioPeriodo, int idPeriodo, int idSeccion)
         {
             AcadmixEntities academixEntities = new AcadmixEntities();
 
@@ -127,7 +127,7 @@ namespace Data.Administration
             return 0;
 
         }
-        public bool validarChoqueEstudiante(int idEstudiante, string anioPeriodo, int idPeriodo, int diaId, TimeSpan horaDesde, TimeSpan horaHasta)
+        public bool validarChoqueEstudiante(int idEstudiante, int anioPeriodo, int idPeriodo, int diaId, TimeSpan horaDesde, TimeSpan horaHasta)
         {
 
             AcadmixEntities academixEntities = new AcadmixEntities();

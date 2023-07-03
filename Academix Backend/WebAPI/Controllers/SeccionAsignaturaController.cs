@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WebAPI.Infraestructure;
+using OnlineUser = WebAPI.Infraestructure.OnlineUser;
 
 namespace WebAPI.Controllers
 {
@@ -63,6 +64,27 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
+        /// Obtiene todas las secciones enlazadas por un usuario
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetMisSecciones")]
+        public List<SeccionAsignaturaModel> GetMisSecciones()
+        {
+            AcadmixEntities academixEntities = new AcadmixEntities();
+
+            int idUsuario = OnlineUser.GetUserId();
+
+            var idMaestro = academixEntities.Maestro
+                           .Where(z => z.idUsuario == idUsuario)
+                           .Select(x => x.idMaestro)
+                           .FirstOrDefault();
+
+            List<SeccionAsignaturaModel> seccionesMaestro = seccionAsignaturaRepo.Get(x => x.idMaestro == idMaestro).ToList();
+            return seccionesMaestro;
+        }
+
+        /// <summary>
         /// Agrega una nueva seccion (se necesita permiso de administrador).
         /// </summary>
         /// <param name="model"></param>
@@ -98,6 +120,19 @@ namespace WebAPI.Controllers
                     {
                         if (model.detalleSeccion != null)
                         {
+                            AcadmixEntities academixEntities = new AcadmixEntities();
+
+
+                            var infoAsignatura = academixEntities.Asignatura
+                                           .Where(creditos => creditos.idAsignatura == model.idAsignatura)
+                                           .Select(x => new { x.creditos, x.nombreAsignatura } )
+                                           .FirstOrDefault();
+
+                            
+
+                            int diferenciaTotal = 0;
+                            
+
                             foreach (var item in model.detalleSeccion)
                             {
                                 if (item.horaHasta <= item.horaDesde)
@@ -112,6 +147,20 @@ namespace WebAPI.Controllers
                                 {
                                     return new OperationResult(false, $"El aula no tiene disponibilidad para el dia {(DiasSemanaEnum)item.idDia} en la hora proporcionada");
                                 }
+
+                                int diferencia = (int)(item.horaHasta - item.horaDesde).TotalHours;
+                                diferenciaTotal += diferencia;
+
+                                if (diferenciaTotal > infoAsignatura.creditos ) 
+                                {
+                                    return new OperationResult(false, $"No puedes agregar mas horas que la cantidad de creditos que tiene la asignatura {infoAsignatura.nombreAsignatura}");
+                                }
+                                if (diferencia <= infoAsignatura.creditos - 2)
+                                {
+                                    return new OperationResult(false, $"No puedes agregar menos horas que la cantidad de creditos que tiene la asignatura {infoAsignatura.nombreAsignatura}");
+                                }
+
+
 
                             }
                             created = seccionAsignaturaRepo.Add(model);
@@ -186,6 +235,16 @@ namespace WebAPI.Controllers
                     {
                         if (model.detalleSeccion != null)
                         {
+                            AcadmixEntities academixEntities = new AcadmixEntities();
+
+
+                            var infoAsignatura = academixEntities.Asignatura
+                                           .Where(creditos => creditos.idAsignatura == model.idAsignatura)
+                                           .Select(x => new { x.creditos, x.nombreAsignatura })
+                                           .FirstOrDefault();
+
+                            int diferenciaTotal = 0;
+
                             foreach (var item in model.detalleSeccion)
                             {
                                 if (item.horaHasta <= item.horaDesde)
@@ -199,6 +258,17 @@ namespace WebAPI.Controllers
                                 if (!seccionAsignaturaRepo.ValidarChoquesdeHoraAula(item.idAula, item.idDia, item.horaDesde, item.horaHasta, model.idSeccion))
                                 {
                                     return new OperationResult(false, $"El aula no tiene disponibilidad para el dia {(DiasSemanaEnum)item.idDia} en la hora proporcionada");
+                                }
+                                int diferencia = (int)(item.horaHasta - item.horaDesde).TotalHours;
+                                diferenciaTotal += diferencia;
+
+                                if (diferenciaTotal > infoAsignatura.creditos)
+                                {
+                                    return new OperationResult(false, $"No puedes agregar mas horas que la cantidad de creditos que tiene la asignatura {infoAsignatura.nombreAsignatura}");
+                                }
+                                if (diferencia <= infoAsignatura.creditos - 2)
+                                {
+                                    return new OperationResult(false, $"No puedes agregar menos horas que la cantidad de creditos que tiene la asignatura {infoAsignatura.nombreAsignatura}");
                                 }
 
                             }

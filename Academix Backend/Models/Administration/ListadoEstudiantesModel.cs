@@ -16,6 +16,6 @@ namespace Models.Administration
         public string nombreCompleto { get; set; }
         public int idPeriodo { get; set; }
         public string nombrePeriodo { get; set; }
-        public string anioPeriodo { get; set; }
+        public int anioPeriodo { get; set; }
     }
 }
