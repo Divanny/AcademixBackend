@@ -10,6 +10,8 @@ using System.Web.Helpers;
 using WebAPI.Infraestructure;
 using Data.Entities;
 using System.Web.Http;
+using Microsoft.AspNetCore.Mvc.Internal;
+using Data.Common;
 
 namespace WebAPI.Controllers
 {
@@ -116,6 +118,67 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
+        /// Valida que el usuario colocado existe y retorna el correo electrónico parcialmente oculto
+        /// </summary>
+        /// <param name="NombreUsuario"></param>
+        /// <returns></returns>
+        [Route("ValidateUser")]
+        [HttpGet]
+        public OperationResult ValidateUser(string NombreUsuario)
+        {
+            using (UsuariosRepo ur = new UsuariosRepo())
+            {
+                if (NombreUsuario != null)
+                {
+                    var usuario = ur.GetFirst(u => u.NombreUsuario == NombreUsuario);
+
+                    if (usuario != null)
+                    {
+                        return new OperationResult(true, "Se ha encontrado el usuario", new { MaskedMail = maskMail(usuario.CorreoElectronico) });
+                    }
+                }
+                return new OperationResult(false, "Este usuario no existes");
+            };
+        }
+
+        /// <summary>
+        /// Cambia la contraseña del usuario automáticamente
+        /// </summary>
+        /// <param name="NombreUsuario"></param>
+        /// <param name="CorreoElectronico"></param>
+        /// <returns></returns>
+        [Route("ChangePassword")]
+        [HttpPut]
+        public OperationResult ChangePassword(string NombreUsuario, string CorreoElectronico)
+        {
+            Utilities utilities = new Utilities();
+            using (UsuariosRepo ur = new UsuariosRepo())
+            {
+                if (NombreUsuario != null)
+                {
+                    var usuario = ur.GetFirst(u => u.NombreUsuario == NombreUsuario);
+
+
+                    if (CorreoElectronico.Trim() == usuario.CorreoElectronico.Trim())
+                    {
+                        var newPassword = utilities.GenerateRandomPassword(8);
+                        usuario.Password = newPassword;
+                        
+                        Mailing mailing = new Mailing();
+                        string body = $"Estimado <b>{usuario.Nombres + " " + usuario.Apellidos}</b>,<br/><br/>Hemos recibido tu solicitud para restablecer tu contraseña. Entendemos lo importante que es acceder a tu cuenta y estamos aquí para ayudarte.<br/><br/>Hemos generado una nueva contraseña para tu cuenta. A continuación, te proporcionamos tus nuevos datos de inicio de sesión:<br/><br/><b>Nombre de usuario:</b> {usuario.NombreUsuario}<br/><b>Contraseña:</b> {newPassword}<br/><br/>Te recomendamos cambiar tu contraseña tan pronto como accedas a tu cuenta para garantizar la seguridad de tus datos personales.<br/><br/>Si no has solicitado esta recuperación de contraseña, te sugerimos tomar medidas inmediatas para proteger tu cuenta. Ponte en contacto con nuestro equipo de soporte a través de la solicitud de soporte por medio de la web para que podamos asistirte en este proceso.<br/>";
+                        mailing.SendEmail(usuario.CorreoElectronico, "Recuperar contraseña", body, "Recuperar contraseña");
+                        
+                        usuario.PasswordEncrypted = Cipher.Encrypt(newPassword, Properties.Settings.Default.JwtSecret);
+                        ur.Edit(usuario, usuario.idUsuario);
+
+                        return new OperationResult(true, "Se ha enviado un correo electrónico con su nueva contraseña");
+                    }
+                }
+                return new OperationResult(false, "El correo electrónico no coincide");
+            };
+        }
+
+        /// <summary>
         /// Cierra sesión en el sistema.
         /// </summary>
         /// <returns></returns>
@@ -124,6 +187,36 @@ namespace WebAPI.Controllers
         {
             SessionData.Clear();
             return true;
+        }
+
+        /// <summary>
+        /// Retorna el correo electrónico parcialmente oculto. Ej: d*****@gmail.com
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        private string maskMail(string email)
+        {
+            string result = "";
+            bool isAfterArroba = false;
+            if (email != null)
+            {
+                result += email[0];
+
+                for (int i = 1; i < email.Length; i++)
+                {
+                    if (email[i] != '@' && !isAfterArroba)
+                    {
+                        result += '*';
+                    }
+                    else
+                    {
+                        if (!isAfterArroba) isAfterArroba = true;
+
+                        result += email[i];
+                    }
+                }
+            }
+            return result;
         }
     }
 }
