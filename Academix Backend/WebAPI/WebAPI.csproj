@@ -39,6 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>App_Data/XmlDocument.xml</DocumentationFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -353,6 +354,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ListadoEstudiantesController.cs" />
+    <Compile Include="Controllers\PublicacionController.cs" />
     <Compile Include="Controllers\SolicitudSoporteController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\AreasController.cs" />

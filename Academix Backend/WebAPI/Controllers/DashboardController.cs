@@ -91,6 +91,21 @@ namespace WebAPI.Controllers
             return estudiantesDashboard;
         }
 
+        [HttpGet]
+        [Route("Maestro")]
+        [Autorizar(VistasEnum.Inicio)]
+        public EstudiantesDashboardModel Maestro()
+        {
+            int idUsuarioOnline = OnlineUser.GetUserId();
+
+            EstudiantesDashboardModel estudiantesDashboard = new EstudiantesDashboardModel();
+            estudiantesDashboard.InfoEstudiante = estudiantesRepo.Get(x => x.idUsuario == idUsuarioOnline).FirstOrDefault();
+            estudiantesDashboard.InfoUsuario = usuariosRepo.Get(x => x.idUsuario == idUsuarioOnline).FirstOrDefault();
+            estudiantesDashboard.AsignaturasSeleccionadas = new List<AsignaturasModel>();
+
+            return estudiantesDashboard;
+        }
+
         /// <summary>
         /// Obtiene toda la información principal del home de Maestros.
         /// </summary>

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace Data.Administration
            (DB, filter) => 
            {
                SeccionHorarioDetalleRepo seccionHorarioDetalleRepo = new SeccionHorarioDetalleRepo(dbContext);
+
 
               return( from u in DB.Set<Seccion_Asignatura>().Where(filter)
                join m in DB.Set<Modalidad>() on u.idModalidad equals m.idModalidad
@@ -57,6 +59,11 @@ namespace Data.Administration
            }   
        )
         { }
+
+        public SeccionAsignaturaModel GetByCode(int codigoSeccion, int idAsignatura)
+        {
+            return this.Get(x => x.codigoSeccion == codigoSeccion && x.idAsignatura == idAsignatura).FirstOrDefault();
+        }
         public IEnumerable<SeccionHorarioDetalleModel> GetHorariosDetalles(int idSeccion)
         {
             return from u in dbContext.Set<SeccionHorarioDetalle>().Where(u => u.idSecciom == idSeccion )
@@ -256,5 +263,62 @@ namespace Data.Administration
                 }
             }
         }
+
+        public List<SeccionAsignaturaModel> GetMaestroSecciones()
+        {
+            AcadmixEntities academixEntities = new AcadmixEntities();
+
+            //int idUsuario = OnlineUser.GetUserId();
+
+            var idMaestro = academixEntities.Maestro
+                           .Where(z => z.idUsuario == 14)
+                           .Select(x => x.idMaestro)
+                           .FirstOrDefault();
+
+            List<SeccionAsignaturaModel> seccionesMaestro = this.Get(x => x.idMaestro == idMaestro).ToList();
+            return seccionesMaestro;
+        
+        }
+
+        public List<ListadoEstudiantesModel> GetListadoEstudiantes()
+        {
+            AcadmixEntities academixEntities = new AcadmixEntities();
+            ListadoEstudiantesRepo listadoEstudiantesRepo = new ListadoEstudiantesRepo();
+            Utilities utilities = new Utilities();
+
+           
+            int Periodo = utilities.ObtenerTrimestreActual();
+
+
+            List<SeccionAsignaturaModel> seccionesMaestro = this.GetMaestroSecciones();
+
+
+
+            List<ListadoEstudiantesModel> listadoEstudiantes = new List<ListadoEstudiantesModel>();
+            foreach (var item in seccionesMaestro)
+            {
+                var estudiantes = listadoEstudiantesRepo.Get(x => x.idSeccion == item.idSeccion && x.idPeriodo == Periodo && x.anioPeriodo == DateTime.Now.Year).ToList();
+                listadoEstudiantes.AddRange(estudiantes);
+            }
+
+                 var listadoEstudiantesModel = listadoEstudiantes
+                    .GroupBy(x => x.idSeccion)
+                    .SelectMany(g => g.Select(estudiante => new ListadoEstudiantesModel
+                    {
+                        idListadoEstudiante = estudiante.idListadoEstudiante,
+                        idSeccion = estudiante.idSeccion,
+                        codigoSeccion = estudiante.codigoSeccion,
+                        nombreAsignatura = estudiante.nombreAsignatura,
+                        idEstudiante = estudiante.idEstudiante,
+                        idPeriodo = estudiante.idPeriodo,
+                        anioPeriodo = estudiante.anioPeriodo,
+                    }))
+                    .ToList();
+
+
+
+            return listadoEstudiantesModel;
+        }
+
     }
 }
