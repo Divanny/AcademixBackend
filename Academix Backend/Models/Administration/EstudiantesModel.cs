@@ -12,6 +12,7 @@ namespace Models.Administration
         public int idUsuario { get; set; }
         public int idCarrera { get; set; }
         public string Carrera { get; set; }
+        public string Identificacion { get; set; }
         public int trimestresCursados { get; set; }
         public int asignaturasAprobadas { get; set; }
         public int idPensum { get; set; }

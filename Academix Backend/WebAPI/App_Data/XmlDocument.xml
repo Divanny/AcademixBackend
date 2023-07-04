@@ -665,9 +665,60 @@
             API para manejar los diferentes Dashboard
             </summary>
         </member>
+        <member name="P:WebAPI.Controllers.DashboardController.academixEntities">
+            <summary>
+            AcademixEntities
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.DashboardController.usuariosRepo">
+            <summary>
+            UsuariosRepo
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.DashboardController.estudiantesRepo">
+            <summary>
+            EstudiantesRepo
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.DashboardController.maestrosRepo">
+            <summary>
+            MaestrosRepo
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.DashboardController.asignaturasRepo">
+            <summary>
+            AsignaturasRepo
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.DashboardController.carrerasRepo">
+            <summary>
+            CarrerasRepo
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.DashboardController.solicitudesSoporteRepo">
+            <summary>
+            SolicitudesSoporteRepo
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.DashboardController.seccionAsignaturaRepo">
+            <summary>
+            SeccionAsignaturaRepo
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.DashboardController.#ctor">
+            <summary>
+            API Dashboard
+            </summary>
+        </member>
         <member name="M:WebAPI.Controllers.DashboardController.Estudiantes">
             <summary>
             Obtiene toda la información principal del home de Estudiantes.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.DashboardController.Maestros">
+            <summary>
+            Obtiene toda la información principal del home de Maestros.
             </summary>
             <returns></returns>
         </member>

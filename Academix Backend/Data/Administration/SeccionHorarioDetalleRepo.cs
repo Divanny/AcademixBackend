@@ -29,7 +29,7 @@ namespace Data.Administration
                              select new SeccionHorarioDetalleModel()
                              {
                                  idSecciom = u.idSecciom,
-                                 idAula = u.idAula,
+                                 idAula = u.idAula ?? 0,
                                  Aula = a.nombre,
                                  idDia = u.idDia,
                                  Dia = d.dia,

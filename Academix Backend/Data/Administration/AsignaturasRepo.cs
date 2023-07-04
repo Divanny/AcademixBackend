@@ -24,8 +24,9 @@ namespace Data.Administration
                 idArea = u.idArea,
                 creditos = u.Creditos,
                 idCarrera = u.idCarrera,
-                esActivo = u.esActivo
-
+                esActivo = u.esActivo,
+                Icon = u.Icon,
+                Color = u.Color
             }),
             (DB, filter) => (from u in DB.Set<Asignatura>().Where(filter)
                              join a in DB.Set<Area>() on u.idArea equals a.idArea into area
@@ -42,7 +43,9 @@ namespace Data.Administration
                                  Creditos = u.creditos,
                                  idCarrera = c != null ? c.idCarrera : (int?)null,
                                  Carrera = c != null ? c.nombre : null,
-                                 esActivo = u.esActivo
+                                 esActivo = u.esActivo,
+                                 Icon = u.Icon,
+                                 Color = u.Color
                              })
         )
         { }

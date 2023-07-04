@@ -26,6 +26,8 @@
           <Property Name="creditos" Type="int" Nullable="false" />
           <Property Name="idCarrera" Type="int" />
           <Property Name="esActivo" Type="bit" Nullable="false" />
+          <Property Name="Icon" Type="varchar" MaxLength="50" />
+          <Property Name="Color" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Asignatura_Pensum">
           <Key>
@@ -224,7 +226,7 @@
           </Key>
           <Property Name="idSeccionHorario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="idSecciom" Type="int" Nullable="false" />
-          <Property Name="idAula" Type="int" Nullable="false" />
+          <Property Name="idAula" Type="int" />
           <Property Name="idDia" Type="int" Nullable="false" />
           <Property Name="horaDesde" Type="time" Precision="7" Nullable="false" />
           <Property Name="horaHasta" Type="time" Precision="7" Nullable="false" />
@@ -424,6 +426,8 @@
           <Property Name="creditos" Type="Int32" Nullable="false" />
           <Property Name="idCarrera" Type="Int32" />
           <Property Name="esActivo" Type="Boolean" Nullable="false" />
+          <Property Name="Icon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Asignatura_Pensum">
           <Key>
@@ -565,7 +569,7 @@
           </Key>
           <Property Name="idSeccionHorario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="idSecciom" Type="Int32" Nullable="false" />
-          <Property Name="idAula" Type="Int32" Nullable="false" />
+          <Property Name="idAula" Type="Int32" />
           <Property Name="idDia" Type="Int32" Nullable="false" />
           <Property Name="horaDesde" Type="Time" Nullable="false" Precision="7" />
           <Property Name="horaHasta" Type="Time" Nullable="false" Precision="7" />
@@ -709,6 +713,8 @@
           <EntitySetMapping Name="Asignatura">
             <EntityTypeMapping TypeName="AcadmixModel.Asignatura">
               <MappingFragment StoreEntitySet="Asignatura">
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
                 <ScalarProperty Name="esActivo" ColumnName="esActivo" />
                 <ScalarProperty Name="idCarrera" ColumnName="idCarrera" />
                 <ScalarProperty Name="creditos" ColumnName="creditos" />

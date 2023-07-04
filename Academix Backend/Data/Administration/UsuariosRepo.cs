@@ -57,6 +57,7 @@ namespace Data.Administration
                             UltimoIngreso = u.UltimoIngreso,
                             InfoEstudiante = infoEstudiante,
                             InfoMaestro = infoMaestro,
+                            IdentificacionEstudiante = generateIdentificacion(u, infoEstudiante),
                             Telefono = u.Telefono
                         });
             }
@@ -84,5 +85,17 @@ namespace Data.Administration
         {
             return dbContext.Set<EstadosUsuarios>().ToList();
         }
+
+        private static string generateIdentificacion(Usuarios infoUsuario, EstudiantesModel infoEstudiante)
+        {
+            if (infoEstudiante == null)
+            {
+                return "";
+            }
+            string identificacion = "110";
+            identificacion += infoUsuario.idUsuario + infoUsuario.FechaRegistro.Day.ToString() + infoEstudiante.idEstudiante;
+            return identificacion;
+        }
+
     }
 }
