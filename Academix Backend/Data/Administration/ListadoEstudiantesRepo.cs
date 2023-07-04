@@ -45,6 +45,46 @@ namespace Data.Administration
          )
         { }
 
+        public List<Listado_Estudiantes> getListadoByEstudiante()
+        {
+            AcadmixEntities academixEntities = new AcadmixEntities();
+            Utilities utilities = new Utilities();
+
+            //int idUsuario = OnlineUser.GetUserId();
+            int Periodo = utilities.ObtenerTrimestreActual();
+
+
+            var idEstudiante = academixEntities.Estudiante
+                           .Where(z => z.idUsuario == 9)
+                           .Select(x => x.idEstudiante)
+                           .FirstOrDefault();
+
+            List<Listado_Estudiantes> ids = academixEntities.Listado_Estudiantes
+                                                .Where(z => z.idEstudiante == idEstudiante && z.idPeriodo == Periodo && z.anioPeriodo == DateTime.Now.Year).ToList();
+
+            return ids;
+        }
+
+        public List<Listado_Estudiantes> getListadoByEstudianteGeneral()
+        {
+            AcadmixEntities academixEntities = new AcadmixEntities();
+            Utilities utilities = new Utilities();
+
+            int idUsuario = OnlineUser.GetUserId();
+            
+
+
+            var idEstudiante = academixEntities.Estudiante
+                           .Where(z => z.idUsuario == idUsuario)
+                           .Select(x => x.idEstudiante)
+                           .FirstOrDefault();
+
+            List<Listado_Estudiantes> AsignaturasCursadas = academixEntities.Listado_Estudiantes
+                                                .Where(z => z.idEstudiante == idEstudiante).ToList();
+
+            return AsignaturasCursadas;
+        }
+
         public ListadoEstudiantesModel GetByIdSeccion(int idSeccion,int idEstudiante, int anioPeriodo, int idPeriodo)
         {
             return this.Get(x => x.idSeccion == idSeccion && x.idEstudiante == idEstudiante && x.anioPeriodo == anioPeriodo && x.idPeriodo == idPeriodo).FirstOrDefault();
@@ -127,6 +167,44 @@ namespace Data.Administration
             return 0;
 
         }
+
+        public int verificarAprobacionAsignatura(int idEstudiante,  int idSeccion)
+        {
+            AcadmixEntities academixEntities = new AcadmixEntities();
+
+            int AsignaturaComparable = ObtenerIdAsignaturaPorIdSeccion(idSeccion);
+
+            var seccionesActuales = academixEntities.Listado_Estudiantes
+                                        .Where(x => x.idEstudiante == idEstudiante)
+                                        .ToList();
+
+            foreach (var seccionEstudiante in seccionesActuales)
+            {
+                var asignaturaSeccion = academixEntities.Seccion_Asignatura
+                                            .FirstOrDefault(x => x.idSeccion == seccionEstudiante.idSeccion && x.idAsignatura == AsignaturaComparable);
+
+                if (asignaturaSeccion != null)
+                {
+                    var listadoCursado = academixEntities.Listado_Estudiantes
+                                            .Where(x => x.idSeccion == asignaturaSeccion.idSeccion).FirstOrDefault();
+
+                    var PublicacionCursada = academixEntities.Publicacion
+                                                .Where(x => x.idListadoEstudiante == listadoCursado.idListadoEstudiante).FirstOrDefault();
+
+                    if (PublicacionCursada.idCalificacion >= 70)
+                    {
+                        return PublicacionCursada.idCalificacion;
+                    }
+
+                    // Devuelve el ID del registro en la tabla academixEntities.Listado_Estudiantes
+                   
+                }
+            }
+
+            return 0;
+
+        }
+
         public bool validarChoqueEstudiante(int idEstudiante, int anioPeriodo, int idPeriodo, int diaId, TimeSpan horaDesde, TimeSpan horaHasta)
         {
 

@@ -68,20 +68,20 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("GetMisSecciones")]
-        public List<SeccionAsignaturaModel> GetMisSecciones()
+        [Route("GetMisSeccionesMaestro")]
+        public List<SeccionAsignaturaModel> GetMisSeccionesMaestro()
         {
-            AcadmixEntities academixEntities = new AcadmixEntities();
-
-            int idUsuario = OnlineUser.GetUserId();
-
-            var idMaestro = academixEntities.Maestro
-                           .Where(z => z.idUsuario == idUsuario)
-                           .Select(x => x.idMaestro)
-                           .FirstOrDefault();
-
-            List<SeccionAsignaturaModel> seccionesMaestro = seccionAsignaturaRepo.Get(x => x.idMaestro == idMaestro).ToList();
+            List<SeccionAsignaturaModel> seccionesMaestro = seccionAsignaturaRepo.GetMaestroSecciones();
             return seccionesMaestro;
+
+        }
+
+        [HttpGet]
+        [Route("listadoEstudianteMaestro")]
+        public List<ListadoEstudiantesModel> listadoEstudianteMaestro()
+        {
+            List<ListadoEstudiantesModel> listadoEstudiantes = seccionAsignaturaRepo.GetListadoEstudiantes();
+            return listadoEstudiantes;
         }
 
         /// <summary>
@@ -100,6 +100,12 @@ namespace WebAPI.Controllers
                 try
                 {
                     Seccion_Asignatura created;
+                    
+                    SeccionAsignaturaModel seccionCode = seccionAsignaturaRepo.GetByCode(model.codigoSeccion, model.idAsignatura);
+                    if (seccionCode != null)
+                    {
+                        return new OperationResult(false, "Este codigo de seccion ya está registrado");
+                    }
 
 
                     if (model.idModalidad == (int)ModalidadesEnum.Asignaturaasincrónica)

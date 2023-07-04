@@ -90,5 +90,75 @@ namespace Data.Common
 
             return password;
         }
+
+         public string getCalificacionLiteral(int calificacion)
+         {
+            string letra;
+            if (calificacion >= 90)
+            {
+                letra = "A";
+            }
+            else if (calificacion >= 85)
+            {
+                letra = "B+";
+            }
+            else if (calificacion >= 80)
+            {
+                letra = "B";
+            }
+            else if (calificacion >= 75)
+            {
+                letra = "C+";
+            }
+            else if (calificacion >= 70)
+            {
+                letra = "C";
+            }
+            else if (calificacion >= 60)
+            {
+                letra = "D";
+            }
+            else
+            {
+                letra = "F";
+            }
+            return letra;
+         }
+
+        public double ValorDelLiteral(string literal)
+        {
+            double valor = 0;
+
+            switch (literal)
+            {
+                case "A":
+                    valor = 4.0;
+                    break;
+                case "B+":
+                    valor = 3.5;
+                    break;
+                case "B":
+                    valor = 3.0;
+                    break;
+                case "C+":
+                    valor = 2.5;
+                    break;
+                case "C":
+                    valor = 2.0;
+                    break;
+                case "D":
+                    valor = 1.0;
+                    break;
+                case "F":
+                    valor = 0.0;
+                    break;
+                default:
+                    // Valor por defecto si el literal no coincide con ningún caso
+                    break;
+            }
+
+            return valor;
+        }
+
     }
 }

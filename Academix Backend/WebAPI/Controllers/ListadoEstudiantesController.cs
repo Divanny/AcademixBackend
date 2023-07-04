@@ -54,30 +54,22 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetMisAsignaturasActual")]
-        public List<SeccionAsignaturaModel> GetMisAsignaturasActual()
+        public List<SeccionAsignaturaModel> GetMiSeleccionActual()
         {
-            AcadmixEntities academixEntities = new AcadmixEntities();
+            List<Listado_Estudiantes> ids = listadoEstudiantesRepo.getListadoByEstudiante();
 
-            int idUsuario = OnlineUser.GetUserId();
 
-            var idEstudiante = academixEntities.Estudiante
-                           .Where(z => z.idUsuario == idUsuario)
-                           .Select(x => x.idEstudiante)
-                           .FirstOrDefault();
-
-            List<int> ids = academixEntities.Listado_Estudiantes
-                           .Where(z => z.idEstudiante == 9)
-                           .Select(x => x.idSeccion).ToList();
 
             List<SeccionAsignaturaModel> seccionesEstudiante = new List<SeccionAsignaturaModel>();
-
+            
 
             foreach (var item in ids)
             {
-                seccionesEstudiante = seccionAsignaturaRepo.Get(x => x.idMaestro == item).ToList();
-            }               
+                var seccion = seccionAsignaturaRepo.Get(x => x.idSeccion == item.idSeccion).ToList();
+                seccionesEstudiante.AddRange(seccion);
+            }
 
-           
+
             return seccionesEstudiante;
         }
 
@@ -98,11 +90,29 @@ namespace WebAPI.Controllers
                     AcadmixEntities academixEntities = new AcadmixEntities();
                     Utilities utilities = new Utilities();
 
+
+
+                    int idUsuario = OnlineUser.GetUserId();
+
+                    var idEstudiante = academixEntities.Estudiante
+                                   .Where(z => z.idUsuario == 9)
+                                   .Select(x => x.idEstudiante)
+                                   .FirstOrDefault();
+
+                    model.idEstudiante = idEstudiante;
+
                     model.idPeriodo = utilities.ObtenerTrimestreActual();
                     model.anioPeriodo = DateTime.Now.Year;
 
+                    //Validar que el estudiante no seleccione una asignatura aprobada
+                    int asignaturaAprobada = listadoEstudiantesRepo.verificarAprobacionAsignatura(model.idEstudiante, model.idSeccion);
+                    if (asignaturaAprobada != 0)
+                    {
+                        //No permitir al usuario seleccionar una asignatura aprobada
+                        return new OperationResult(false, "Ya aprobaste esta asignatura antes");
+                    }
 
-                    ListadoEstudiantesModel lista = listadoEstudiantesRepo.GetByIdSeccion(model.idSeccion,model.idEstudiante,model.anioPeriodo,model.idPeriodo);
+                    ListadoEstudiantesModel lista = listadoEstudiantesRepo.GetByIdSeccion(model.idSeccion, model.idEstudiante, model.anioPeriodo, model.idPeriodo);
                     if (lista != null)
                     {
                         return new OperationResult(false, "Ya perteneces a esta seccion");
@@ -111,7 +121,7 @@ namespace WebAPI.Controllers
                     int cupoActual = listadoEstudiantesRepo.CupoActual(model.idSeccion, model.anioPeriodo, model.idPeriodo);
                     int limite = listadoEstudiantesRepo.CapacidadMaxima(model.idSeccion);
 
-                   
+
 
                     if (cupoActual >= limite)
                     {
@@ -121,22 +131,27 @@ namespace WebAPI.Controllers
 
                     foreach (var item in detalle)
                     {
-                        
-                        if (!listadoEstudiantesRepo.validarChoqueEstudiante(model.idEstudiante,model.anioPeriodo,model.idPeriodo, item.idDia, item.horaDesde, item.horaHasta))
+
+                        if (!listadoEstudiantesRepo.validarChoqueEstudiante(model.idEstudiante, model.anioPeriodo, model.idPeriodo, item.idDia, item.horaDesde, item.horaHasta))
                         {
                             return new OperationResult(false, $"El estudiante no tiene disponibilidad para el dia {(DiasSemanaEnum)item.idDia} en la hora proporcionada");
                         }
 
                     }
 
+                   
+
+
+                    //Validar que el estudiante no seleccione una asignatura prerrequisito
+
                     //Esto seria lo ultimo
                     int seccionAsignaturaRepetida = listadoEstudiantesRepo.verificarSeccionRepetida(model.idEstudiante, model.anioPeriodo, model.idPeriodo, model.idSeccion);
 
-                    if(seccionAsignaturaRepetida != 0)
+                    if (seccionAsignaturaRepetida != 0)
                     {
                         //Eliminar el registro de listadoEstudiante
                         listadoEstudiantesRepo.Delete(seccionAsignaturaRepetida);
-                        
+
                     }
 
                     var created = listadoEstudiantesRepo.Add(model);
@@ -180,7 +195,7 @@ namespace WebAPI.Controllers
                 catch (Exception ex)
                 {
 
-                    
+
 
                     return new OperationResult(false, "Error en la inserción de datos");
                 }
@@ -192,6 +207,114 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetMiIndiceTrimestral")]
+        public double GetMiIndiceTrimestral()
+        {
+            AcadmixEntities acadmixEntities = new AcadmixEntities();
+            Utilities utilities = new Utilities();
 
+            List<Listado_Estudiantes> ids = listadoEstudiantesRepo.getListadoByEstudiante();
+            double indiceTrimestal;
+            int sumaCreditos = 0;
+            double sumaPuntos = 0;
+            int creditos;
+
+
+            foreach (var item in ids)
+            {
+                int calificacion = acadmixEntities.Publicacion
+                                .Where(x => x.idListadoEstudiante == item.idListadoEstudiante)
+                                .Select(x => x.idCalificacion).FirstOrDefault();
+
+                
+
+                if (calificacion != null)
+                {
+                    string literal = utilities.getCalificacionLiteral(calificacion);
+
+                    double valorLiteral = utilities.ValorDelLiteral(literal);
+
+                    int idAsignatura = acadmixEntities.Seccion_Asignatura
+                                        .Where(x => x.idSeccion == item.idSeccion)
+                                        .Select(x => x.idAsignatura).FirstOrDefault();
+
+                     creditos = acadmixEntities.Asignatura
+                                        .Where(x => x.idAsignatura == idAsignatura)
+                                        .Select(x => x.creditos).FirstOrDefault();
+
+                    double puntos = creditos * valorLiteral;
+
+                    sumaCreditos += creditos;
+                    sumaPuntos += puntos;
+
+
+
+                }
+
+                
+               
+                
+
+            }
+            indiceTrimestal = sumaPuntos / sumaCreditos;
+            return indiceTrimestal;
+
+        }
+
+        [HttpGet]
+        [Route("GetMiIndiceGeneral")]
+        public double GetMiIndiceGeneral()
+        {
+            AcadmixEntities acadmixEntities = new AcadmixEntities();
+            Utilities utilities = new Utilities();
+
+            List<Listado_Estudiantes> ids = listadoEstudiantesRepo.getListadoByEstudianteGeneral();
+            double indiceTrimestal;
+            int sumaCreditos = 0;
+            double sumaPuntos = 0;
+            int creditos;
+
+
+            foreach (var item in ids)
+            {
+                int calificacion = acadmixEntities.Publicacion
+                                .Where(x => x.idListadoEstudiante == item.idListadoEstudiante)
+                                .Select(x => x.idCalificacion).FirstOrDefault();
+
+
+
+                if (calificacion != null)
+                {
+                    string literal = utilities.getCalificacionLiteral(calificacion);
+
+                    double valorLiteral = utilities.ValorDelLiteral(literal);
+
+                    int idAsignatura = acadmixEntities.Seccion_Asignatura
+                                        .Where(x => x.idSeccion == item.idSeccion)
+                                        .Select(x => x.idAsignatura).FirstOrDefault();
+
+                    creditos = acadmixEntities.Asignatura
+                                       .Where(x => x.idAsignatura == idAsignatura)
+                                       .Select(x => x.creditos).FirstOrDefault();
+
+                    double puntos = creditos * valorLiteral;
+
+                    sumaCreditos += creditos;
+                    sumaPuntos += puntos;
+
+
+
+                }
+
+
+
+
+
+            }
+            indiceTrimestal = sumaPuntos / sumaCreditos;
+            return indiceTrimestal;
+
+        }
     }
 }
