@@ -552,7 +552,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:WebAPI.Controllers.ListadoEstudiantesController.GetMisAsignaturasActual">
+        <member name="M:WebAPI.Controllers.ListadoEstudiantesController.GetMiSeleccionActual">
             <summary>
             Obtiene todas las solicitudes realizadas por un usuario
             </summary>
@@ -570,6 +570,27 @@
             Elimina un registro del listado estudiante.
             </summary>
             <param name="idPerfil"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PublicacionController.Get">
+            <summary>
+            Obtiene un listado de los pensum registrados.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PublicacionController.Post(Models.Administration.ListadoEstudiantesModel,System.Int32)">
+            <summary>
+            Agrega una nueva calificacion (se necesita permiso de administrador).
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.PublicacionController.Put(System.Int32,Models.Administration.PublicacionModel)">
+            <summary>
+            Actualiza la información de un pensum.
+            </summary>
+            <param name="idPublicacion"></param>
+            <param name="model"></param>
             <returns></returns>
         </member>
         <member name="T:WebAPI.Controllers.SolicitudSoporteController">
@@ -963,7 +984,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:WebAPI.Controllers.SeccionAsignaturaController.GetMisSecciones">
+        <member name="M:WebAPI.Controllers.SeccionAsignaturaController.GetMisSeccionesMaestro">
             <summary>
             Obtiene todas las secciones enlazadas por un usuario
             </summary>

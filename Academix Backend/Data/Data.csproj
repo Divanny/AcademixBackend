@@ -64,6 +64,7 @@
     <Compile Include="Administration\CarrerasRepo.cs" />
     <Compile Include="Administration\DependenciasRepo.cs" />
     <Compile Include="Administration\ListadoEstudiantesRepo.cs" />
+    <Compile Include="Administration\PublicacionRepo.cs" />
     <Compile Include="Administration\SolicitudesSoporteRepo.cs" />
     <Compile Include="Administration\EstudiantesRepo.cs" />
     <Compile Include="Administration\MaestrosRepo.cs" />
