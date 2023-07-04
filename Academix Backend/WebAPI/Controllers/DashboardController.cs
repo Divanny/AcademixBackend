@@ -20,13 +20,41 @@ namespace WebAPI.Controllers
     [RoutePrefix("api/Dashboard")]
     public class DashboardController : ApiBaseController
     {
+        /// <summary>
+        /// AcademixEntities
+        /// </summary>
         public AcadmixEntities academixEntities { get; set; }
+        /// <summary>
+        /// UsuariosRepo
+        /// </summary>
         public UsuariosRepo usuariosRepo { get; set; }
+        /// <summary>
+        /// EstudiantesRepo
+        /// </summary>
         public EstudiantesRepo estudiantesRepo { get; set; }
+        /// <summary>
+        /// MaestrosRepo
+        /// </summary>
         public MaestrosRepo maestrosRepo { get; set; }
+        /// <summary>
+        /// AsignaturasRepo
+        /// </summary>
         public AsignaturasRepo asignaturasRepo { get; set; }
+        /// <summary>
+        /// CarrerasRepo
+        /// </summary>
         public CarrerasRepo carrerasRepo { get; set; }
+        /// <summary>
+        /// SolicitudesSoporteRepo
+        /// </summary>
         public SolicitudesSoporteRepo solicitudesSoporteRepo { get; set; }
+        /// <summary>
+        /// SeccionAsignaturaRepo
+        /// </summary>
+        public SeccionAsignaturaRepo seccionAsignaturaRepo { get; set; }
+        /// <summary>
+        /// API Dashboard
+        /// </summary>
         public DashboardController()
         {
             academixEntities = new AcadmixEntities();
@@ -36,6 +64,7 @@ namespace WebAPI.Controllers
             asignaturasRepo = new AsignaturasRepo(academixEntities);
             carrerasRepo = new CarrerasRepo(academixEntities);
             solicitudesSoporteRepo = new SolicitudesSoporteRepo(academixEntities);
+            seccionAsignaturaRepo = new SeccionAsignaturaRepo(academixEntities);
         }
 
         /// <summary>
@@ -52,9 +81,33 @@ namespace WebAPI.Controllers
             EstudiantesDashboardModel estudiantesDashboard = new EstudiantesDashboardModel();
             estudiantesDashboard.InfoEstudiante = estudiantesRepo.Get(x => x.idUsuario == idUsuarioOnline).FirstOrDefault();
             estudiantesDashboard.InfoUsuario = usuariosRepo.Get(x => x.idUsuario == idUsuarioOnline).FirstOrDefault();
-            estudiantesDashboard.AsignaturasSeleccionadas = new List<AsignaturasModel>();
+
+            List<int> ids = academixEntities.Listado_Estudiantes
+                           .Where(z => z.idEstudiante == estudiantesDashboard.InfoEstudiante.idEstudiante)
+                           .Select(x => x.idSeccion).ToList();
+
+            estudiantesDashboard.AsignaturasSeleccionadas = seccionAsignaturaRepo.Get(x => ids.Contains(x.idSeccion)).ToList();
 
             return estudiantesDashboard;
+        }
+
+        /// <summary>
+        /// Obtiene toda la información principal del home de Maestros.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Maestros")]
+        [Autorizar(VistasEnum.Inicio)]
+        public MaestrosDashboardModel Maestros()
+        {
+            int idUsuarioOnline = OnlineUser.GetUserId();
+
+            MaestrosDashboardModel maestrosDashboard = new MaestrosDashboardModel();
+            maestrosDashboard.InfoMaestro = maestrosRepo.Get(x => x.idUsuario == idUsuarioOnline).FirstOrDefault();
+            maestrosDashboard.InfoUsuario = usuariosRepo.Get(x => x.idUsuario == idUsuarioOnline).FirstOrDefault();
+            maestrosDashboard.Secciones = seccionAsignaturaRepo.Get(x => x.idMaestro == maestrosDashboard.InfoMaestro.idMaestro).ToList();
+
+            return maestrosDashboard;
         }
 
         /// <summary>
