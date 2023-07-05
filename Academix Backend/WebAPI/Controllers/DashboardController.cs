@@ -11,6 +11,8 @@ using Swashbuckle.Swagger;
 using Models.Common;
 using System.Globalization;
 using Models.Enums;
+using Data.Common;
+using OnlineUser = WebAPI.Infraestructure.OnlineUser;
 
 namespace WebAPI.Controllers
 {
@@ -80,6 +82,11 @@ namespace WebAPI.Controllers
 
             EstudiantesDashboardModel estudiantesDashboard = new EstudiantesDashboardModel();
             estudiantesDashboard.InfoEstudiante = estudiantesRepo.Get(x => x.idUsuario == idUsuarioOnline).FirstOrDefault();
+            estudiantesDashboard.InfoEstudiante.IndiceTrimestral = GetMiIndiceTrimestral();
+            estudiantesDashboard.InfoEstudiante.IndiceGeneral = GetMiIndiceGeneral();
+            estudiantesDashboard.InfoEstudiante.CreditosAprobados = GetCreditosAprobados();
+            estudiantesDashboard.InfoEstudiante.CreditosTotales = GetCreditosTotales(estudiantesDashboard.InfoEstudiante.idPensum);
+            estudiantesDashboard.InfoEstudiante.HonorAcademico = GetMiHonorAcademico();
             estudiantesDashboard.InfoUsuario = usuariosRepo.Get(x => x.idUsuario == idUsuarioOnline).FirstOrDefault();
 
             List<int> ids = academixEntities.Listado_Estudiantes
@@ -88,20 +95,37 @@ namespace WebAPI.Controllers
 
             estudiantesDashboard.AsignaturasSeleccionadas = seccionAsignaturaRepo.Get(x => ids.Contains(x.idSeccion)).ToList();
 
-            return estudiantesDashboard;
-        }
+            Utilities utilities = new Utilities();
+            var trimestreActual = utilities.ObtenerTrimestreActual();
+            string PeriodoDesde = "", PeriodoHasta = "", PeriodoAño = "";
+            if (trimestreActual == (int)PeriodosEnum.febero_abril)
+            {
+                PeriodoDesde = "Febrero";
+                PeriodoHasta = "Abril";
+                PeriodoAño =  DateTime.Now.Year.ToString();
+            }
+            else if (trimestreActual == (int)PeriodosEnum.mayo_julio)
+            {
+                PeriodoDesde = "Mayo";
+                PeriodoHasta = "Julio";
+                PeriodoAño = DateTime.Now.Year.ToString();
+            }
+            else if (trimestreActual == (int)PeriodosEnum.agosto_octubre)
+            {
+                PeriodoDesde = "Agosto";
+                PeriodoHasta = "Octubre";
+                PeriodoAño =  DateTime.Now.Year.ToString();
+            }
+            else if (trimestreActual == (int)PeriodosEnum.noviembre_enero)
+            {
+                PeriodoDesde = "Noviembre";
+                PeriodoHasta = "Enero";
+                PeriodoAño = DateTime.Now.Year.ToString();
+            }
 
-        [HttpGet]
-        [Route("Maestro")]
-        [Autorizar(VistasEnum.Inicio)]
-        public EstudiantesDashboardModel Maestro()
-        {
-            int idUsuarioOnline = OnlineUser.GetUserId();
-
-            EstudiantesDashboardModel estudiantesDashboard = new EstudiantesDashboardModel();
-            estudiantesDashboard.InfoEstudiante = estudiantesRepo.Get(x => x.idUsuario == idUsuarioOnline).FirstOrDefault();
-            estudiantesDashboard.InfoUsuario = usuariosRepo.Get(x => x.idUsuario == idUsuarioOnline).FirstOrDefault();
-            estudiantesDashboard.AsignaturasSeleccionadas = new List<AsignaturasModel>();
+            estudiantesDashboard.PeriodoDesde = PeriodoDesde;
+            estudiantesDashboard.PeriodoDesde = PeriodoHasta;
+            estudiantesDashboard.PeriodoAño = PeriodoAño;
 
             return estudiantesDashboard;
         }
@@ -186,6 +210,186 @@ namespace WebAPI.Controllers
             administradorDashboard.GraficaSolicitudesSoporte = solicitudesPorMes;
 
             return administradorDashboard;
+        }
+
+        /// <summary>
+        /// Obtiene el indice trimestral del Estudiante
+        /// </summary>
+        /// <returns></returns>
+        private double GetMiIndiceTrimestral()
+        {
+            using (AcadmixEntities dbc = new AcadmixEntities())
+            {
+                ListadoEstudiantesRepo listadoEstudiantesRepo = new ListadoEstudiantesRepo(dbc);
+                Utilities utilities = new Utilities();
+
+                List<Listado_Estudiantes> ids = listadoEstudiantesRepo.getListadoByEstudiante();
+                double indiceTrimestal = 0, sumaPuntos = 0;
+                int sumaCreditos = 0, creditos = 0;
+
+                foreach (var item in ids)
+                {
+                    int calificacion = dbc.Publicacion
+                                    .Where(x => x.idListadoEstudiante == item.idListadoEstudiante)
+                                    .Select(x => x.idCalificacion).FirstOrDefault();
+
+                    if (calificacion != 0)
+                    {
+                        string literal = utilities.getCalificacionLiteral(calificacion);
+
+                        double valorLiteral = utilities.ValorDelLiteral(literal);
+
+                        int idAsignatura = dbc.Seccion_Asignatura
+                                            .Where(x => x.idSeccion == item.idSeccion)
+                                            .Select(x => x.idAsignatura).FirstOrDefault();
+
+                        creditos = dbc.Asignatura
+                                           .Where(x => x.idAsignatura == idAsignatura)
+                                           .Select(x => x.creditos).FirstOrDefault();
+
+                        double puntos = creditos * valorLiteral;
+
+                        sumaCreditos += creditos;
+                        sumaPuntos += puntos;
+                    }
+                }
+                indiceTrimestal = sumaPuntos / sumaCreditos;
+                return indiceTrimestal;
+            }
+        }
+        /// <summary>
+        /// Obtiene el indice general del Estudiante
+        /// </summary>
+        /// <returns></returns>
+        private double GetMiIndiceGeneral()
+        {
+            using (AcadmixEntities dbc = new AcadmixEntities())
+            {
+                ListadoEstudiantesRepo listadoEstudiantesRepo = new ListadoEstudiantesRepo(dbc);
+                Utilities utilities = new Utilities();
+
+                List<Listado_Estudiantes> ids = listadoEstudiantesRepo.getListadoByEstudianteGeneral();
+                double indiceTrimestal, sumaPuntos = 0;
+                int sumaCreditos = 0, creditos;
+
+                foreach (var item in ids)
+                {
+                    int calificacion = dbc.Publicacion
+                                    .Where(x => x.idListadoEstudiante == item.idListadoEstudiante)
+                                    .Select(x => x.idCalificacion).FirstOrDefault();
+
+                    if (calificacion != 0)
+                    {
+                        string literal = utilities.getCalificacionLiteral(calificacion);
+
+                        double valorLiteral = utilities.ValorDelLiteral(literal);
+
+                        int idAsignatura = dbc.Seccion_Asignatura
+                                            .Where(x => x.idSeccion == item.idSeccion)
+                                            .Select(x => x.idAsignatura).FirstOrDefault();
+
+                        creditos = dbc.Asignatura
+                                           .Where(x => x.idAsignatura == idAsignatura)
+                                           .Select(x => x.creditos).FirstOrDefault();
+
+                        double puntos = creditos * valorLiteral;
+
+                        sumaCreditos += creditos;
+                        sumaPuntos += puntos;
+                    }
+                }
+                indiceTrimestal = sumaPuntos / sumaCreditos;
+                return indiceTrimestal;
+            }
+        }
+
+        /// <summary>
+        /// Get creditos aprobados del Estudiante
+        /// </summary>
+        /// <returns></returns>
+        private int GetCreditosAprobados()
+        {
+            using (AcadmixEntities dbc = new AcadmixEntities())
+            {
+                ListadoEstudiantesRepo listadoEstudiantesRepo = new ListadoEstudiantesRepo(dbc);
+                Utilities utilities = new Utilities();
+
+                List<Listado_Estudiantes> ids = listadoEstudiantesRepo.getListadoByEstudianteGeneral();
+                int sumaCreditos = 0, creditos;
+
+                foreach (var item in ids)
+                {
+                    int calificacion = dbc.Publicacion
+                                    .Where(x => x.idListadoEstudiante == item.idListadoEstudiante)
+                                    .Select(x => x.idCalificacion).FirstOrDefault();
+
+                    if (calificacion != 0)
+                    {
+                        int idAsignatura = dbc.Seccion_Asignatura
+                                            .Where(x => x.idSeccion == item.idSeccion)
+                                            .Select(x => x.idAsignatura).FirstOrDefault();
+
+                        creditos = dbc.Asignatura
+                                           .Where(x => x.idAsignatura == idAsignatura)
+                                           .Select(x => x.creditos).FirstOrDefault();
+
+                        sumaCreditos += creditos;
+                    }
+                }
+                return sumaCreditos;
+            }
+        }
+
+        /// <summary>
+        /// Get creditos aprobados del Estudiante
+        /// </summary>
+        /// <returns></returns>
+        private int GetCreditosTotales(int idPensum)
+        {
+            using (AcadmixEntities dbc = new AcadmixEntities())
+            {
+                int sumaCreditosTotales = 0;
+
+                List<int> idsAsignaturas = academixEntities.Asignatura_Pensum
+                           .Where(z => z.idPensum == idPensum)
+                           .Select(x => x.idAsignatura).ToList();
+
+                sumaCreditosTotales = asignaturasRepo.Get(x => idsAsignaturas.Contains(x.idAsignatura)).Sum(x => x.Creditos);
+
+                return sumaCreditosTotales;
+            }
+        }
+
+        /// <summary>
+        /// Get el honor académico del Estudiante
+        /// </summary>
+        /// <returns></returns>
+        private string GetMiHonorAcademico()
+        {
+            using (AcadmixEntities dbc = new AcadmixEntities())
+            {
+                ListadoEstudiantesRepo listadoEstudiantesRepo = new ListadoEstudiantesRepo(dbc);
+                double indiceGeneral = GetMiIndiceGeneral();
+                string HonorAcademico = "";
+
+                if (indiceGeneral >= 3.8)
+                {
+                    HonorAcademico = "Summa Cum Laude";
+                }
+                else if (indiceGeneral >= 3.6)
+                {
+                    HonorAcademico = "Magna Cum Laude";
+                }
+                else if (indiceGeneral >= 3.4)
+                {
+                    HonorAcademico = "Cum Laude";
+                }
+                else
+                {
+                    HonorAcademico = "N/A";
+                }
+                return HonorAcademico;
+            }
         }
     }
 }

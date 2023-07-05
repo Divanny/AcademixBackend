@@ -353,6 +353,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\RankingController.cs" />
     <Compile Include="Controllers\ListadoEstudiantesController.cs" />
     <Compile Include="Controllers\PublicacionController.cs" />
     <Compile Include="Controllers\SolicitudSoporteController.cs" />
