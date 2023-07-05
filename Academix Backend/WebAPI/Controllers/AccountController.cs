@@ -93,8 +93,6 @@ namespace WebAPI.Controllers
             catch (Exception ex) {
                 using (var dbc = new AcadmixEntities())
                 {
-                    var logger = new Data.Common.Logger(dbc);
-                    logger.LogError(ex);
                     return new OperationResult(false, "Error al iniciar sesión");
                 }
             }

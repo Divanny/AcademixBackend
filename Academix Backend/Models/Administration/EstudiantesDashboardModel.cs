@@ -11,5 +11,9 @@ namespace Models.Administration
         public EstudiantesModel InfoEstudiante { get; set; }
         public UsuariosModel InfoUsuario { get; set; }
         public object AsignaturasSeleccionadas { get; set; }
+        public string PeriodoDesde { get; set; }    
+        public string PeriodoHasta { get; set; }    
+        public string PeriodoAño { get; set; }    
+
     }
 }

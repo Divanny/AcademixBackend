@@ -18,5 +18,7 @@ namespace Models.Administration
         public string Carrera { get; set; }
         public bool esActivo { get; set; }
         public IEnumerable<DependenciasModel> Dependencias { get; set;}
+        public string Icon { get; set; }
+        public string Color { get; set; }
     }
 }

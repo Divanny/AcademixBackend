@@ -33,5 +33,6 @@ namespace Models.Administration
         public string Telefono { get; set; }
         public EstudiantesModel InfoEstudiante { get ; set; }
         public MaestroModel InfoMaestro { get ; set; }
+        public string IdentificacionEstudiante { get; set; }
     }
 }

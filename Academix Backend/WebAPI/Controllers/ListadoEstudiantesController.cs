@@ -216,11 +216,8 @@ namespace WebAPI.Controllers
             Utilities utilities = new Utilities();
 
             List<Listado_Estudiantes> ids = listadoEstudiantesRepo.getListadoByEstudiante();
-            double indiceTrimestal;
-            int sumaCreditos = 0;
-            double sumaPuntos = 0;
-            int creditos;
-
+            double indiceTrimestal, sumaPuntos = 0;
+            int sumaCreditos = 0, creditos;
 
             foreach (var item in ids)
             {
@@ -228,9 +225,7 @@ namespace WebAPI.Controllers
                                 .Where(x => x.idListadoEstudiante == item.idListadoEstudiante)
                                 .Select(x => x.idCalificacion).FirstOrDefault();
 
-                
-
-                if (calificacion != null)
+                if (calificacion != 0)
                 {
                     string literal = utilities.getCalificacionLiteral(calificacion);
 
@@ -248,19 +243,10 @@ namespace WebAPI.Controllers
 
                     sumaCreditos += creditos;
                     sumaPuntos += puntos;
-
-
-
                 }
-
-                
-               
-                
-
             }
             indiceTrimestal = sumaPuntos / sumaCreditos;
             return indiceTrimestal;
-
         }
 
         [HttpGet]

@@ -75,7 +75,7 @@ namespace Data.Administration
                    {
                       idSecciom = u.idSecciom,
                       idSeccionHorario = u.idSeccionHorario,
-                      idAula = u.idAula,
+                      idAula = u.idAula ?? 0,
                       Aula = a.nombre,
                       idDia = u.idDia,
                       Dia = d.dia,
