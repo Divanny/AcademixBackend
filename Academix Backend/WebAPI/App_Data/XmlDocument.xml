@@ -534,6 +534,32 @@
             <param name="email"></param>
             <returns></returns>
         </member>
+        <member name="T:WebAPI.Controllers.RankingController">
+            <summary>
+            API para manejar el ranking de estudiante
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.RankingController.academixEntities">
+            <summary>
+            AcademixEntities
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.RankingController.usuariosRepo">
+            <summary>
+            UsuariosRepo
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.RankingController.#ctor">
+            <summary>
+            API Dashboard
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.RankingController.Get">
+            <summary>
+            Get ranking de estudiantes
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:WebAPI.Controllers.ListadoEstudiantesController">
             <summary>
             API para manejar los estudiantes de las diferentes secciones.
@@ -725,6 +751,36 @@
         <member name="M:WebAPI.Controllers.DashboardController.Administrador">
             <summary>
             Obtiene toda la información principal del home de Administradores.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.DashboardController.GetMiIndiceTrimestral">
+            <summary>
+            Obtiene el indice trimestral del Estudiante
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.DashboardController.GetMiIndiceGeneral">
+            <summary>
+            Obtiene el indice general del Estudiante
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.DashboardController.GetCreditosAprobados">
+            <summary>
+            Get creditos aprobados del Estudiante
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.DashboardController.GetCreditosTotales(System.Int32)">
+            <summary>
+            Get creditos aprobados del Estudiante
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.DashboardController.GetMiHonorAcademico">
+            <summary>
+            Get el honor académico del Estudiante
             </summary>
             <returns></returns>
         </member>
