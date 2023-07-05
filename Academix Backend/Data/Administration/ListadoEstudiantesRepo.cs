@@ -254,5 +254,135 @@ namespace Data.Administration
 
             
         }
+
+        public double GetMiIndiceGeneral()
+        {
+            AcadmixEntities acadmixEntities = new AcadmixEntities();
+            Utilities utilities = new Utilities();
+
+            List<Listado_Estudiantes> ids = this.getListadoByEstudianteGeneral();
+            double indiceTrimestal;
+            int sumaCreditos = 0;
+            double sumaPuntos = 0;
+            int creditos;
+
+
+            foreach (var item in ids)
+            {
+                int calificacion = acadmixEntities.Publicacion
+                                .Where(x => x.idListadoEstudiante == item.idListadoEstudiante)
+                                .Select(x => x.idCalificacion).FirstOrDefault();
+
+
+
+                if (calificacion != null)
+                {
+                    string literal = utilities.getCalificacionLiteral(calificacion);
+
+                    double valorLiteral = utilities.ValorDelLiteral(literal);
+
+                    int idAsignatura = acadmixEntities.Seccion_Asignatura
+                                        .Where(x => x.idSeccion == item.idSeccion)
+                                        .Select(x => x.idAsignatura).FirstOrDefault();
+
+                    creditos = acadmixEntities.Asignatura
+                                       .Where(x => x.idAsignatura == idAsignatura)
+                                       .Select(x => x.creditos).FirstOrDefault();
+
+                    double puntos = creditos * valorLiteral;
+
+                    sumaCreditos += creditos;
+                    sumaPuntos += puntos;
+
+
+
+                }
+
+
+
+
+
+            }
+            indiceTrimestal = sumaPuntos / sumaCreditos;
+            return indiceTrimestal;
+        }
+
+        public int verificarAprobacionPrerrequisitos(int idEstudiante, int idSeccion)
+        {
+            AcadmixEntities academixEntities = new AcadmixEntities();
+            SeccionAsignaturaRepo seccionAsignaturaRepo = new SeccionAsignaturaRepo();
+
+            int AsignaturaComparable = ObtenerIdAsignaturaPorIdSeccion(idSeccion);
+
+            var prerrequisito = academixEntities.Dependencia
+                                    .Where(x => x.idAsignatura == AsignaturaComparable)
+                                    .Select(x => x.idPrerrequisito).ToList();
+
+            var conteoPrerrequisito = academixEntities.Dependencia
+                                    .Where(x => x.idAsignatura == AsignaturaComparable)
+                                    .Count();
+
+            int conteoSeccionesActuales = 0;
+            var seccionesActuales= new List<int>();
+
+            if (conteoPrerrequisito > 0)
+            {
+                foreach (var item in prerrequisito)
+                {
+                    var seccionesPrerrequisito = academixEntities.Seccion_Asignatura
+                                                .Where(x => x.idAsignatura == item).ToList();
+
+                    foreach (var x in seccionesPrerrequisito)
+                    {
+                         seccionesActuales = academixEntities.Listado_Estudiantes
+                                           .Where(y => y.idEstudiante == idEstudiante && y.idSeccion == x.idSeccion)
+                                           .Select(z => z.idListadoEstudiante)
+                                           .ToList();
+
+                        conteoSeccionesActuales = seccionesActuales.Count();
+
+                    }
+
+
+                }
+                if (conteoSeccionesActuales < conteoPrerrequisito)
+                {
+                    return 1;
+                }
+                else
+                {
+                    bool tieneCalificacionMenor70 = false;
+
+                    foreach (var item in seccionesActuales)
+                    {
+                        var PublicacionCursada = academixEntities.Publicacion
+                                                    .Where(x => x.idListadoEstudiante == item)
+                                                    .FirstOrDefault();
+
+                        if (PublicacionCursada.idCalificacion < 70)
+                        {
+                            tieneCalificacionMenor70 = true;
+                            break; // Salir del bucle si se encuentra una calificación menor a 70
+                        }
+                    }
+
+                    if (tieneCalificacionMenor70)
+                    {
+                        return 1;
+                    }
+                    
+
+                }
+
+            }
+            else
+            {
+                return 0;
+            }
+
+            return 0;
+
+        }
+
     }
 }
