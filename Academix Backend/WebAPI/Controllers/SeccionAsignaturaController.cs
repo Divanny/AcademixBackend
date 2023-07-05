@@ -157,18 +157,21 @@ namespace WebAPI.Controllers
                                 int diferencia = (int)(item.horaHasta - item.horaDesde).TotalHours;
                                 diferenciaTotal += diferencia;
 
-                                if (diferenciaTotal > infoAsignatura.creditos ) 
-                                {
-                                    return new OperationResult(false, $"No puedes agregar mas horas que la cantidad de creditos que tiene la asignatura {infoAsignatura.nombreAsignatura}");
-                                }
-                                if (diferencia <= infoAsignatura.creditos - 2)
-                                {
-                                    return new OperationResult(false, $"No puedes agregar menos horas que la cantidad de creditos que tiene la asignatura {infoAsignatura.nombreAsignatura}");
-                                }
+                               
 
 
 
                             }
+
+                            if (diferenciaTotal > infoAsignatura.creditos)
+                            {
+                                return new OperationResult(false, $"No puedes agregar mas horas que la cantidad de creditos que tiene la asignatura {infoAsignatura.nombreAsignatura}");
+                            }
+                            if (diferenciaTotal <= infoAsignatura.creditos - 2)
+                            {
+                                return new OperationResult(false, $"No puedes agregar menos horas que la cantidad de creditos que tiene la asignatura {infoAsignatura.nombreAsignatura}");
+                            }
+
                             created = seccionAsignaturaRepo.Add(model);
                             seccionAsignaturaRepo.SaveChanges();
                             return new OperationResult(true, "Se ha creado la seccion", created);

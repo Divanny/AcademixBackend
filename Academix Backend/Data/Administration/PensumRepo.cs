@@ -89,7 +89,7 @@ namespace Data.Administration
 
                 if (sumaCreditos >= pensum.limiteCreditoTrimestral)
                 {
-                    return new OperationResult(false, "Las asignaturas han excedido la cantidad de límite de créditos trmimestral");
+                    return new OperationResult(false, "Las asignaturas han excedido la cantidad de límite de créditos trimestral");
                 }
 
                 asignaturasSet.RemoveRange(asignaturasSet.Where(p => p.idPensum == idPensum && p.idTrimestre == idTrimestre));

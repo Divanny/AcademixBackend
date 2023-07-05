@@ -49,8 +49,10 @@ namespace Data.Administration
                    capacidadMax = u.capacidadMax,
                    idAsignatura = u.idAsignatura,
                    Asignatura = a.nombreAsignatura,
+                   codigoAsignatura = a.codigoAsignatura,
                    idMaestro = u.idMaestro,
                    Maestro = s.Nombres + " " + s.Apellidos,
+                   creditos = a.creditos,
                    esActivo = u.esActivo,
                    detalleSeccion = detalleHorario
 
@@ -310,6 +312,7 @@ namespace Data.Administration
                         codigoSeccion = estudiante.codigoSeccion,
                         nombreAsignatura = estudiante.nombreAsignatura,
                         idEstudiante = estudiante.idEstudiante,
+                        nombreCompleto = estudiante.nombreCompleto,
                         idPeriodo = estudiante.idPeriodo,
                         anioPeriodo = estudiante.anioPeriodo,
                     }))

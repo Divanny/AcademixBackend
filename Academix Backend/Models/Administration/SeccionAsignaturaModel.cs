@@ -16,8 +16,10 @@ namespace Models.Administration
         public int capacidadMax { get; set; }
         public int idAsignatura { get; set; }
         public string Asignatura { get; set; }
+        public string codigoAsignatura { get; set; }
         public int idMaestro { get; set; }
         public string Maestro { get; set; }
+        public int creditos { get; set; } 
         public bool esActivo { get; set; }
         public IEnumerable <SeccionHorarioDetalleModel> detalleSeccion { get; set; }
     }
