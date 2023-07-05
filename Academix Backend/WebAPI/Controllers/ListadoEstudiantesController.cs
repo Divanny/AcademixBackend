@@ -104,13 +104,7 @@ namespace WebAPI.Controllers
                     model.idPeriodo = utilities.ObtenerTrimestreActual();
                     model.anioPeriodo = DateTime.Now.Year;
 
-                    //Validar que el estudiante no seleccione una asignatura aprobada
-                    int asignaturaAprobada = listadoEstudiantesRepo.verificarAprobacionAsignatura(model.idEstudiante, model.idSeccion);
-                    if (asignaturaAprobada != 0)
-                    {
-                        //No permitir al usuario seleccionar una asignatura aprobada
-                        return new OperationResult(false, "Ya aprobaste esta asignatura antes");
-                    }
+                    
 
                     ListadoEstudiantesModel lista = listadoEstudiantesRepo.GetByIdSeccion(model.idSeccion, model.idEstudiante, model.anioPeriodo, model.idPeriodo);
                     if (lista != null)
@@ -139,10 +133,17 @@ namespace WebAPI.Controllers
 
                     }
 
-                   
+                    //Validar que el estudiante no seleccione una asignatura aprobada
+                    int asignaturaAprobada = listadoEstudiantesRepo.verificarAprobacionAsignatura(model.idEstudiante, model.idSeccion);
+                    if (asignaturaAprobada != 0)
+                    {
+                        //No permitir al usuario seleccionar una asignatura aprobada
+                        return new OperationResult(false, "Ya aprobaste esta asignatura antes");
+                    }
 
 
                     //Validar que el estudiante no seleccione una asignatura prerrequisito
+
 
                     //Esto seria lo ultimo
                     int seccionAsignaturaRepetida = listadoEstudiantesRepo.verificarSeccionRepetida(model.idEstudiante, model.anioPeriodo, model.idPeriodo, model.idSeccion);
@@ -266,54 +267,31 @@ namespace WebAPI.Controllers
         [Route("GetMiIndiceGeneral")]
         public double GetMiIndiceGeneral()
         {
-            AcadmixEntities acadmixEntities = new AcadmixEntities();
-            Utilities utilities = new Utilities();
+            double indiceGeneral = listadoEstudiantesRepo.GetMiIndiceGeneral();
+            return indiceGeneral;
 
-            List<Listado_Estudiantes> ids = listadoEstudiantesRepo.getListadoByEstudianteGeneral();
-            double indiceTrimestal;
-            int sumaCreditos = 0;
-            double sumaPuntos = 0;
-            int creditos;
+        }
 
+        [HttpGet]
+        [Route("GetMiHonorAcademico")]
+        public string GetMiHonorAcademico()
+        {
+            double indiceGeneral = listadoEstudiantesRepo.GetMiIndiceGeneral();
+            string HonorAcademico = "";
 
-            foreach (var item in ids)
+            if (indiceGeneral <= 4.0 && indiceGeneral >= 3.8)
             {
-                int calificacion = acadmixEntities.Publicacion
-                                .Where(x => x.idListadoEstudiante == item.idListadoEstudiante)
-                                .Select(x => x.idCalificacion).FirstOrDefault();
-
-
-
-                if (calificacion != null)
-                {
-                    string literal = utilities.getCalificacionLiteral(calificacion);
-
-                    double valorLiteral = utilities.ValorDelLiteral(literal);
-
-                    int idAsignatura = acadmixEntities.Seccion_Asignatura
-                                        .Where(x => x.idSeccion == item.idSeccion)
-                                        .Select(x => x.idAsignatura).FirstOrDefault();
-
-                    creditos = acadmixEntities.Asignatura
-                                       .Where(x => x.idAsignatura == idAsignatura)
-                                       .Select(x => x.creditos).FirstOrDefault();
-
-                    double puntos = creditos * valorLiteral;
-
-                    sumaCreditos += creditos;
-                    sumaPuntos += puntos;
-
-
-
-                }
-
-
-
-
-
+                HonorAcademico = "Summa Cum Laude";
             }
-            indiceTrimestal = sumaPuntos / sumaCreditos;
-            return indiceTrimestal;
+            if(indiceGeneral < 3.8 && indiceGeneral >= 3.6)
+            {
+                HonorAcademico = "Magna Cum Laude";
+            }
+            if (indiceGeneral < 3.6 && indiceGeneral >= 3.4)
+            {
+                HonorAcademico = "Magna Cum Laude";
+            }
+            return HonorAcademico;
 
         }
     }
