@@ -204,9 +204,22 @@ namespace Data.Administration
                     var PublicacionCursada = academixEntities.Publicacion
                                                 .Where(x => x.idListadoEstudiante == listadoCursado.idListadoEstudiante).FirstOrDefault();
 
-                    if (PublicacionCursada.idCalificacion >= 70)
+
+                    if (PublicacionCursada != null)
                     {
-                        return PublicacionCursada.idCalificacion;
+                        if (PublicacionCursada.idCalificacion >= 70)
+                        {
+                            return PublicacionCursada.idCalificacion;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+
+                    }
+                    else
+                    {
+                        return 0;
                     }
 
                     // Devuelve el ID del registro en la tabla academixEntities.Listado_Estudiantes
