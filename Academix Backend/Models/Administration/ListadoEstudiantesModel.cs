@@ -18,5 +18,7 @@ namespace Models.Administration
         public string nombrePeriodo { get; set; }
         public int anioPeriodo { get; set; }
         public int calificacion { get; set; }
+        public DateTime? fechaPublicacion { get; set; }
+        public int idAsignatura { get; set; }
     }
 }

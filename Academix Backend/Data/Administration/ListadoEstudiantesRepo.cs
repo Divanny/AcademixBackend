@@ -46,13 +46,15 @@ namespace Data.Administration
                                   idListadoEstudiante = u.idListadoEstudiante,
                                   idSeccion = u.idSeccion,
                                   codigoSeccion = m.codigoSeccion,
+                                  idAsignatura = m.idAsignatura,
                                   nombreAsignatura = a.nombreAsignatura,
                                   idEstudiante = u.idEstudiante,
                                   infoUsuario = infoUsuario,
                                   idPeriodo = u.idPeriodo,
                                   nombrePeriodo = p.nombre,
                                   anioPeriodo = u.anioPeriodo,
-                                  calificacion = n != null ? n.idCalificacion : 0
+                                  calificacion = n != null ? n.idCalificacion : 0,
+                                  fechaPublicacion = n != null ? n.fechaPublicacion : DateTime.Now
                               });
              }
          )

@@ -534,6 +534,42 @@
             <param name="email"></param>
             <returns></returns>
         </member>
+        <member name="T:WebAPI.Controllers.HistoricoAcademicoController">
+            <summary>
+            API para ver el HistoricoAcademico del estudiante
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.HistoricoAcademicoController.academixEntities">
+            <summary>
+            AcademixEntities
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.HistoricoAcademicoController.usuariosRepo">
+            <summary>
+            UsuariosRepo
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.HistoricoAcademicoController.seccionAsignaturaRepo">
+            <summary>
+            SeccionAsignaturaRepo
+            </summary>
+        </member>
+        <member name="P:WebAPI.Controllers.HistoricoAcademicoController.listadoEstudianteRepo">
+            <summary>
+            ListadoEstudianteRepo
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.HistoricoAcademicoController.#ctor">
+            <summary>
+            API Dashboard
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.HistoricoAcademicoController.Get">
+            <summary>
+            Obtiene el HistoricoAcademico del estudiante
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:WebAPI.Controllers.RankingController">
             <summary>
             API para manejar el ranking de estudiante
