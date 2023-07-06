@@ -9,7 +9,7 @@ namespace Models.Enums
     public enum PerfilesEnum
     {
         Administrador = 1,
-        Maestro = 2,
+        Maestro = 7,
         Estudiante = 3
     }
 }
