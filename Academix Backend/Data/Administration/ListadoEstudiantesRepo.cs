@@ -5,12 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Data.Administration
 {
-    public class ListadoEstudiantesRepo:Repository<Listado_Estudiantes,ListadoEstudiantesModel>
+    public class ListadoEstudiantesRepo : Repository<Listado_Estudiantes, ListadoEstudiantesModel>
     {
         public ListadoEstudiantesRepo(DbContext dbContext = null) : base
          (
@@ -24,24 +25,35 @@ namespace Data.Administration
                  anioPeriodo = u.anioPeriodo
 
              }),
-             (DB, filter) => (from u in DB.Set<Listado_Estudiantes>().Where(filter)
+             (DB, filter) =>
+             {
+                 UsuariosRepo usuariosRepo = new UsuariosRepo(dbContext);
+
+
+                 return (
+
+                              from u in DB.Set<Listado_Estudiantes>().Where(filter)
                               join m in DB.Set<Seccion_Asignatura>() on u.idSeccion equals m.idSeccion
                               join a in DB.Set<Asignatura>() on m.idAsignatura equals a.idAsignatura
                               join e in DB.Set<Estudiante>() on u.idEstudiante equals e.idEstudiante
-                              join s in DB.Set<Usuarios>() on e.idUsuario equals s.idUsuario    
+                              join s in DB.Set<Usuarios>() on e.idUsuario equals s.idUsuario
                               join p in DB.Set<Periodo>() on u.idPeriodo equals p.idPeriodo
+                              join n in DB.Set<Publicacion>() on u.idListadoEstudiante equals n.idListadoEstudiante
+                              let infoUsuario = usuariosRepo.Get(x => x.idUsuario == e.idUsuario).FirstOrDefault()
                               select new ListadoEstudiantesModel()
                               {
                                   idListadoEstudiante = u.idListadoEstudiante,
                                   idSeccion = u.idSeccion,
-                                  codigoSeccion = m.codigoSeccion,  
+                                  codigoSeccion = m.codigoSeccion,
                                   nombreAsignatura = a.nombreAsignatura,
                                   idEstudiante = u.idEstudiante,
-                                  nombreCompleto = s.Nombres + " " + s.Apellidos,
+                                  infoUsuario = infoUsuario,
                                   idPeriodo = u.idPeriodo,
                                   nombrePeriodo = p.nombre,
-                                  anioPeriodo = u.anioPeriodo
-                              })
+                                  anioPeriodo = u.anioPeriodo,
+                                  calificacion = n.idCalificacion
+                              });
+             }
          )
         { }
 
@@ -71,7 +83,7 @@ namespace Data.Administration
             Utilities utilities = new Utilities();
 
             int idUsuario = OnlineUser.GetUserId();
-            
+
 
 
             var idEstudiante = academixEntities.Estudiante
@@ -85,7 +97,7 @@ namespace Data.Administration
             return AsignaturasCursadas;
         }
 
-        public ListadoEstudiantesModel GetByIdSeccion(int idSeccion,int idEstudiante, int anioPeriodo, int idPeriodo)
+        public ListadoEstudiantesModel GetByIdSeccion(int idSeccion, int idEstudiante, int anioPeriodo, int idPeriodo)
         {
             return this.Get(x => x.idSeccion == idSeccion && x.idEstudiante == idEstudiante && x.anioPeriodo == anioPeriodo && x.idPeriodo == idPeriodo).FirstOrDefault();
         }
@@ -168,7 +180,7 @@ namespace Data.Administration
 
         }
 
-        public int verificarAprobacionAsignatura(int idEstudiante,  int idSeccion)
+        public int verificarAprobacionAsignatura(int idEstudiante, int idSeccion)
         {
             AcadmixEntities academixEntities = new AcadmixEntities();
 
@@ -197,7 +209,7 @@ namespace Data.Administration
                     }
 
                     // Devuelve el ID del registro en la tabla academixEntities.Listado_Estudiantes
-                   
+
                 }
             }
 
@@ -209,7 +221,7 @@ namespace Data.Administration
         {
 
             AcadmixEntities academixEntities = new AcadmixEntities();
-            
+
 
             var seccionesActuales = academixEntities.Listado_Estudiantes
                                         .Where(x => x.idEstudiante == idEstudiante && x.anioPeriodo == anioPeriodo && x.idPeriodo == idPeriodo)
@@ -243,16 +255,16 @@ namespace Data.Administration
                 }
             }
 
-            
 
-           
+
+
 
             return Disponible;
 
 
 
 
-            
+
         }
 
         public double GetMiIndiceGeneral()
@@ -323,7 +335,7 @@ namespace Data.Administration
                                     .Count();
 
             int conteoSeccionesActuales = 0;
-            var seccionesActuales= new List<int>();
+            var seccionesActuales = new List<int>();
 
             if (conteoPrerrequisito > 0)
             {
@@ -334,10 +346,10 @@ namespace Data.Administration
 
                     foreach (var x in seccionesPrerrequisito)
                     {
-                         seccionesActuales = academixEntities.Listado_Estudiantes
-                                           .Where(y => y.idEstudiante == idEstudiante && y.idSeccion == x.idSeccion)
-                                           .Select(z => z.idListadoEstudiante)
-                                           .ToList();
+                        seccionesActuales = academixEntities.Listado_Estudiantes
+                                          .Where(y => y.idEstudiante == idEstudiante && y.idSeccion == x.idSeccion)
+                                          .Select(z => z.idListadoEstudiante)
+                                          .ToList();
 
                         conteoSeccionesActuales = seccionesActuales.Count();
 
@@ -370,7 +382,7 @@ namespace Data.Administration
                     {
                         return 1;
                     }
-                    
+
 
                 }
 

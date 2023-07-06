@@ -38,28 +38,37 @@ namespace WebAPI.Controllers
         // POST api/Pensum
         [HttpPost]
         //[Autorizar(AllowAnyProfile = true)]
-        public OperationResult Post([FromBody] ListadoEstudiantesModel model, int calificacion)
+        public OperationResult Post(List<ListadoEstudiantesModel> model)
         {
             if (ValidateModel(model))
             {
                 try
                 {
-                    if (calificacion > 100 || calificacion < 0 )
+
+                    foreach (var item in model)
                     {
-                        return new OperationResult(false, "Ingresa una calificacion entre el rango de 0-100");
+                        if (item.calificacion > 100 || item.calificacion < 0)
+                        {
+                            return new OperationResult(false, "Ingresa una calificacion entre el rango de 0-100");
+                        }
                     }
+
+                    return publicacionRepo.PostPublicacionListado(model);
+                    
 
                     PublicacionModel model2 = new PublicacionModel();
 
-                    model2.idListadoEstudiante = model.idListadoEstudiante;
-                    model2.idCalificacion = calificacion;
-                    model2.fechaPublicacion = DateTime.Now;
+                    //model2.idListadoEstudiante = model.idListadoEstudiante;
+                    //model2.idCalificacion = model.calificacion;
+                    //model2.fechaPublicacion = DateTime.Now;
 
-                    PublicacionModel publicacion = publicacionRepo.Get(x => x.idListadoEstudiante == model2.idListadoEstudiante).FirstOrDefault();
-                    if (publicacion != null)
-                    {
-                        return new OperationResult(false, "Ya le pusiste calificacion a este estudiante");
-                    }
+                   //VALIDAR LA INSERCION DE NOTAS VARIAS VECES O CAMBIAR CON PUT?????
+
+                    //PublicacionModel publicacion = publicacionRepo.Get(x => x.idListadoEstudiante == model2.idListadoEstudiante).FirstOrDefault();
+                    //if (publicacion != null)
+                    //{
+                    //    return new OperationResult(false, "Ya le pusiste calificacion a este estudiante");
+                    //}
 
                     var created = publicacionRepo.Add(model2);
                     publicacionRepo.SaveChanges();

@@ -22,5 +22,7 @@ namespace Models.Administration
         public int creditos { get; set; } 
         public bool esActivo { get; set; }
         public IEnumerable <SeccionHorarioDetalleModel> detalleSeccion { get; set; }
+        public int cantidadEstudiantes { get; set; }
+        public int calificacion { get; set; }
     }
 }
