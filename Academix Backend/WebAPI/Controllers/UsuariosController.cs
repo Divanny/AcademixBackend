@@ -12,6 +12,7 @@ using System.Web.Helpers;
 using WebAPI.Infraestructure;
 using System.Web.Http;
 using Data.Entities;
+using OnlineUser = WebAPI.Infraestructure.OnlineUser;
 
 namespace WebAPI.Controllers
 {
@@ -287,23 +288,34 @@ namespace WebAPI.Controllers
         [Route("CambiarContraseña")]
         [HttpPut]
         [Autorizar(AllowAnyProfile = true)]
-        public OperationResult CambiarContraseña(int idUsuario, string password)
+        public OperationResult CambiarContraseña(string AntPassword, string NewPassword, string ConfirmPassword)
         {
+            int idUsuario = OnlineUser.GetUserId();
             UsuariosModel usuario = usuariosRepo.Get(x => x.idUsuario == idUsuario).FirstOrDefault();
+
+            if (AntPassword != Cipher.Decrypt(usuario.Password, Properties.Settings.Default.JwtSecret))
+            {
+                return new OperationResult(false, "La contraseña actual no coincide");
+            }
+
+            if (NewPassword != ConfirmPassword)
+            {
+                return new OperationResult(false, "La contraseña nueva no coincide con la confirmación");
+            }
 
             if (usuario == null)
             {
                 return new OperationResult(false, "Este usuario no existe.");
             }
 
-            var PasswordValidation = utilities.ValidarContraseña(password);
+            var PasswordValidation = utilities.ValidarContraseña(NewPassword);
 
             if (!PasswordValidation.Success)
             {
                 return PasswordValidation;
             }
 
-            usuario.PasswordEncrypted = Cipher.Encrypt(password, Properties.Settings.Default.JwtSecret);
+            usuario.PasswordEncrypted = Cipher.Encrypt(NewPassword, Properties.Settings.Default.JwtSecret);
             usuariosRepo.Edit(usuario, idUsuario);
             return new OperationResult(true, "La contraseña se ha actualizado satisfactoriamente");
         }
