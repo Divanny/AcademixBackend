@@ -77,10 +77,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("listadoEstudianteMaestro")]
-        public List<ListadoEstudiantesModel> listadoEstudianteMaestro(int idSeccion)
+        [Route("ListadoEstudianteMaestro/{idSeccion}")]
+        public List<ListadoEstudiantesModel> ListadoEstudianteMaestro(int idSeccion)
         {
-            List<ListadoEstudiantesModel> listadoEstudiantes = seccionAsignaturaRepo.GetListadoEstudiantes(idSeccion);
+            List<ListadoEstudiantesModel> listadoEstudiantes = seccionAsignaturaRepo.GetListadoEstudiantes(idSeccion, OnlineUser.GetUserId());
             return listadoEstudiantes;
         }
 

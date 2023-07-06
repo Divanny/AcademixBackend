@@ -1145,12 +1145,13 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:WebAPI.Controllers.UsuariosController.CambiarContraseña(System.Int32,System.String)">
+        <member name="M:WebAPI.Controllers.UsuariosController.ChangePassword(Models.Administration.CambiarContraseñaModel)">
             <summary>
             Cambia la contraseña de un usuario
             </summary>
-            <param name="idUsuario"></param>
-            <param name="password"></param>
+            <param name="AntPassword"></param>
+            <param name="NewPassword"></param>
+            <param name="ConfirmPassword"></param>
             <returns></returns>
         </member>
         <member name="M:WebAPI.Controllers.UsuariosController.GetEstadosUsuarios">

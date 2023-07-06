@@ -25,8 +25,8 @@ namespace WebAPI.Controllers
         /// Obtiene un listado de todos las solicitudes de soporte no atendidas.
         /// </summary>
         /// <returns></returns>
-        //[Autorizar(VistasEnum.GestionarPerfiles)]
         [HttpGet]
+        [Autorizar(VistasEnum.GestionarPerfiles)]
         public List<SolicitudesSoporteModel> Get()
         {
             List<SolicitudesSoporteModel> solicitudesSoportes = solicitudesSoporteRepo.Get().ToList();
@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         // GET api/SolicitudesSoporte/5
         [HttpGet]
-        //[Autorizar(AllowAnyProfile = true)]
+        [Autorizar(AllowAnyProfile = true)]
         public SolicitudesSoporteModel Get(int id)
         {
             return solicitudesSoporteRepo.Get(x => x.idSolicitud == id).FirstOrDefault();
@@ -52,6 +52,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetMisSolicitudes")]
+        [Autorizar(AllowAnyProfile = true)]
         public List<SolicitudesSoporteModel> GetMisSolicitudes()
         {
             List<SolicitudesSoporteModel> solicitudesSoportes = solicitudesSoporteRepo.Get(x => x.idUsuario == OnlineUser.GetUserId()).ToList();
@@ -64,6 +65,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetBandejaSolicitudes")]
+        [Autorizar(VistasEnum.BandejadeSolicitudes)]
         public List<SolicitudesSoporteModel> GetBandejaSolicitudes()
         {
             List<SolicitudesSoporteModel> solicitudesSoportes = solicitudesSoporteRepo.Get(x => x.idEstatus == (int)EstatusSolicitudSoporteEnum.Enrevisión || x.idEstatus == (int)EstatusSolicitudSoporteEnum.PendienteaRevisión).ToList();
@@ -77,7 +79,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         // POST api/SolicitudesSoporte
         [HttpPost]
-        //[Autorizar(AllowAnyProfile = true)]
+        [Autorizar(AllowAnyProfile = true)]
         public OperationResult Post([FromBody] SolicitudesSoporteModel model)
         {
             if (ValidateModel(model))
@@ -115,24 +117,20 @@ namespace WebAPI.Controllers
         /// <param name="idSolicitud"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        // PUT api/SolicitudesSoporte/5
         [HttpPut]
-        //[Autorizar(AllowAnyProfile = true)]
+        [Autorizar(AllowAnyProfile = true)]
         public OperationResult Put(int idSolicitud, [FromBody] SolicitudesSoporteModel model)
         {
             if (ValidateModel(model))
             {
-
                 try
                 {
-
                     SolicitudesSoporteModel solicitud = solicitudesSoporteRepo.Get(x => x.idSolicitud == idSolicitud).FirstOrDefault();
 
                     if (solicitud == null)
                     {
                         return new OperationResult(false, "Esta solicitud no existe.");
                     }
-
                     solicitudesSoporteRepo.Edit(model, idSolicitud);
                     return new OperationResult(true, "Se ha actualizado satisfactoriamente");
                 }
@@ -140,7 +138,6 @@ namespace WebAPI.Controllers
                 {
 
                     solicitudesSoporteRepo.LogError(ex);
-
                     return new OperationResult(false, "Error en la inserción de datos");
                 }
 
