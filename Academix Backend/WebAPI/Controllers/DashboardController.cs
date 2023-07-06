@@ -54,6 +54,7 @@ namespace WebAPI.Controllers
         /// SeccionAsignaturaRepo
         /// </summary>
         public SeccionAsignaturaRepo seccionAsignaturaRepo { get; set; }
+        
         /// <summary>
         /// API Dashboard
         /// </summary>
@@ -79,6 +80,12 @@ namespace WebAPI.Controllers
         public EstudiantesDashboardModel Estudiantes()
         {
             int idUsuarioOnline = OnlineUser.GetUserId();
+            var idEstudiante = academixEntities.Estudiante
+                           .Where(z => z.idUsuario == idUsuarioOnline)
+                           .Select(x => x.idEstudiante)
+                           .FirstOrDefault();
+            Utilities utilities1 = new Utilities();
+            var periodo = utilities1.ObtenerTrimestreActual();
 
             EstudiantesDashboardModel estudiantesDashboard = new EstudiantesDashboardModel();
             estudiantesDashboard.InfoEstudiante = estudiantesRepo.Get(x => x.idUsuario == idUsuarioOnline).FirstOrDefault();
@@ -94,6 +101,19 @@ namespace WebAPI.Controllers
                            .Select(x => x.idSeccion).ToList();
 
             estudiantesDashboard.AsignaturasSeleccionadas = seccionAsignaturaRepo.Get(x => ids.Contains(x.idSeccion)).ToList();
+
+            foreach(var asignaturaSeleccionada in estudiantesDashboard.AsignaturasSeleccionadas)
+            {
+                var idListadoEstudiante = academixEntities.Listado_Estudiantes
+                                .Where(x => x.idEstudiante == idEstudiante && x.idPeriodo == periodo && x.anioPeriodo == DateTime.Now.Year && x.idSeccion == asignaturaSeleccionada.idSeccion).Select(x => x.idListadoEstudiante).FirstOrDefault();
+
+                var calificacion = academixEntities.Publicacion
+                                    .Where(x => x.idListadoEstudiante == idListadoEstudiante)
+                                    .Select(z => z.idCalificacion).FirstOrDefault();
+
+                int actualPosicion = estudiantesDashboard.AsignaturasSeleccionadas.IndexOf(asignaturaSeleccionada);
+                estudiantesDashboard.AsignaturasSeleccionadas[actualPosicion].calificacion = calificacion;
+            }
 
             Utilities utilities = new Utilities();
             var trimestreActual = utilities.ObtenerTrimestreActual();

@@ -1,6 +1,7 @@
 ﻿using Data.Common;
 using Data.Entities;
 using Models.Administration;
+using Models.Common;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -76,6 +77,35 @@ namespace Data.Administration
             }
             return letra;
         }
-      
+
+        public OperationResult PostPublicacionListado(List<ListadoEstudiantesModel> listados)
+        {
+            var publicacionSet = dbContext.Set<Publicacion>();
+
+            if (listados != null)
+            {
+                foreach(var listado in listados)
+                {
+                    publicacionSet.Remove(publicacionSet.Where(x => x.idListadoEstudiante == listado.idListadoEstudiante).FirstOrDefault());
+
+                    publicacionSet.Add(new Publicacion()
+                    {
+                        idListadoEstudiante = listado.idListadoEstudiante,
+                        fechaPublicacion = DateTime.Now,
+                        idCalificacion = listado.calificacion
+                    });
+                }
+                
+                SaveChanges();
+                return new OperationResult(true, "Se han guardado las publicaciones satisfactoriamente");
+            }
+            else
+            {
+                return new OperationResult(false, "No se han enviado las publicaciones");
+            }
+        }
+
+
+
     }
 }
