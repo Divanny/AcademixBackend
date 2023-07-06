@@ -78,7 +78,7 @@ namespace Data.Administration
                             detalleSet.AddRange(newDetalleHorario.Select(p => new Dependencia()
                             {
                                 idDependencia = p.idAsignatura,
-                                idAsignatura = p.idAsignatura,
+                                idAsignatura = model.idAsignatura,
                                 idPrerrequisito = p.idPrerrequisito,
                             }));
                             SaveChanges();

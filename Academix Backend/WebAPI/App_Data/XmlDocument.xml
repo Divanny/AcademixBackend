@@ -604,7 +604,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:WebAPI.Controllers.PublicacionController.Post(Models.Administration.ListadoEstudiantesModel,System.Int32)">
+        <member name="M:WebAPI.Controllers.PublicacionController.Post(System.Collections.Generic.List{Models.Administration.ListadoEstudiantesModel})">
             <summary>
             Agrega una nueva calificacion (se necesita permiso de administrador).
             </summary>

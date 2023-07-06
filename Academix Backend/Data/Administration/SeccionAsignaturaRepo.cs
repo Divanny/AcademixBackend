@@ -54,7 +54,8 @@ namespace Data.Administration
                    Maestro = s.Nombres + " " + s.Apellidos,
                    creditos = a.creditos,
                    esActivo = u.esActivo,
-                   detalleSeccion = detalleHorario
+                   detalleSeccion = detalleHorario,
+                   cantidadEstudiantes = DB.Set<Listado_Estudiantes>().Count(a => a.idSeccion == u.idSeccion),
 
 
                });
@@ -270,10 +271,10 @@ namespace Data.Administration
         {
             AcadmixEntities academixEntities = new AcadmixEntities();
 
-            //int idUsuario = OnlineUser.GetUserId();
+            int idUsuario = OnlineUser.GetUserId();
 
             var idMaestro = academixEntities.Maestro
-                           .Where(z => z.idUsuario == 14)
+                           .Where(z => z.idUsuario == idUsuario)
                            .Select(x => x.idMaestro)
                            .FirstOrDefault();
 
@@ -282,7 +283,23 @@ namespace Data.Administration
         
         }
 
-        public List<ListadoEstudiantesModel> GetListadoEstudiantes()
+        public List<SeccionAsignaturaModel> GetMaestroSeccionesById(int idSeccion)
+        {
+            AcadmixEntities academixEntities = new AcadmixEntities();
+
+            int idUsuario = OnlineUser.GetUserId();
+
+            var idMaestro = academixEntities.Maestro
+                           .Where(z => z.idUsuario == idUsuario)
+                           .Select(x => x.idMaestro)
+                           .FirstOrDefault();
+
+            List<SeccionAsignaturaModel> seccionesMaestro = this.Get(x => x.idMaestro == idMaestro && x.idSeccion == idSeccion).ToList();
+            return seccionesMaestro;
+
+        }
+
+        public List<ListadoEstudiantesModel> GetListadoEstudiantes(int idSeccion)
         {
             AcadmixEntities academixEntities = new AcadmixEntities();
             ListadoEstudiantesRepo listadoEstudiantesRepo = new ListadoEstudiantesRepo();
@@ -292,7 +309,7 @@ namespace Data.Administration
             int Periodo = utilities.ObtenerTrimestreActual();
 
 
-            List<SeccionAsignaturaModel> seccionesMaestro = this.GetMaestroSecciones();
+            List<SeccionAsignaturaModel> seccionesMaestro = this.GetMaestroSeccionesById(idSeccion);
 
 
 
@@ -312,7 +329,7 @@ namespace Data.Administration
                         codigoSeccion = estudiante.codigoSeccion,
                         nombreAsignatura = estudiante.nombreAsignatura,
                         idEstudiante = estudiante.idEstudiante,
-                        nombreCompleto = estudiante.nombreCompleto,
+                        infoUsuario = estudiante.infoUsuario,
                         idPeriodo = estudiante.idPeriodo,
                         anioPeriodo = estudiante.anioPeriodo,
                     }))
