@@ -44,7 +44,6 @@ namespace WebAPI.Controllers
             {
                 try
                 {
-
                     foreach (var item in model)
                     {
                         if (item.calificacion > 100 || item.calificacion < 0)
@@ -54,28 +53,6 @@ namespace WebAPI.Controllers
                     }
 
                     return publicacionRepo.PostPublicacionListado(model);
-                    
-
-                    PublicacionModel model2 = new PublicacionModel();
-
-                    //model2.idListadoEstudiante = model.idListadoEstudiante;
-                    //model2.idCalificacion = model.calificacion;
-                    //model2.fechaPublicacion = DateTime.Now;
-
-                   //VALIDAR LA INSERCION DE NOTAS VARIAS VECES O CAMBIAR CON PUT?????
-
-                    //PublicacionModel publicacion = publicacionRepo.Get(x => x.idListadoEstudiante == model2.idListadoEstudiante).FirstOrDefault();
-                    //if (publicacion != null)
-                    //{
-                    //    return new OperationResult(false, "Ya le pusiste calificacion a este estudiante");
-                    //}
-
-                    var created = publicacionRepo.Add(model2);
-                    publicacionRepo.SaveChanges();
-                    return new OperationResult(true, "Se ha colocado la clasificacion correctamente", created);
-
-
-
                 }
                 catch (Exception ex)
                 {

@@ -38,7 +38,8 @@ namespace Data.Administration
                               join e in DB.Set<Estudiante>() on u.idEstudiante equals e.idEstudiante
                               join s in DB.Set<Usuarios>() on e.idUsuario equals s.idUsuario
                               join p in DB.Set<Periodo>() on u.idPeriodo equals p.idPeriodo
-                              join n in DB.Set<Publicacion>() on u.idListadoEstudiante equals n.idListadoEstudiante
+                              join n in DB.Set<Publicacion>() on u.idListadoEstudiante equals n.idListadoEstudiante into publicacion
+                              from n in publicacion.DefaultIfEmpty()
                               let infoUsuario = usuariosRepo.Get(x => x.idUsuario == e.idUsuario).FirstOrDefault()
                               select new ListadoEstudiantesModel()
                               {
@@ -51,7 +52,7 @@ namespace Data.Administration
                                   idPeriodo = u.idPeriodo,
                                   nombrePeriodo = p.nombre,
                                   anioPeriodo = u.anioPeriodo,
-                                  calificacion = n.idCalificacion
+                                  calificacion = n != null ? n.idCalificacion : 0
                               });
              }
          )

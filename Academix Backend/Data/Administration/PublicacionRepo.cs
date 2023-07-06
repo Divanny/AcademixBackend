@@ -86,7 +86,7 @@ namespace Data.Administration
             {
                 foreach(var listado in listados)
                 {
-                    publicacionSet.Remove(publicacionSet.Where(x => x.idListadoEstudiante == listado.idListadoEstudiante).FirstOrDefault());
+                    if (publicacionSet.Where(x => x.idListadoEstudiante == listado.idListadoEstudiante).Any()) publicacionSet.Remove(publicacionSet.Where(x => x.idListadoEstudiante == listado.idListadoEstudiante).FirstOrDefault());
 
                     publicacionSet.Add(new Publicacion()
                     {
@@ -104,8 +104,5 @@ namespace Data.Administration
                 return new OperationResult(false, "No se han enviado las publicaciones");
             }
         }
-
-
-
     }
 }

@@ -173,12 +173,6 @@ namespace Data.Administration
 
         }
 
-        
-
-
-
-
-
         public override Seccion_Asignatura Add(SeccionAsignaturaModel model)
         {
             using (var trx = dbContext.Database.BeginTransaction())
@@ -283,23 +277,20 @@ namespace Data.Administration
         
         }
 
-        public List<SeccionAsignaturaModel> GetMaestroSeccionesById(int idSeccion)
+        public SeccionAsignaturaModel GetMaestroSeccionById(int idSeccion, int idUsuario)
         {
             AcadmixEntities academixEntities = new AcadmixEntities();
-
-            int idUsuario = OnlineUser.GetUserId();
 
             var idMaestro = academixEntities.Maestro
                            .Where(z => z.idUsuario == idUsuario)
                            .Select(x => x.idMaestro)
                            .FirstOrDefault();
 
-            List<SeccionAsignaturaModel> seccionesMaestro = this.Get(x => x.idMaestro == idMaestro && x.idSeccion == idSeccion).ToList();
+            SeccionAsignaturaModel seccionesMaestro = this.Get(x => x.idMaestro == idMaestro && x.idSeccion == idSeccion).FirstOrDefault();
             return seccionesMaestro;
-
         }
 
-        public List<ListadoEstudiantesModel> GetListadoEstudiantes(int idSeccion)
+        public List<ListadoEstudiantesModel> GetListadoEstudiantes(int idSeccion, int idUsuario)
         {
             AcadmixEntities academixEntities = new AcadmixEntities();
             ListadoEstudiantesRepo listadoEstudiantesRepo = new ListadoEstudiantesRepo();
@@ -308,36 +299,34 @@ namespace Data.Administration
            
             int Periodo = utilities.ObtenerTrimestreActual();
 
+            SeccionAsignaturaModel seccionMaestro = this.GetMaestroSeccionById(idSeccion, idUsuario);
 
-            List<SeccionAsignaturaModel> seccionesMaestro = this.GetMaestroSeccionesById(idSeccion);
-
-
-
-            List<ListadoEstudiantesModel> listadoEstudiantes = new List<ListadoEstudiantesModel>();
-            foreach (var item in seccionesMaestro)
+            if (seccionMaestro != null)
             {
-                var estudiantes = listadoEstudiantesRepo.Get(x => x.idSeccion == item.idSeccion && x.idPeriodo == Periodo && x.anioPeriodo == DateTime.Now.Year).ToList();
+                List<ListadoEstudiantesModel> listadoEstudiantes = new List<ListadoEstudiantesModel>();
+                var estudiantes = listadoEstudiantesRepo.Get(x => x.idSeccion == seccionMaestro.idSeccion && x.idPeriodo == Periodo && x.anioPeriodo == DateTime.Now.Year).ToList();
                 listadoEstudiantes.AddRange(estudiantes);
+
+                List<ListadoEstudiantesModel> listadoEstudiantesModel = listadoEstudiantes.Select(x => new ListadoEstudiantesModel
+                {
+                    idListadoEstudiante = x.idListadoEstudiante,
+                    idSeccion = x.idSeccion,
+                    codigoSeccion = x.codigoSeccion,
+                    nombreAsignatura = x.nombreAsignatura,
+                    idEstudiante = x.idEstudiante,
+                    infoUsuario = x.infoUsuario,
+                    idPeriodo = x.idPeriodo,
+                    anioPeriodo = x.anioPeriodo,
+                    calificacion = x.calificacion,
+                }).ToList();
+
+                return listadoEstudiantesModel;
+            }
+            else
+            {
+                return new List<ListadoEstudiantesModel>();
             }
 
-                 var listadoEstudiantesModel = listadoEstudiantes
-                    .GroupBy(x => x.idSeccion)
-                    .SelectMany(g => g.Select(estudiante => new ListadoEstudiantesModel
-                    {
-                        idListadoEstudiante = estudiante.idListadoEstudiante,
-                        idSeccion = estudiante.idSeccion,
-                        codigoSeccion = estudiante.codigoSeccion,
-                        nombreAsignatura = estudiante.nombreAsignatura,
-                        idEstudiante = estudiante.idEstudiante,
-                        infoUsuario = estudiante.infoUsuario,
-                        idPeriodo = estudiante.idPeriodo,
-                        anioPeriodo = estudiante.anioPeriodo,
-                    }))
-                    .ToList();
-
-
-
-            return listadoEstudiantesModel;
         }
 
     }

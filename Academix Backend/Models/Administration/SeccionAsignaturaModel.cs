@@ -24,5 +24,6 @@ namespace Models.Administration
         public IEnumerable <SeccionHorarioDetalleModel> detalleSeccion { get; set; }
         public int cantidadEstudiantes { get; set; }
         public int calificacion { get; set; }
+        public string calificacionLiteral { get; set; }
     }
 }

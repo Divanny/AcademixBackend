@@ -101,6 +101,7 @@ namespace WebAPI.Controllers
                            .Select(x => x.idSeccion).ToList();
 
             estudiantesDashboard.AsignaturasSeleccionadas = seccionAsignaturaRepo.Get(x => ids.Contains(x.idSeccion)).ToList();
+            Utilities utilities = new Utilities();
 
             foreach(var asignaturaSeleccionada in estudiantesDashboard.AsignaturasSeleccionadas)
             {
@@ -113,9 +114,9 @@ namespace WebAPI.Controllers
 
                 int actualPosicion = estudiantesDashboard.AsignaturasSeleccionadas.IndexOf(asignaturaSeleccionada);
                 estudiantesDashboard.AsignaturasSeleccionadas[actualPosicion].calificacion = calificacion;
+                estudiantesDashboard.AsignaturasSeleccionadas[actualPosicion].calificacionLiteral = utilities.getCalificacionLiteral(calificacion);
             }
 
-            Utilities utilities = new Utilities();
             var trimestreActual = utilities.ObtenerTrimestreActual();
             string PeriodoDesde = "", PeriodoHasta = "", PeriodoAño = "";
             if (trimestreActual == (int)PeriodosEnum.febero_abril)
@@ -144,7 +145,7 @@ namespace WebAPI.Controllers
             }
 
             estudiantesDashboard.PeriodoDesde = PeriodoDesde;
-            estudiantesDashboard.PeriodoDesde = PeriodoHasta;
+            estudiantesDashboard.PeriodoHasta = PeriodoHasta;
             estudiantesDashboard.PeriodoAño = PeriodoAño;
 
             return estudiantesDashboard;

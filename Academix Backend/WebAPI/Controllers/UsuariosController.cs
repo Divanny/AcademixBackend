@@ -13,6 +13,7 @@ using WebAPI.Infraestructure;
 using System.Web.Http;
 using Data.Entities;
 using OnlineUser = WebAPI.Infraestructure.OnlineUser;
+using System.Web.UI.WebControls;
 
 namespace WebAPI.Controllers
 {
@@ -44,7 +45,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         // GET api/Usuarios
         [HttpGet]
-        //[Autorizar(AllowAnyProfile = true)]
+        [Autorizar(AllowAnyProfile = true)]
         public List<UsuariosModel> Get()
         {
             return usuariosRepo.Get().ToList();
@@ -282,42 +283,50 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Cambia la contraseña de un usuario
         /// </summary>
-        /// <param name="idUsuario"></param>
-        /// <param name="password"></param>
+        /// <param name="AntPassword"></param>
+        /// <param name="NewPassword"></param>
+        /// <param name="ConfirmPassword"></param>
         /// <returns></returns>
-        [Route("CambiarContraseña")]
+        [Route("ChangePassword")]
         [HttpPut]
         [Autorizar(AllowAnyProfile = true)]
-        public OperationResult CambiarContraseña(string AntPassword, string NewPassword, string ConfirmPassword)
+        public OperationResult ChangePassword(CambiarContraseñaModel cambiarContraseñaModel)
         {
-            int idUsuario = OnlineUser.GetUserId();
-            UsuariosModel usuario = usuariosRepo.Get(x => x.idUsuario == idUsuario).FirstOrDefault();
-
-            if (AntPassword != Cipher.Decrypt(usuario.Password, Properties.Settings.Default.JwtSecret))
+            if (ValidateModel(cambiarContraseñaModel))
             {
-                return new OperationResult(false, "La contraseña actual no coincide");
-            }
+                int idUsuario = OnlineUser.GetUserId();
+                UsuariosModel usuario = usuariosRepo.Get(x => x.idUsuario == idUsuario).FirstOrDefault();
 
-            if (NewPassword != ConfirmPassword)
+                if (cambiarContraseñaModel.AntPassword != Cipher.Decrypt(usuario.PasswordEncrypted, Properties.Settings.Default.JwtSecret))
+                {
+                    return new OperationResult(false, "La contraseña actual no coincide");
+                }
+
+                if (cambiarContraseñaModel.NewPassword != cambiarContraseñaModel.ConfirmPassword)
+                {
+                    return new OperationResult(false, "La contraseña nueva no coincide con la confirmación");
+                }
+
+                if (usuario == null)
+                {
+                    return new OperationResult(false, "Este usuario no existe.");
+                }
+
+                var PasswordValidation = utilities.ValidarContraseña(cambiarContraseñaModel.NewPassword);
+
+                if (!PasswordValidation.Success)
+                {
+                    return new OperationResult(true, "La contraseña no es segura");
+                }
+
+                usuario.PasswordEncrypted = Cipher.Encrypt(cambiarContraseñaModel.NewPassword, Properties.Settings.Default.JwtSecret);
+                usuariosRepo.Edit(usuario, idUsuario);
+                return new OperationResult(true, "La contraseña se ha actualizado satisfactoriamente");
+            }
+            else
             {
-                return new OperationResult(false, "La contraseña nueva no coincide con la confirmación");
+                return new OperationResult(false, "Los datos ingresados son invalidos", Validation.Errors);
             }
-
-            if (usuario == null)
-            {
-                return new OperationResult(false, "Este usuario no existe.");
-            }
-
-            var PasswordValidation = utilities.ValidarContraseña(NewPassword);
-
-            if (!PasswordValidation.Success)
-            {
-                return PasswordValidation;
-            }
-
-            usuario.PasswordEncrypted = Cipher.Encrypt(NewPassword, Properties.Settings.Default.JwtSecret);
-            usuariosRepo.Edit(usuario, idUsuario);
-            return new OperationResult(true, "La contraseña se ha actualizado satisfactoriamente");
         }
 
         /// <summary>

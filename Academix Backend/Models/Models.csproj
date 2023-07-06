@@ -49,6 +49,7 @@
     <Compile Include="Administration\AsignaturaPensumModel.cs" />
     <Compile Include="Administration\AsignaturasModel.cs" />
     <Compile Include="Administration\AulaModel.cs" />
+    <Compile Include="Administration\CambiarContraseñaModel.cs" />
     <Compile Include="Administration\CarrerasModel.cs" />
     <Compile Include="Administration\AdministradorDashboardModel.cs" />
     <Compile Include="Administration\DependenciasModel.cs" />
